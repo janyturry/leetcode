@@ -1,0 +1,27 @@
+//283. Move Zeroes
+//leetcode
+//同向双指针, 指针right一直向右搜索， 指针left指向下一个可以存放非0的地方， 一旦right遇到可以存放的， 放到left里面
+public class moveZeroes {
+	public void moveZeroes(int[] nums) {
+        if(nums == null || nums.length ==0){
+            return;
+        }    
+
+        int left = 0;
+        int right = 0;
+        
+        while(right <= nums.length -1){
+            if(nums[right] != 0){
+            	swap(nums, left, right);
+            	left++;
+            }
+            right++;
+        }
+    }
+
+   public void swap(int[] nums , int a, int b){
+       int tmp = nums[a];
+       nums[a] = nums[b];
+       nums[b] = tmp;
+   }
+}
