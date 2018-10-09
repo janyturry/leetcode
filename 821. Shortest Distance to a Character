@@ -1,0 +1,31 @@
+//821. Shortest Distance to a Character
+//leetcode
+//思路：two pass, (1) left to right. (2) right to left
+public class shortestToChar {
+	public int[] shortestToChar(String S, char C) {
+		if (S.length() == 0) {
+			return new int[0];
+		}
+
+		int l = S.length();
+		int [] res = new int[l];
+		
+		
+		int pos = -l;
+		for(int i = 0; i < l; i++){
+			if(S.charAt(i) == C){
+		        pos  = i;    		
+			}
+			res[i] =  i - pos;
+		}
+		
+		for(int i = l-1; i >=0; i--){
+			if(S.charAt(i) == C){
+				pos = i;
+			}
+			res[i] = Math.min(res[i] , Math.abs(i-pos));
+		}
+		
+		return res;
+	}
+}
