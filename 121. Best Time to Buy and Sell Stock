@@ -1,0 +1,19 @@
+//121. Best Time to Buy and Sell Stock
+//leetcode
+//因为只有一次买和卖， 买肯定是在卖之前， 所以先记录最小值min,然后从1开始， 每次更新profit和min
+public class maxProfit {
+	public int maxProfit(int[] prices) {
+		int profit = 0;
+		if(prices == null || prices.length ==0){
+			return profit;
+		}
+		int min = prices[0];
+		
+		for(int i = 1; i < prices.length;i++){
+		    profit = Math.max(profit, prices[i] - min);
+		    min = Math.min(min, prices[i]);
+		}
+		
+		return profit;
+	}
+}
