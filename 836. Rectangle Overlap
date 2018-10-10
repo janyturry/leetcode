@@ -1,0 +1,25 @@
+//836. Rectangle Overlap
+//leetcode
+//[x1, y1, x2, y2] , bottom left, top right. 
+//width = min(r1,r2) - max(l1,l2)
+//height = min(t1,t2) - max(b1,b2)
+//return width > 0 and height > 0
+//思路：wid = 两个右上x 的最小值 -两个左下x的最大值. hei = 右上的最小值 - 左下的最大值
+public class isRectangleOverlap {
+	public boolean isRectangleOverlap(int[] rec1, int[] rec2) {
+		if(rec1 == null || rec2 == null || rec1.length < 4 ||rec2.length < 4 ){
+			return false;
+		}
+		
+		
+		
+		int wid = Math.min(rec1[2], rec2[2]) - Math.max(rec1[0], rec2[0]);
+		int hei = Math.min(rec1[3], rec2[3]) - Math.max(rec1[1], rec2[1]);
+		
+        if(wid > 0 && hei >0){
+        	return true;
+        }
+        
+        return false;
+	}
+}
