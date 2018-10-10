@@ -1,0 +1,20 @@
+//122. Best Time to Buy and Sell Stock II
+//leetcode
+//思路：并没有限制总的买卖次数，只限制了当天只能买或卖。所以可以采用greedy的方法，来获得所有可能的正利润
+//只要prices[i] - prices[i-1]>0，我们就在第i-1天买入，第i天抛出。这样可以包括所有可能赚取利润的区间。
+public class maxProfit122 {
+	public int maxProfit(int[] prices) {
+	    if(prices == null || prices.length ==0){
+	    	return 0;
+	    }
+	    
+	    int sum = 0;
+	    for(int i = 1; i < prices.length; i++){
+	    	if(prices[i] > prices[i-1]){
+	    		sum+= prices[i] - prices[i-1];
+	    	}
+	    }
+	    
+	    return sum;
+	}
+}
