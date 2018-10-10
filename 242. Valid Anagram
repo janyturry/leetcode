@@ -1,0 +1,27 @@
+//242. Valid Anagram
+//leetcode
+//思路是建立数组，然后用char作为index, 先+后减，看是不是都为0
+public class isAnagram {
+	public boolean isAnagram(String s, String t) {
+		if (s == null || t == null) {
+			return false;
+		}
+
+		int[] res = new int[256];
+
+		for (int i = 0; i < s.length(); i++) {
+			res[s.charAt(i) - 'a']++;
+		}
+
+		for (int i = 0; i < t.length(); i++) {
+			res[t.charAt(i) - 'a']--;
+		}
+
+		for (int i = 0; i < res.length; i++) {
+			if (res[i] != 0) {
+				return false;
+			}
+		}
+		return true;
+	}
+}
