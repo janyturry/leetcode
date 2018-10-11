@@ -1,0 +1,18 @@
+
+//70. Climbing Stairs
+//leetcode
+//每次能走一步或者两步， 走到倒数第二步的时候,i - 2层跳1步再跳1步的这个走法，已经包含在跳到第i - 1层的走法里了。所以不需要重复去加一次
+//n==0 的时候， 需要返回1,真正的斐波那契数列 : 1,1,2,3,5,8,13,21,34,55,89,144
+//不然的话for loop需要从 n==3 开始然后初始化
+public class climbStairs {
+	public int climbStairs(int n) {
+		//n+1是因为阶级和index要对应，res[i] 表示一共i个阶级
+		int[] res = new int[n + 1];
+		res[0] = 1;
+		res[1] = 1;
+		for (int i = 2; i <= n; i++) {
+			res[i] = res[i - 1] + res[i - 2];
+		}
+		return res[n];
+	}
+}
