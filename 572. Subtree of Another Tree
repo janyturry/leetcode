@@ -1,0 +1,69 @@
+
+//572. Subtree of Another Tree
+//leetcode
+//思路：先判断s是否为null, 然后如果直接两个isSame(s,t),如果相等直接 return true. 然后递归isSubtree(s.left,t), isSubtree(s.right,t)
+public class isSubtree {
+	public class TreeNode {
+		int val;
+		TreeNode left;
+		TreeNode right;
+
+		TreeNode(int x) {
+			val = x;
+		}
+	}
+	
+   //recursive
+	public boolean isSubtree(TreeNode s, TreeNode t) {
+		if (s == null) {
+			return false;
+		}
+		if (isSame(s, t)) {
+			return true;
+		}
+		return isSubtree(s.left, t) || isSubtree(s.right, t);
+	}
+
+	public boolean isSame(TreeNode s, TreeNode t) {
+		if (s == null && t == null) {
+			return true;
+		}
+
+		if (s == null || t == null) {
+			return false;
+		}
+
+		if (s.val != t.val) {
+			return false;
+		}
+
+		return isSame(s.left, t.left) && isSame(s.right, t.right);
+	}
+	
+	
+	//iterative
+	public boolean isSubtree2(TreeNode s, TreeNode t) {
+		if (s == null) {
+			return false;
+		}
+		
+		Queue<TreeNode> q = new LinkedList<TreeNode>();
+		q.offer(s);
+		
+		while(!q.isEmpty()){
+			TreeNode tmp = q.poll();
+			if(isSame(tmp,t)){
+				return true;
+			}
+			
+			if(tmp.left != null){
+				q.offer(tmp.left);
+			}
+			
+			if(tmp.right != null){
+				q.offer(tmp.right);
+			}
+		}
+		return false;
+	}
+}
