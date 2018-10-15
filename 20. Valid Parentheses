@@ -1,0 +1,29 @@
+import java.util.Stack;
+
+//20. Valid Parentheses
+//开始先判断是不是偶数长度， 如果不是的话可以直接判断是错的，因为括号都是配对的
+//然后没碰到一个"(" 左边的就入栈一个右边的")", 
+public class isValid {
+	public boolean isValid(String s) {
+		if (s == null || s.length() % 2 != 0) {
+			return false;
+		}
+
+		Stack<Character> stack = new Stack<Character>();
+		for (char c : s.toCharArray()) {
+			if (c == '(') {
+				stack.push(')');
+			} else if (c == '[') {
+				stack.push(']');
+			} else if (c == '{') {
+				stack.push('}');
+			} else if (!stack.isEmpty() && stack.peek() == c) {
+				stack.pop();
+			} else {
+				return false;
+			}
+
+		}
+		return stack.isEmpty();
+	}
+}
