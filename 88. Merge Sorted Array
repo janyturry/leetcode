@@ -1,0 +1,20 @@
+//88. Merge Sorted Array
+//leetcode
+//基本思路是从num1的尾部进行插入， 然后设立两个指针分别指向nums1和nums2的尾部，然后一直往前走
+
+public class merge {
+	public void merge(int[] nums1, int m, int[] nums2, int n) {
+
+		int p = m - 1;
+		int q = n - 1;
+		int i = m + n - 1;
+
+		while (q >= 0) {
+			if (p < 0 || nums2[q] > nums1[p]) {
+				nums1[i--] = nums2[q--];
+			} else {
+				nums1[i--] = nums1[p--];
+			}
+		}
+	}
+}
