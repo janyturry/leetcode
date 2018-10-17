@@ -1,0 +1,48 @@
+
+import java.util.Stack;
+
+//155. Min Stack
+//leetcode
+//建立对象 element 多加一个min的属性,和 stack
+/*
+ push(x) -- Push element x onto stack.
+ pop() -- Removes the element on top of the stack.
+ top() -- Get the top element.
+ getMin() -- Retrieve the minimum element in the stack.
+ */
+class MinStack {
+	class element {
+		int min;
+		int val;
+
+		public element(int min, int val) {
+			this.min = min;
+			this.val = val;
+		}
+	}
+    Stack<element> s = new Stack<element>();
+	public MinStack() {
+		
+	}
+
+	public void push(int x) {
+        if(s.isEmpty()){
+        	s.push(new element(x, x));
+        }else{
+        	s.push(new element(s.peek().min < x ? s.peek().min : x, x));
+        }
+	}
+
+	public void pop() {
+        s.pop();
+	}
+
+	public int top() {
+        return s.peek().val;
+	}
+
+	public int getMin() {
+        return s.peek().min;
+	}
+
+}
