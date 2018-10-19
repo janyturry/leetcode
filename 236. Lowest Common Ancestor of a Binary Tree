@@ -1,0 +1,34 @@
+
+//236. Lowest Common Ancestor of a Binary Tree
+//leetcode
+//思路：这个解法也适用于BST, 如果碰到root == p , q 或者是空的，马上返回，就是搜索就是一直到p , q  或者没找到
+//如果当前root的root.left 或者root.right递归下去都有值，代表了证明左右都 各自找到了p,q 所以目前节点肯定是LCA.
+//
+
+public class lowestCommonAncestor236 {
+	public class TreeNode {
+		int val;
+		TreeNode left;
+		TreeNode right;
+
+		TreeNode(int x) {
+			val = x;
+		}
+	}
+
+	public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+		if (root == null || root == q || root == p) {
+			return root;
+		}
+
+		TreeNode left = lowestCommonAncestor(root.left, p, q);
+		TreeNode right = lowestCommonAncestor(root.right, p, q);
+
+		if (left != null && right != null) {
+			return root;
+		}
+
+		return left == null ? right : left;
+
+	}
+}
