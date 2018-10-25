@@ -1,0 +1,58 @@
+
+import java.util.HashMap;
+
+//76. Minimum Window Substring
+//leetcode
+//基本思路是设置一个hashmap, 然后把目标小的那个char放进去hashmap <Character, Integer>, 计算count. 然后设存在于目标char的count+1. 然后设置条件
+//end < s.length. end 一直往右滑， 遇到存在目标的 ，count--,
+public class minWindow {
+	public String minWindow(String s, String t) {
+		int count = 0;
+        HashMap<Character, Integer> map  = new HashMap<Character, Integer>();
+        for(char c : s.toCharArray()){
+            map.put(c , 0);    	
+        }
+        
+        for(char c : t.toCharArray()){
+        	if(map.containsKey(c)){
+        		map.put(c , map.get(c)+1);
+        		count++;
+        	}else{
+        		return "";
+        	}
+        }
+        
+        int start = 0;
+        int end = 0;
+        int min_len = Integer.MAX_VALUE;
+        int min_start = 0;
+        
+        while(end < s.length()){
+            char c  =  s.charAt(end);
+            if(map.get(c) > 0){
+            	count--;
+            }
+            map.put(c , map.get(c)-1);
+            end++;
+            
+            
+            while(count==0){
+            	if( (end - start) < min_len){
+                	min_len = end - start;
+                	min_start = start;
+                }
+            	
+            	char d = s.charAt(start);
+            	map.put(d, map.get(d) + 1);
+            	
+            	if(map.get(d) >0){
+            		count++;
+            	}
+            	start++;
+            }
+ 
+        }
+        return min_len == Integer.MAX_VALUE ?   ""  : s.substring(min_start, min_len + min_start);
+        
+	}
+}
