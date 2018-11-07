@@ -1,0 +1,62 @@
+
+//138. Copy List with Random Pointer
+//leetcode
+/*The idea is to associate the original node with its copy node in a single linked list. In this way, we don't need extra space to keep track of the new nodes.
+(1) 第一次循环， 复制每个节点,链接起来
+(2) 第二次循环 ， 复制random点
+(3) 第三次循环     deattach 节点
+*/
+import java.util.HashMap;
+
+public class copyRandomList {
+
+	class RandomListNode {
+		RandomListNode next;
+		RandomListNode random;
+		int label;
+
+		RandomListNode(int label) {
+			this.label = label;
+		}
+	}
+
+	public RandomListNode copyRandomList(RandomListNode head) {
+	    if(head == null){
+        	return head;
+        }
+        
+        RandomListNode dummy = head;
+        RandomListNode next;
+        while(dummy != null){
+        	RandomListNode tmp  = new RandomListNode(dummy.label);
+        	next = dummy.next;
+        	dummy.next = tmp;
+        	tmp.next = next;
+        	dummy = next;
+        }
+        
+        dummy = head;
+        while(dummy != null){
+        	if(dummy.random!= null){
+        		dummy.next.random = dummy.random.next;
+        	}
+                        	dummy = dummy.next.next;
+
+        }
+        
+        dummy = head;
+        RandomListNode copyHead = dummy.next;
+        RandomListNode copy = copyHead;
+        while(copy.next!= null){
+        	dummy.next = dummy.next.next;
+        	dummy = dummy.next;
+        	
+        	copy.next = copy.next.next;
+        	copy = copy.next;
+        }
+        
+        dummy.next = dummy.next.next;
+        
+        return copyHead;
+	}
+}
