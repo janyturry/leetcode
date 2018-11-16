@@ -1,0 +1,42 @@
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
+//47. Permutations II
+//使用boolean 数组来去重复， 这个一定需要排序
+//visit用来判断每一个排序组合里面，每一个数字只能使用一次
+//preNum 保证每个每个数字在该位置只出现一次
+public class permuteUnique {
+	public List<List<Integer>> permuteUnique(int[] nums) {
+		LinkedList<List<Integer>> res = new LinkedList<List<Integer>>();
+		//这一步必须
+		Arrays.sort(nums);
+		//记录访问过的值
+		boolean[] flag = new boolean[nums.length];
+		helper(nums, new ArrayList<Integer>(), res, flag);
+		return res;
+
+	}
+
+	public void helper(int[] nums, ArrayList<Integer> tmp,
+			LinkedList<List<Integer>> res, boolean[] flag) {
+		if (tmp.size() == nums.length) {
+			res.add(new ArrayList<Integer>(tmp));
+			return;
+		} else {
+			int preNum = nums[0] - 1;
+			for (int i = 0; i < nums.length; i++) {
+				if (flag[i] == false && preNum != nums[i]) {
+					preNum = nums[i];
+					tmp.add(nums[i]);
+					flag[i] = true;
+					helper(nums, tmp, res, flag);
+					tmp.remove(tmp.size() - 1);
+					flag[i] = false;
+				}
+			}
+		}
+	}
+}
