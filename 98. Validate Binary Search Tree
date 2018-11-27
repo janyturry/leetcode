@@ -1,0 +1,50 @@
+
+import java.util.Stack;
+//98. Validate Binary Search Tree
+//leetcode
+//归纳了使用inorder解决树的问题
+//https://discuss.leetcode.com/topic/46016/learn-one-iterative-inorder-traversal-apply-it-to-multiple-tree-questions-java-solution
+//思路： 中序遍历BST就是小中大， ,BST 的 特征也是刚好 < , = , > 所以一旦current <=之前那个pre, 就要return false
+public class isValidBST {
+	public class TreeNode {
+		int val;
+		TreeNode left;
+		TreeNode right;
+
+		TreeNode(int x) {
+			val = x;
+		}
+	}
+
+	public boolean isValidBST(TreeNode root) {
+		if (root == null) {
+			return true;
+		}
+
+		Stack<TreeNode> stack = new Stack<TreeNode>();
+		while (root != null) {
+			stack.push(root);
+			root = root.left;
+		}
+		TreeNode pre = null;
+		TreeNode cur = null;
+		while (!stack.isEmpty()) {
+			TreeNode node = stack.pop();
+			cur = node;
+
+			if (pre != null && cur.val <= pre.val) {
+				return false;
+			}
+
+			pre = cur;
+			if (node.right != null) {
+				node = node.right;
+				while (node != null) {
+					stack.push(node);
+					node = node.left;
+				}
+			}
+		}
+		return true;
+	}
+}
