@@ -1,0 +1,64 @@
+
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
+//BFS
+//127. Word Ladder
+//leetcode
+//思路就是变成chararray然后直接替换字母的方式
+//第二个重点就是使用hashset 来排除重复查找的可能性， 因为当dog 变成hog 的时候 , 如果判断 hog -> dog 存在列表，那么就会重复加进queue，步骤等同于设置visit flag
+//其他的就是典型的BFS
+public class ladderLength {
+	public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+
+		if (beginWord.equals(endWord)) {
+			return 2;
+		}
+		// endword not eixst in wordlist
+		if (!wordList.contains(endWord)) {
+			return 0;
+		}
+
+		Queue<String> q = new LinkedList<String>();
+		//Set<String> set = new HashSet<String>();
+		q.offer(beginWord);
+		// set.add(beginWord);
+
+		// 这样可以避免后面的反复循环查找是否在set里面
+		HashSet<String> dict = new HashSet<>();
+		for (String word : wordList) {
+			dict.add(word);
+		}
+		// 删除开始单词
+		dict.remove(beginWord);
+
+		int count = 1;
+		while (!q.isEmpty()) {
+			count++;
+			int size = q.size();
+			for (int i = 0; i < size; i++) {
+				String cur = q.poll();
+				//第一个外层循环可以先不转化成char[]
+				for (int k = 0; k < cur.length(); k++) {
+					// 牢记替换字母方法
+					for (char j = 'a'; j <= 'z'; j++) {
+						char[] tmp = cur.toCharArray();
+						tmp[k] = j;
+						String new_s = new String(tmp);
+						// for(String nei: wordList){
+						if (new_s.equals(endWord)) {
+							return count;
+						}
+						// 能删除成功代表在在wordlist上面并且避免了重读查找
+						if (dict.remove(new_s)) {
+							q.offer(new_s);
+						}	
+					}
+				}
+			}
+		}
+		return 0;
+	}		
+}
