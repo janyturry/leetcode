@@ -1,0 +1,49 @@
+
+import java.util.ArrayList;
+import java.util.List;
+
+//301. Remove Invalid Parentheses
+//leetcode
+//思路：DFS. 刚开始
+public class removeInvalidParentheses {
+	public List<String> removeInvalidParentheses(String s) {
+		  List<String>  res = new ArrayList<String>();
+			if(s == null || s.length() <1 ){
+			    res.add("");
+				return res;
+			}
+			helper(s , res, 0,0 ,'(', ')');
+			
+			return res;
+	}
+
+	public void helper(String s, List<String> res, int ist, int jst, char open, char close) {
+		int openC = 0;
+		int closeC = 0;
+		for(int i = ist; i < s.length();i++){
+			if(s.charAt(i) == open){
+				openC++;
+			}
+			
+			if(s.charAt(i) == close){
+				closeC++;
+			}
+			
+			if(closeC > openC){
+				for(int j = jst; j <=i ;j++){
+				    if(s.charAt(j) == close && (j == jst || s.charAt(j-1) != close)){
+						helper(s.substring(0,j)+ s.substring(j+1, s.length()), res, i, j, open,close);
+					}					
+				}
+				return;
+			}
+		}
+			
+			String reverse = new StringBuilder(s).reverse().toString();
+			if(open == '('){
+			    helper(reverse , res, 0,0 ,')', '(');
+			}else{
+			  res.add(reverse);
+			}
+	}
+}
