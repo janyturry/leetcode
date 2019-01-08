@@ -1,0 +1,56 @@
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+//56. Merge Intervals
+//leetcode
+//基本思路是先从小到大把interval排序了，然后loop一遍,如果last.end 大于 cur.start的，更新last.end
+public class mergeIntervals {
+	public class Interval {
+		int start;
+		int end;
+
+		Interval() {
+			start = 0;
+			end = 0;
+		}
+
+		Interval(int s, int e) {
+			start = s;
+			end = e;
+		}
+	}
+
+	public List<Interval> merge(List<Interval> intervals) {
+		 List<Interval> res=  new ArrayList<Interval>();
+	        if(intervals == null || intervals.size() == 0){
+	            return intervals;
+	        }
+	        
+	        Collections.sort(intervals, new Comparator<Interval>(){
+	        	//要写public
+	            public int compare(Interval a, Interval b){
+	                if(a.start == b.start){
+	                    return (a.end - b.end);
+	                }else{
+	                    return (a.start - b.start);
+	                }
+	            }
+	        });
+	        
+	        Interval last  = null;
+	        for(Interval i :intervals ){
+	            if(last == null || last.end < i.start){
+	                res.add(i);
+	                last = i;
+	            }else{
+	            	//修改已经加进去的
+	                last.end = Math.max(last.end, i.end);
+	            }
+	        }
+	        
+	        return res;
+	            
+	}
+}
