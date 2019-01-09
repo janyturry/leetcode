@@ -1,0 +1,45 @@
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
+
+//94. Binary Tree Inorder Traversal
+//leetcode
+//重点是利用stack来实现现金后出， 一直遍历按照 左， 中， 右的顺序
+//一开始没进入while q.isEmpty()之前就要全部入栈左节点
+public class inorderTraversal {
+	public class TreeNode {
+		int val;
+		TreeNode left;
+		TreeNode right;
+
+		TreeNode(int x) {
+			val = x;
+		}
+	}
+
+	public List<Integer> inorderTraversal(TreeNode root) {
+		List<Integer> res = new ArrayList<Integer>();
+		if (root == null) {
+			return res;
+		}
+		Stack<TreeNode> stack = new Stack<TreeNode>();
+		while (root != null) {
+			stack.push(root);
+			root = root.left;
+		}
+
+		while (!stack.isEmpty()) {
+			TreeNode node = stack.pop();
+			res.add(node.val);
+			if (node.right != null) {
+				node = node.right;
+				while (node != null) {
+					stack.push(node);
+					node = node.left;
+				}
+			}
+		}
+		return res;
+	}
+}
