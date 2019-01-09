@@ -1,0 +1,70 @@
+
+//287. Find the Duplicate Number
+
+//我们知道，这总共n + 1 个数每个数x都满足  1 <= x <= n
+//所以，我们二分答案为   mid = (L+R )/2 其中 L=1  R= n
+//然后扫描整个数组进行统计 ，设cnt为满足不大于mid的元素个数，则有：cnt <= mid  则说明重复的应该在 [mid , R] ，否则，应该在[L,mid]
+//总的时间复杂度为O(nlogn)
+
+/*
+public class findDuplicate {
+	public int findDuplicate(int[] nums) {
+		int low = 1;
+		int high = nums.length - 1;
+
+		while (low + 1 < high) {
+			int mid = low + (high - low) / 2;
+			int count = count(mid, nums);
+			if (count > mid) {
+				high = mid;
+			} else {
+				low = mid;
+			}
+		}
+
+		if (count(low, nums) > low)
+			return low;
+		return high;
+	}
+
+	public int count(int target, int[] nums) {
+		int count = 0;
+		for (int i = 0; i < nums.length; i++) {
+			if (nums[i] <= target) {
+				count++;
+			}
+		}
+		return count;
+	}
+}
+*/
+
+//https://www.programcreek.com/2015/06/leetcode-find-the-duplicate-number-java/
+//快慢指针方法， 基本思路是通过索引和数值链接起链表
+public class findDuplicate {
+	public int findDuplicate(int[] nums) {
+		if(nums == null || nums.length < 2){
+			return -1;
+		}
+		
+		int fast = nums[nums[0]];
+		int slow = nums[0];
+		
+		
+		
+		while(fast != slow){
+		    fast = nums[nums[fast]];
+		    slow = nums[slow];
+		}
+		
+		fast = 0;
+		while(fast != slow){
+			fast = nums[fast];
+			slow = nums[slow];
+		}
+		
+	    return slow;
+		
+	}
+}
+
