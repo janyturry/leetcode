@@ -1,0 +1,18 @@
+//leetcode 55
+//55. Jump Game
+//思路：设置变量dis 作为最远 能跳到哪里， i能到达的是小于等于dis最远能到的index, 然后不断更新dis,一旦dis >= n , 那么return true
+public class canJump {
+	public boolean canJump(int[] nums) {
+		if (nums == null || nums.length == 0) {
+			return false;
+		}
+		int dis = 0;
+		for (int i = 0; i <= dis; i++) {
+			dis = Math.max(i + nums[i], dis);
+			if (dis >= nums.length - 1) {
+				return true;
+			}
+		}
+		return false;
+	}
+}
