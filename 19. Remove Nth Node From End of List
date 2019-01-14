@@ -1,0 +1,33 @@
+
+//19. Remove Nth Node From End of List
+//leetcode
+//思路是先设置dummy node, 然后先让fast先走n+1 step, 然后 fast and slow 一起走, 走到fast 指到null ,然后这时候 slow 就是要移除的点的前一个点
+public class removeNthFromEnd {
+	public class ListNode {
+		int val;
+		ListNode next;
+
+		ListNode(int x) {
+			val = x;
+		}
+	}
+
+	public ListNode removeNthFromEnd(ListNode head, int n) {
+		ListNode dummy = new ListNode(0);
+		ListNode fast = dummy;
+		ListNode slow = dummy;
+		dummy.next = head;
+		
+		for(int i  =1 ; i <=n+1; i++){
+			fast = fast.next;
+		}
+		
+		while(fast != null){
+			slow = slow.next;
+			fast = fast.next;
+		}
+		
+		slow.next = slow.next.next;
+		return dummy.next;
+	}
+}
