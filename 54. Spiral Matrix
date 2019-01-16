@@ -1,0 +1,56 @@
+
+import java.util.LinkedList;
+import java.util.List;
+
+//54. Spiral Matrix
+//leetcode
+//设置上下左右index,外面循环条件 left < right && top < bottom. 一直add, add 完一轮之后， letf++, right--,top++,bottom--. 
+//然后计算特殊情况, left == right. top == bottom
+
+public class spiralOrder {
+	public List<Integer> spiralOrder(int[][] matrix) {
+
+		List<Integer> res = new LinkedList<Integer>();
+		if (matrix.length == 0 || matrix == null || matrix[0].length == 0) {
+			return res;
+		}
+
+		int left = 0;
+		int right = matrix[0].length - 1;
+		int top = 0;
+		int bottom = matrix.length - 1;
+
+		while (left < right && top < bottom) {
+			for (int i = left; i < right; i++) {
+				res.add(matrix[top][i]);
+			}
+			for (int i = top; i < bottom; i++) {
+				res.add(matrix[i][right]);
+			}
+			for (int i = right; i > left; i--) {
+				res.add(matrix[bottom][i]);
+			}
+			for (int i = bottom; i > top; i--) {
+				res.add(matrix[i][left]);
+			}
+
+			left++;
+			right--;
+			top++;
+			bottom--;
+		}
+
+		if(left == right){
+		    while(top <= bottom){
+			    res.add(matrix[top][left]);
+				top++;
+			}
+		}else if(top == bottom){
+		    while(left <= right){
+			    res.add(matrix[top][left]);
+				left++;
+			}
+		}
+		return res;
+	}
+}
