@@ -1,7 +1,13 @@
+
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 //387. First Unique Character in a String
 //ASCII Table 256 长度
 //循环两次
 public class firstUniqChar {
+	/* 2 pass, 题目限定了只有小写字母， 所以可以 - 'a'
 	public int firstUniqChar(String s) {
 		if (s == null || s.length() == 0) {
 			return -1;
@@ -20,5 +26,22 @@ public class firstUniqChar {
 		}
 
 		return -1;
+	}
+	*/
+	
+	//方法2 , 1 pass
+	public int firstUniqChar(String s) {
+	    Map<Character, Integer> map   = new LinkedHashMap<Character, Integer>();
+	    HashSet<Character> set = new HashSet<Character>();
+	    for(int i = 0; i < s.length(); i++){
+	        if(set.contains(s.charAt(i))){
+	        	map.remove(s.charAt(i));
+	        }else{
+	        	set.add(s.charAt(i));
+	        	map.put(s.charAt(i), i);
+	        }
+	    }
+	    
+	    return map.size() >0 ? map.entrySet().iterator().next().getValue() : -1;      
 	}
 }
