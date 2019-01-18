@@ -1,0 +1,63 @@
+
+//189. Rotate Array
+//熟记翻转的方法
+//when k =1
+//Reverse the whole array, so array = [5,4,3,2,1]
+//Reverse the first k-1 elements, so array = [5,4,3,2,1]
+//Reverse [k, n] elements, so array = [5,1,2,3,4]
+
+/*
+ nums = "----->-->"; k =3
+ result = "-->----->";
+
+ reverse "----->-->" we can get "<--<-----"
+ reverse "<--" we can get "--><-----"
+ reverse "<-----" we can get "-->----->"
+ this visualization help me figure it out
+ */
+//reverse thinking, O(n) time cost, O(1) space cost
+public class rotateArray {
+	/*
+	public void rotate(int[] nums, int k) {
+		// handle k大于数组长度的情况
+		k = k % nums.length;
+		if (k <= 0) {
+			return;
+		}
+		reverse(nums, 0, nums.length - 1);
+		reverse(nums, 0, k - 1);
+		reverse(nums, k, nums.length - 1);
+	}
+
+	public void reverse(int[] nums, int start, int end) {
+		while (start < end) {
+			int tmp = nums[start];
+			nums[start] = nums[end];
+			nums[end] = tmp;
+			start++;
+			end--;
+		}
+	}
+*/
+	// method 2 : O(n) time cost, O(k % nums.length) space cost
+	public void rotate(int[] nums, int k) {
+		if (nums.length <= 1) {
+			return;
+		}
+		int step = k % nums.length;
+		int[] tmp = new int[step];
+
+		for (int i = 0; i < step; i++) {
+			tmp[i] = nums[nums.length - step + i];
+		}
+
+		for (int i = nums.length - step - 1; i >= 0; i--) {
+			nums[i + step] = nums[i];
+		}
+
+		for (int i = 0; i < tmp.length; i++) {
+			nums[i] = tmp[i];
+		}
+
+	}
+}
