@@ -1,0 +1,40 @@
+
+import java.util.LinkedList;
+
+//71. Simplify Path
+//leetcode
+//思路：使用stringbuilder 最终建立出整个string, , list 之放进去除了".."     "."   ""   的有效文件名字
+//先用"/"分割， 如果碰到"..", 并且前面的路径不为空， 那么remove 前面的路径， "." 和 "" 直接可以忽略
+
+
+public class simplifyPath {
+	public String simplifyPath(String path) {
+		if (path == null || path.length() < 1) {
+			return "";
+		}
+		StringBuilder sb = new StringBuilder();
+		LinkedList<String> stack = new LinkedList<String>();
+
+		sb.append("/");
+
+		for (String tmp : path.split("/")) {
+			if (tmp.equals("..")) {
+				if (!stack.isEmpty()) {
+					stack.removeLast();
+				}
+			} else if (!tmp.equals(".") && !tmp.equals("")) {
+				stack.add(tmp);
+			}
+		}
+
+		for (String t : stack) {
+			sb.append(t + "/");
+		}
+//删除最后面的 “/”
+		if (!stack.isEmpty()) {
+			sb.setLength(sb.length() - 1);
+		}
+
+		return sb.toString();
+	}
+}
