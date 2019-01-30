@@ -1,0 +1,85 @@
+
+//151. Reverse Words in a String
+//leetcode
+//这里不会包括标点符号，所以直接用" "来split 单词，然后使用strignBuilder 来从尾到头append,然后最后要出去那个empty space
+public class reverseWords {
+	/*
+	public static String reverseWords(String s) {
+		if (s == null || s.length() == 0) {
+			return new String("");
+		}
+		String[] ar = s.split(" ");
+		//输入有可能是" "， 这种情况split 出来的array size 也是0
+		if (ar.length <= 0) {
+			return new String("");
+		}
+		int n = ar.length;
+		StringBuilder sb = new StringBuilder();
+		for (int i = n - 1; i >= 0; i--) {
+			// 注意这里要使用equals
+			//因为" 1" split 之后会变成["","1"];
+			if (!ar[i].equals("") && !ar[i].equals(" ")) {
+				// if (ar[i] != "") {
+				sb.append(ar[i]).append(" ");
+			}
+		}
+		int l = sb.length();
+		// 最后还有一个" ", 需要移除
+		return sb.toString().substring(0, l - 1);
+	}
+	
+	*/
+	
+	public static String reverseWords(String s) {
+	    if (s == null) return null;
+	    
+	    char[] a = s.toCharArray();
+	    int n = a.length;
+	    
+	    // step 1. reverse the whole string
+	    reverse(a, 0, n - 1);
+	    // step 2. reverse each word
+	    reverseWords(a, n);
+	    // step 3. clean up spaces
+	    return cleanSpaces(a, n);
+	  }
+	  
+	//方法二， 先全部翻转一次，然后再逐个单词翻转， 然后再除去头尾和单词之间的多于空格
+	public  static void reverseWords(char[] a, int n) {
+	    int i = 0, j = 0;
+	      
+	    while (i < n) {
+	      while (i < j || i < n && a[i] == ' ') i++; // skip spaces
+	      while (j < i || j < n && a[j] != ' ') j++; // skip non spaces
+	      reverse(a, i, j - 1);                      // reverse the word
+	    }
+	  }
+	  
+	  // trim leading, trailing and multiple spaces
+	 public  static String cleanSpaces(char[] a, int n) {
+	    int i = 0, j = 0;
+	      
+	    while (j < n) {
+	      while (j < n && a[j] == ' ') j++;             // skip spaces
+	      while (j < n && a[j] != ' ') a[i++] = a[j++]; // keep non spaces
+	      while (j < n && a[j] == ' ') j++;             // skip spaces
+	      if (j < n) a[i++] = ' ';                      // keep only one space
+	    }
+	  
+	    return new String(a).substring(0, i);
+	  }
+	  
+	  // reverse a[] from a[i] to a[j]
+	  private static void reverse(char[] a, int i, int j) {
+	    while (i < j) {
+	      char t = a[i];
+	      a[i++] = a[j];
+	      a[j--] = t;
+	    }
+	  }
+	  
+	  
+	  public static void main(String[] argc){
+		  System.out.println(reverseWords("sky     is   blue"));
+	  }
+}
