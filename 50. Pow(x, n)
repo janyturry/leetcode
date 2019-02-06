@@ -1,0 +1,30 @@
+
+//50. Pow(x, n)
+//leetcode
+//log(n)
+public class myPow {
+	public double myPow(double x, int n) {
+		//这种情况是无线小， 设置为0
+		if(n == Integer.MIN_VALUE && x > 1){
+              return 0;
+        }
+		if(n == 0){
+			return 1;
+		}
+		//转成long 避免后面n = -n overflow
+		long tmpN = (long) n;
+		if(tmpN <0){
+			//When n=Integer.MIN_VALUE, then n=-n will overflow
+			//int 的范围是-2147483648到2147483647, 所以从-2147483648 到 2147483648就会越界
+			tmpN = -tmpN;
+			x = 1/x;
+		}
+		//偶数的时候    2^4 = (2*2)^(4/2)
+		if(tmpN %2 ==0){
+			return  myPow(x * x, (int)tmpN/2);
+		}else {
+			//奇数的时候， 2^5 = ((2*2)^(5/2=2))*2
+			return  myPow(x * x, (int)tmpN/2) * x;
+		}
+	}
+}
