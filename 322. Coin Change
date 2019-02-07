@@ -1,0 +1,29 @@
+//322. Coin Change
+//leetcode
+//思路：使用DP， 首先建立一个amount+1的数组， 这样最后dp[amount] 就可以代表最后的值. dp[i] 代表的是 amount 是i 的时候需要的最少的硬币数
+//然后建立两个循环
+/*
+设我取了一个值为5的硬币，那么由于目标值是11，所以是不是假如我们知道dp[6]，
+那么就知道了组成11的dp值了？所以我们更新dp[i]的方法就是遍历每个硬币，如果遍历到的硬币值小于i值（比如我们不能用值为5的硬币去更新dp[3]）时，
+我们用 dp[i - coins[j]] + 1 来更新dp[i]，所以状态转移方程为：
+dp[i] = min(dp[i], dp[i - coins[j]] + 1);
+ */
+import java.util.Arrays;
+
+public class coinChange {
+	public int coinChange(int[] coins, int amount) {
+		int dp[] = new int[amount + 1];
+		Arrays.fill(dp, amount + 1);
+		dp[0] = 0;
+		for (int i = 1; i <= amount; i++) {
+			for (int j = 0; j < coins.length; j++) {
+				if (i >= coins[j]) {
+					dp[i] = Math.min(dp[i], dp[i - coins[j]] + 1);
+				}
+			}
+		}
+
+		return dp[amount] > amount ? -1 : dp[amount];
+
+	}
+}
