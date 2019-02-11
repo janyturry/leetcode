@@ -1,0 +1,53 @@
+
+//556. Next Greater Element III
+//leetcode
+/*
+如果从数字的第k位开始到数字尾部都是递减的并且第k位数字比第k-1位数字大，
+表明从第k位开始到尾部的这段数字是他们能组合出的最大数字，
+在下一个数字中他们要整体倒序变为能组合出的最小数字，
+倒序后从这段数字序列中找出第一个大于第k-1位数字的位置和第k-1位交换即可。
+举个栗子，如果n=13452，其中52是递减的，而且5>4，这样我们先把52倒序，
+n就变为13425，然后从25中找出第一个大于4的数字和4交换，就得到了最终结果13524。需要注意的是下一个数字可能会超出INT_MAX范围
+*/
+public class nextGreaterElement3 {
+	public int nextGreaterElement(int n) {
+		char[] num = String.valueOf(n).toCharArray();
+
+		int i = num.length - 1;
+		for (; i - 1 >= 0; i--) {
+			if (num[i - 1] < num[i]) {
+				break;
+			}
+		}
+
+		if (i == 0) {
+			return -1;
+		}
+
+		int small = i;
+		for (int j = small + 1; j <= num.length - 1; j++) {
+			if (num[j] > num[i - 1] && num[j] <= num[small]) {
+				small = j;
+			}
+		}
+
+		char tmp = num[small];
+		num[small] = num[i - 1];
+		num[i - 1] = tmp;
+
+		rever(num, i);
+		long res = Long.parseLong(new String(num));
+		return res > Integer.MAX_VALUE ? -1 : (int) res;
+	}
+
+	public void rever(char[] num, int s) {
+		int end = num.length - 1;
+		while (s < end) {
+			char tmp = num[s];
+			num[s] = num[end];
+			num[end] = tmp;
+			s++;
+			end--;
+		}
+	}
+}
