@@ -1,0 +1,91 @@
+
+//63. Unique Paths II
+//leetcode
+//思路： 先create 一个 res数组， 先计算最左边和最上边的栏， 如果有障碍， 设置为0， 然后两层循环， 从1，1开始，计算res.
+
+public class uniquePathsWithObstacles {
+	/*
+	public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+		if (obstacleGrid == null || obstacleGrid.length == 0
+				|| obstacleGrid[0].length == 0) {
+			return 0;
+		}
+
+		int m = obstacleGrid.length;
+		int n = obstacleGrid[0].length;
+
+		int[][] f = new int[m][n];
+        //最左上的点可能不为0
+		boolean flag1 = false;
+		for (int i = 0; i < m; i++) {
+			if (obstacleGrid[i][0] == 1) {
+				flag1 = true;
+			}
+
+			if (flag1) {
+				f[i][0] = 0;
+			} else {
+				f[i][0] = 1;
+			}
+
+		}
+        //记得要重新设置为false
+		boolean flag2 = false;
+
+		for (int i = 0; i < n; i++) {
+			if (obstacleGrid[0][i] == 1) {
+				flag2 = true;
+			}
+
+			if (flag2) {
+				f[0][i] = 0;
+			} else {
+				f[0][i] = 1;
+			}
+		}
+
+		for (int i = 1; i < m; i++) {
+			for (int j = 1; j < n; j++) {
+				if (obstacleGrid[i][j] == 1) {
+					f[i][j] = 0;
+				} else {
+					f[i][j] = f[i - 1][j] + f[i][j - 1];
+				}
+			}
+		}
+
+		return f[m - 1][n - 1];
+	}
+	*/
+	
+/*
+dp[j] += dp[j - 1];
+is
+dp[j] = dp[j] + dp[j - 1];
+which is new dp[j] = old dp[j] + dp[j-1]
+which is current cell = top cell + left cell
+*/
+	public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+		if(obstacleGrid == null || obstacleGrid.length <1 || obstacleGrid[0] == null ||  obstacleGrid[0].length<1){
+			return 0;
+		}
+		
+		int width = obstacleGrid[0].length;
+		
+		int [] dp = new int[width];
+		
+		dp[0] = 1;
+		
+		for(int[] row : obstacleGrid){
+			for(int j = 0 ; j < row.length; j++){
+			    if(row[j] == 1){
+			    	dp[j] =  0;
+			    }else if(j>0){
+			    	dp[j] = dp[j] + dp[j-1];
+			    }
+			}
+		}
+		
+		return dp[width-1];
+	}
+}
