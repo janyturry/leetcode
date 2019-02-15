@@ -1,0 +1,62 @@
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+//210. Course Schedule II
+//leetcode
+//跟I 不一样的就是在出queue的时候加上counter来直接放进去数组里面
+public class findOrder {
+	public static int[] findOrder(int numCourses, int[][] prerequisites) {
+		int[] res = new int[numCourses];
+        // 如果没有prerequisites , 那么一定课程可以直接输出
+		if (prerequisites == null || prerequisites.length == 0 || prerequisites[0].length == 0) {
+			for (int i = 0; i < numCourses; i++) {
+				res[i] = i;
+			}
+		}
+
+		int[] inDegree = new int[numCourses];
+
+		HashMap<Integer, List<Integer>> map = new HashMap<Integer, List<Integer>>();
+
+		for (int i = 0; i < prerequisites.length; i++) {
+			inDegree[prerequisites[i][0]]++;
+
+			if (map.containsKey(prerequisites[i][1])) {
+				map.get(prerequisites[i][1]).add(prerequisites[i][0]);
+			} else {
+				List<Integer> tmp = new ArrayList<Integer>();
+				tmp.add(prerequisites[i][0]);
+				map.put(prerequisites[i][1], tmp);
+			}
+		}
+        //直接用res  数组来记录结果, first 指向开头，每当有indegree = 0的时候， last ++, 
+		int first = 0;
+		int last = 0;
+
+		for (int i = 0; i < numCourses; i++) {
+			if (inDegree[i] == 0) {
+				res[last++] = i;
+			}
+		}
+
+		while (first < last) {
+			int cur = res[first];
+			List<Integer> subClass = map.get(cur);
+			if (map.get(cur) != null) {
+				for (int i = 0; i < subClass.size(); i++) {
+					if (--inDegree[subClass.get(i)] == 0) {
+						res[last++] = subClass.get(i);
+					}
+				}
+			}
+			// 相当于queue poll
+			first++;
+		}
+
+		if (last != numCourses) {
+			return new int[0];
+		}
+		return res;
+	}
+}
