@@ -1,7 +1,7 @@
 
 //19. Remove Nth Node From End of List
 //leetcode
-//思路是先设置dummy node, 然后先让fast先走n+1 step, 然后 fast and slow 一起走, 走到fast 指到null ,然后这时候 slow 就是要移除的点的前一个点
+//思路是先设置dummy node, 然后先让fast先走n+1 step,让fast跟slow相隔n 个点,  然后 fast and slow 一起走, 走到fast 指到null ,然后这时候 slow 的下一个点就是n th node.
 public class removeNthFromEnd {
 	public class ListNode {
 		int val;
@@ -13,21 +13,27 @@ public class removeNthFromEnd {
 	}
 
 	public ListNode removeNthFromEnd(ListNode head, int n) {
-		ListNode dummy = new ListNode(0);
-		ListNode fast = dummy;
-		ListNode slow = dummy;
-		dummy.next = head;
-		
-		for(int i  =1 ; i <=n+1; i++){
-			fast = fast.next;
-		}
-		
-		while(fast != null){
-			slow = slow.next;
-			fast = fast.next;
-		}
-		
-		slow.next = slow.next.next;
-		return dummy.next;
+	    if(head == null){
+	    	return head;
+	    }
+	    
+	    ListNode dummy =  new ListNode(0);
+	    ListNode fast = dummy;
+	    ListNode slow = dummy;
+	    dummy.next = head;
+	    
+	    //让fast 跟 slow 之间相隔n个点
+	    for(int i = 1; i <= n+1 ; i++){
+	        fast = fast.next;
+	    }
+	    
+	    while(fast != null){
+	    	fast = fast.next;
+	    	slow = slow.next;
+	    }
+	    
+	    slow.next =  slow.next.next;
+	    
+	    return dummy.next;
 	}
 }
