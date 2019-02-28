@@ -1,0 +1,29 @@
+
+import java.util.List;
+
+//139. Word Break
+//leetcode
+//Complexity：O(N^2) for DP
+//dp[i] 代表 0~i-1 的 string 可以被成功break; 
+//思路就是初始化dp[0] = true, 然后两层循环， 找出break 的地方
+//有空可以follow up一下九章算术的优化， 先求出最大长度的
+public class wordBreak {
+	public boolean wordBreak(String s, List<String> wordDict) {
+		if(s ==null ||s.length() ==0){
+			return false;
+		}
+		//dp[i] 代表 前 i-1 的单词都能成功分割
+		//需要一个初始化的值来给后面的条件用dp[j] && wordDict.contains(s.substring(j, i))
+		boolean []dp = new boolean[s.length() + 1];
+		dp[0] = true;
+		for(int i =1; i <= s.length(); i++){
+			for(int j = 0; j <i; j++){
+				//这就是保持连贯性的条件，一定要 0~j-1 的位置都能分割点函授 j~i-1的单词， 当前dp[i]才能表示可以分割
+				if(dp[j] && wordDict.contains(s.substring(j, i))){
+				    	dp[i] = true;
+				}
+			}
+		}
+		return dp[s.length()];
+	}
+}
