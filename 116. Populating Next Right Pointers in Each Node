@@ -1,0 +1,47 @@
+
+//116. Populating Next Right Pointers in Each Node
+//leetcode
+//重点是一直循环链接各种点, 外层循环永远是每层最左边的点， 然后先判断左右是否空， 不是空的话直接连接。 然后判断右和next是否为空， 不空的话直接连
+//assume that it is a perfect binary tree (ie, all leaves are at the same level, and every parent has two children)
+public class connect {
+	class Node {
+		public int val;
+		public Node left;
+		public Node right;
+		public Node next;
+
+		public Node() {
+		}
+
+		public Node(int _val, Node _left, Node _right, Node _next) {
+			val = _val;
+			left = _left;
+			right = _right;
+			next = _next;
+		}
+	};
+
+	public Node connect(Node root) {
+		if (root == null) {
+			return root;
+		}
+
+		Node head = root;
+		while (head != null) {
+			Node cur = head;
+			while (cur != null) {
+				if (cur.left != null) {
+					cur.left.next = cur.right;
+				}
+
+				if (cur.right != null && cur.next != null) {
+					cur.right.next = cur.next.left;
+				}
+
+				cur = cur.next;
+			}
+			head = head.left;
+		}
+		return root;
+	}
+}
