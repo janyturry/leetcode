@@ -1,0 +1,40 @@
+
+//567. Permutation in String
+//leetcode
+//思路：采用滑动窗口的方法， 是否S1 在S2 里面，就是看S1 的字符是否被S2 连续用完， 固定长度的窗口可以保证是连续的使用
+//一旦 i - s1.length() >=0 表明 连续长度已经用完， 要重新恢复之前的count
+
+
+public class checkInclusion {
+	public boolean checkInclusion(String s1, String s2) {
+		if (s1.length() > s2.length()) {
+			return false;
+		}
+
+		int[] map = new int[256];
+
+		for (char c : s1.toCharArray()) {
+			map[c]++;
+		}
+
+		for (int i = 0; i < s2.length(); i++) {
+			map[s2.charAt(i)]--;
+			if (i - s1.length() >= 0) {
+				map[s2.charAt(i - s1.length())]++;
+			}
+			if (checkZero(map)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean checkZero(int[] map) {
+		for (int i : map) {
+			if (i != 0) {
+				return false;
+			}
+		}
+		return true;
+	}
+}
