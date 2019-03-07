@@ -1,0 +1,49 @@
+
+import java.util.List;
+//120. Triangle
+//leetcode
+//思路：DP， 采用自底向上的过程，建立res[]数组 ， 大小是最后一行的size, 然后把最后一行的数值赋值进去
+//然后从倒数第二层开始往上走，层数递减，从左到右，更新res, 需要从res[i], res[i+1] 里面选出最小的，然后加当前的triangle.get(i).get(j). 最后res[0]就是到底顶端最小的
+public class minimumTotal {
+	/*
+	public int minimumTotal(List<List<Integer>> triangle) {
+		if (triangle == null || triangle.size() == 0) {
+			return 0;
+		}
+
+		int n = triangle.size();
+		int[] res = new int[n];
+		for (int i = 0; i < n; i++) {
+			res[i] = triangle.get(n - 1).get(i);
+		}
+
+		for (int i = n - 2; i >= 0; i--) {
+			for (int j = 0; j <= i; j++) {
+				res[j] = Math.min(res[j], res[j + 1]) + triangle.get(i).get(j);
+			}
+		}
+		return res[0];
+	}
+	*/
+
+
+
+
+//最新方法， 不使用额外的space, 从倒数第二层开始算起, 从左到右算一遍. 一直算到顶
+    public int minimumTotal(List<List<Integer>> triangle) {
+        if(triangle.size() == 0){
+            return 0;
+        }
+
+        for(int i = triangle.size() -2 ; i >=0 ; i--){
+            List<Integer> next = triangle.get(i+1);
+            for(int j = 0; j <=i ; j++){
+            	//sum 是当前点的最小sum
+                int sum = Math.min(next.get(j) , next.get(j+1)) + triangle.get(i).get(j);
+                triangle.get(i).set(j, sum);
+            }
+        }
+
+        return triangle.get(0).get(0);
+    }
+}
