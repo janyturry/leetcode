@@ -1,0 +1,48 @@
+//109. Convert Sorted List to Binary Search Tree
+//leetcode
+//每次把左边减掉，slow就是中间的点， 左边的重新算， 右边的也可以算
+public class sortedListToBST {
+	public class ListNode {
+		int val;
+		ListNode next;
+
+		ListNode(int x) {
+			val = x;
+		}
+	}
+
+	public class TreeNode {
+		int val;
+		TreeNode left;
+		TreeNode right;
+
+		TreeNode(int x) {
+			val = x;
+		}
+	}
+
+	public TreeNode sortedListToBST(ListNode head) {
+		if(head == null){
+			return null;
+		}
+		
+		if(head.next == null){
+			return  new TreeNode(head.val);
+		}
+		
+		ListNode fast  = head, slow = head, pre = null;
+		
+		while(fast != null && fast.next != null){
+			pre = slow;
+			fast = fast.next.next;
+			slow = slow.next;
+		}
+		
+		TreeNode root = new TreeNode(slow.val);
+		pre.next = null;
+		root.left = sortedListToBST(head);
+		root.right = sortedListToBST(slow.next);
+		
+		return root;
+	}
+}
