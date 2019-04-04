@@ -1,0 +1,44 @@
+
+//105. Construct Binary Tree from Preorder and Inorder Traversal
+//leetcode
+//思路：先找出preOrder数组里面的第一个就是root,然后找出这个root在inorder数组里面的index, 然后这时候0~idnex-1 就是左子树， , index +1~!~~index.length-1就是右子树
+//然后递归求解 
+public class buildTree {
+	public class TreeNode {
+		int val;
+		TreeNode left;
+		TreeNode right;
+
+		TreeNode(int x) {
+			val = x;
+		}
+	}
+
+	public TreeNode buildTree(int[] preorder, int[] inorder) {
+		if (preorder == null || inorder == null || preorder.length != inorder.length) {
+			return null;
+		}
+		return helper(preorder, 0, preorder.length - 1, inorder, 0,inorder.length - 1);
+	}
+
+	public TreeNode helper(int[] preorder, int preStart, int preEnd,int[] inorder, int inStart, int inEnd) {
+		if (preStart > preEnd || inStart > inEnd) {
+			return null;
+		}
+
+		int rootIndex = 0;
+		for (int i = inStart; i <= inEnd; i++) {
+			if (inorder[i] == preorder[preStart]) {
+				rootIndex = i;
+			}
+		}
+
+		int leftLength = rootIndex - inStart;
+
+		TreeNode root = new TreeNode(preorder[preStart]);
+
+		root.left =  helper(preorder, preStart + 1, preStart + leftLength,inorder, inStart, rootIndex - 1);
+		root.right = helper(preorder, preStart + 1 + leftLength, preEnd,inorder, rootIndex + 1, inEnd);
+		return root;
+	}
+}
