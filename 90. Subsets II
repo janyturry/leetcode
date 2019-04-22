@@ -1,0 +1,39 @@
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+//90. Subsets II
+//leetcode
+//思路：跟subset I 一样，唯一不同是能“ solution set must not contain duplicate subsets.”
+//典型的backTracking 加上 去重复的模板preNum, 每个只选择一次， 然后相同位置的不能重复
+public class subsetsWithDup {
+	public static List<List<Integer>> subsetsWithDup(int[] nums) {
+		List<List<Integer>> res = new ArrayList<List<Integer>>();
+		if (nums == null || nums.length == 0) {
+			return res;
+		}
+		Arrays.sort(nums);
+		helper(res, new ArrayList<Integer>(), nums, 0);
+		return res;
+	}
+
+	public static void helper(List<List<Integer>> res, ArrayList<Integer> tmp,int[] nums, int index) {
+		// 这里没有采用if(){ return ..} 之类的模式是因为， 加完一个满足条件之后， 在现有条件下好可以继续+下去，所以不用return
+		if(index<=nums.length){
+		res.add(new ArrayList<Integer>(tmp));
+		int preNum = nums[0] - 1;
+		for (int i = index; i < nums.length; i++) {
+			if (preNum != nums[i]) {
+				tmp.add(nums[i]);
+				// 不要忘记更新preNum
+				preNum = nums[i];
+				helper(res, tmp, nums, i + 1);
+				tmp.remove(tmp.size() - 1);
+			}
+		}
+	    }
+	}
+	
+
+}
