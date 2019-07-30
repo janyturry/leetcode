@@ -1,0 +1,51 @@
+package test;
+
+//8. String to Integer (atoi)
+//leetcode
+//思路： check length first, then skip all the empty space, then check edge cases.
+public class myAtoi {
+	public int myAtoi(String str) {
+		int total = 0;
+		int sign = 1;
+		int index = 0;
+		// 先检查长度
+		if (str.length() == 0) {
+			return 0;
+		}
+		// 跳过开头空格
+		while (index < str.length() && str.charAt(index) == ' ') {
+			index++;
+		}
+
+		if (index >= str.length()) {
+			return 0;
+		}
+
+		// 检查正负开头
+		if (str.charAt(index) == '+') {
+			sign = 1;
+			index++;
+		} else if (str.charAt(index) == '-') {
+			sign = -1;
+			index++;
+		}
+
+		while (index < str.length()) {
+			// char -'0' 变成 字符对应的数字
+			int digit = str.charAt(index) - '0';
+			// 检查单个数字越界
+			if (digit > 9 || digit < 0) {
+				break;
+			}
+			// 之后要total*10 ，所以先检查越界不
+			if (total > Integer.MAX_VALUE / 10 || (total == Integer.MAX_VALUE / 10 && Integer.MAX_VALUE % 10 < digit)) {
+				return sign == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+			}
+
+			total = total * 10 + digit;
+			index++;
+			;
+		}
+		return total * sign;
+	}
+}
