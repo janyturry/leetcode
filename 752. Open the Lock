@@ -1,0 +1,58 @@
+package bloom;
+
+//752. Open the Lock
+//leetcdoe
+//BFS. 2 -end search
+public class openLock {
+    public int openLock(String[] deadends, String target) {
+        Set<String> begin = new HashSet<>();
+        Set<String> end  = new HashSet<>();
+        //dead在这里的作用跟visited set 是一样的
+        Set<String> dead  = new HashSet<>(Arrays.asList(deadends));
+        begin.add("0000");
+        end.add(target);
+        Set<String> tmp;
+
+        int level = 0;
+        while(!begin.isEmpty() && !end.isEmpty()) {
+            //因为每次变换的是Begin, 所以选小的一个放在begin
+            if(begin.size() > end.size()){
+                tmp = begin;
+                begin = end;
+                end = tmp;
+            }
+
+            tmp = new HashSet<>();
+            for(String s : begin){
+                if(end.contains(s)){
+                    return level;
+                }
+                if(dead.contains(s)){
+                    continue;
+                }
+
+                dead.add(s);
+
+                for(int i = 0 ; i < 4; i++){
+                    char c = s.charAt(i);
+                    //注意这里链接起来要不是单纯integer，要不就是string
+                    String a  = s.substring(0,i) +  (c == '9' ? "0" : c-'0'+1) + s.substring(i+1);
+                    String b =  s.substring(0,i) +  (c == '0' ? "9": c-'0'-1) + s.substring(i+1);
+                    if(!dead.contains(a)){
+                        tmp.add(a);
+                    }
+                    if(!dead.contains(b)){
+                        tmp.add(b);
+                    }
+                }
+
+            }
+
+            level++;
+            begin = tmp;
+        }
+
+        return -1;
+
+    }
+}
