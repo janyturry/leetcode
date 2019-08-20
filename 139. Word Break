@@ -19,9 +19,19 @@ public class wordBreak {
 		for(int i =1; i <= s.length(); i++){
 			for(int j = 0; j <i; j++){
 				//这就是保持连贯性的条件，一定要 0~j-1 的位置都能分割点函授 j~i-1的单词， 当前dp[i]才能表示可以分割
+				if(!dp[j]){
+				    continue;
+				}
+				if(wordDict.contains(s.substring(j, i))){
+				    	dp[i] = true;
+					break;
+				}
+				
+				/* old slow version
 				if(dp[j] && wordDict.contains(s.substring(j, i))){
 				    	dp[i] = true;
 				}
+				*/
 			}
 		}
 		return dp[s.length()];
