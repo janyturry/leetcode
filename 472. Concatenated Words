@@ -1,0 +1,57 @@
+package bloom;
+
+
+//472. Concatenated Words
+//leetcode
+//sort the array first, make it from short length to long length order. helper function is from leetcde 139
+
+public class findAllConcatenatedWordsInADict {
+    public List<String> findAllConcatenatedWordsInADict(String[] words) {
+        List<String> res = new LinkedList<String>();
+        HashSet<String> pre= new HashSet<String>();
+
+        Arrays.sort(words, new Comparator<String>(){
+            public int  compare (String a, String b){
+                return a.length() - b.length();
+            }
+        });
+
+        for(int i = 0;  i< words.length; i++){
+            if(helper(words[i] , pre)){
+                res.add(words[i]);
+            }
+
+            pre.add(words[i]);
+        }
+
+
+        return res;
+
+    }
+
+    public boolean helper(String s , HashSet<String> pre){
+        if(pre.isEmpty()){
+            return false;
+        }
+
+        int len = s.length();
+        boolean dp [] = new boolean[s.length()+1];
+
+        dp[0] = true;
+        for(int i = 1; i <= len; i++){
+            for(int j = i-1; j >=0; j--){
+                if(!dp[j]){
+                    continue;
+                }
+                if(pre.contains(s.substring(j,i))){
+                    dp[i]= true;
+                    break;
+                }
+            }
+        }
+
+        return dp[len];
+
+    }
+
+}
