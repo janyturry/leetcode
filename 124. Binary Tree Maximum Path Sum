@@ -1,3 +1,7 @@
+package test;
+
+import test.lowestCommonAncestor.TreeNode;
+
 
 //124. Binary Tree Maximum Path Sum
 //leetcode
@@ -28,4 +32,36 @@ public class maxPathSum {
 		//返回目前单边的最大值， 因为dfs()就是求单边
 		return root.val + Math.max(left, right);
 	}
+
+
+	/*
+	//不使用全局变量的版本
+
+	 public int maxPathSum(TreeNode root) {
+    	if(root == null){
+    		return 0;
+    	}
+        //因为数组可以穿索引， 不用每次都建立COPY， 节省内存
+        int[] max = new int[]{ Integer.MIN_VALUE};
+    	dfs(root, max);
+
+    	return max[0];
+    }
+
+    //以ROOT为跟的直上直下的最大的 path sum. 单边, ， return 左边+ root ， 或者 右边 + root
+    public int dfs(TreeNode root, int[] max){
+        int left =  root.left == null ? 0 : Math.max( dfs(root.left, max) , 0);
+        int right =  root.right == null ? 0 : Math.max( dfs(root.right, max) , 0);
+
+        int cur = root.val + left + right;
+
+        max[0] = Math.max( max[0], cur);
+
+        return root.val + Math.max(left, right);
+    }
+
+
+
+
+	 */
 }
