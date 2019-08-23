@@ -1,0 +1,31 @@
+
+//124. Binary Tree Maximum Path Sum
+//leetcode
+//每个人字形的path都可以求一下SUM 然后比较， 所以采用DFS的方法， 最后返回全局变量最大值
+public class maxPathSum {
+	int max = Integer.MIN_VALUE;
+	public int maxPathSum(TreeNode root) {
+		if(root == null){
+			return 0;
+		}
+
+
+		dfs(root);
+
+		return max;
+	}
+
+	//以ROOT为跟的直上直下的最大的 path sum,  单边,  return 左边+ root ， 或者 右边 + root
+	public int dfs(TreeNode root){
+		//求出左右单边path最大值 (包含左右点的值)
+		//如果结果是小于0， 就设置为0
+		int left =  root.left == null ? 0 : Math.max( dfs(root.left) , 0);
+		int right =  root.right == null ? 0 : Math.max( dfs(root.right) , 0);
+		//求出当前人字path的 最大sum, 因为题目说任何一个人字的path都可以,所以每个人字形都要计算一下最大值
+		int cur = root.val + left + right;
+		//计算一下当前人字的最大值
+		max = Math.max( max, cur);
+		//返回目前单边的最大值， 因为dfs()就是求单边
+		return root.val + Math.max(left, right);
+	}
+}
