@@ -1,0 +1,99 @@
+import java.util.*;
+
+//518. Coin Change 2
+
+//https://www.youtube.com/watch?v=ZKAILBWl08g&list=PLTNkreZiUTIL-S_VJBLRxlmGktAQtla-m&index=1
+//https://www.youtube.com/watch?v=DJ4a7cmjZY0
+
+/*
+dp[i - 1][j]: means the number of combinations if we compeletly don't use the ith coin
+dp[i][j - coins[i - 1]]: we must use at least one of the ith coin, so we expell the ith coin from j (Exclusive, opposite to the upper condition)
+
+dp[i - 1][j]: 完全不用当前硬币组成j有多少种组合
+dp[i][j - coins[i - 1]] :使用至少一个当前硬币（与上面一条是互斥事件）组成组成j有多少组合
+
+当amount 为0 的时候， 无论给什么硬币， 都只有一种方法就是don't use. 所以全部初始化为1
+当coin 为 空， amount也为空的时候，为1。 其他amount 的话，
+
+
+
+
+dp[i][j] : the number of combinations to make up amount j by using the first i types of coins
+以下面的图距离， 每一行就是银币的集合， 当刚开始是空集，然后有银币“1”， 然后加入”2“， 变成银币“1,2”， 如此类推。
+列的话就是amount从 0,1,2,3,4递增。
+每一个新增银币， 都有两种选择，用或者不用， 例如amount =  "5" , coin = "1,2", 这时候新增硬币是2， 可以选择
+
+#1 选择使用硬币2 ， 那么这时候的combition可以从 f[i]["5" - "2"] 得到
+因为减去了当前银币的数值之后， 前一个排列组合已经算出所有可能性， 最后一步 加上 “2” 也就是当前硬币 就可以了。
+#2 选择不使用硬币2， 要得到同样的amount, 那个就只直接上一个cell 的值f[i-1][j]
+
+
+当amount为0的时候， 无论什么银币组合，只要选择不使用，那么都能得到0 ， 所以a[i][0] = 1 ; 对于第一列， 银币组合为空，所以只要amount大于0，无论使用或者不使用， 都不可能组成>0的amount
+所以f[0][j]  = 0   (j>0)
+
+coin/ amount
+
+         0 1 2 3 4 5
+[]       1 0 0 0 0 0
+[1]      1 1 1 1 1 1
+[1,2]    1 1 2 2 3 3
+[1,2,5]  1 1 2 2 3 3
+
+
+
+
+ */
+public class Main {
+/*
+//这是优化前 的版本，二维数组
+//time : O(nm)  space : O(nm)
+
+
+    public int change(int amount, int[] coins) {
+        int len = coins.length;
+        int res [][] = new int[len+1][amount+1];
+
+        res[0][0] = 1;
+
+        for(int i = 1; i <= len; i++){
+            //只初始化1是因为[0][j] 本来初始化就是0， 不用特地写在这里
+            res[i][0] = 1;
+            for(int j = 1; j <=amount; j++){
+                //当前硬币是coins[i-1] ,因为i 是从 空集合开始
+                res[i][j] = res[i-1][j] + (j-coins[i-1]>=0? res[i][j-coins[i-1]] : 0);
+            }
+        }
+        return res[len][amount];
+    }
+
+*/
+
+
+//优化版本
+    // 因为每次要计算需要多的只有 g[k] == f[i][k]  if k < j
+    //                                 or f[i-1][k] if k >=j
+    //O(nm) time and O(m) space
+    // 总的来说，每次计算, 每个新的硬币只有用和不用两种情况， #1 当不使用的时候， 直接f[i-1][j] ，也就是上面的cell. #2 当使用的时候， 就要看当前row左边的某一个cell,
+    //由以上的结论可以得到只有当前cell 的左边所有值和当前cell上面一个当前row和右边的值需要保留, 所以可以简化成一维数组
+    public int change(int amount, int[] coins) {
+        int len  = coins.length;
+        int res [] = new int[amount+1];
+
+        res[0] = 1;
+
+        for(int i = 1; i <= len; i++){
+            //只初始化1是因为[0][j] 本来初始化就是0， 不用特地写在这里
+            for(int j = 1; j <=amount; j++){
+                //当前硬币是coins[i-1] ,因为i 是从 空集合开始
+                res[j] = res[j] + (j-coins[i-1]>=0? res[j - coins[i-1]] : 0);
+            }
+        }
+        return res[amount];
+    }
+
+
+
+    public static void main(String[] args) {
+
+    }
+}
