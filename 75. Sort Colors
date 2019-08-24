@@ -1,0 +1,51 @@
+public class test {
+
+    //75. Sort Colors
+    /*基本solution就是分成三个区域，
+    [0, i)  : a
+    [i, j) : b
+    [j, k] : 位置区域X
+    (K ,len) :  c
+
+    例如： a a a b b b X X X c c
+    经过一部分排序之后， 但loop到第一个X的时候，
+    如果X 是a , 那么 X就跟 nums[j]交换位置， 然后i++, j++
+    如果X 是b, 那么 j++
+    如果X 是c, 那么 X就跟 nums[k]交换位置， 然后k--, j
+    */
+
+    public void sortColors(int[] nums) {
+        if(nums == null || nums.length <=1){
+            return;
+        }
+
+        int i = 0;
+        int j = 0;
+        int k = nums.length-1;
+
+        while(j<=k){
+            if(nums[j]== 0){
+                swap(nums, j++, i++);
+            }else if(nums[j] == 1){
+                j++;
+            }else{
+                //注意这一步j不用自增因为交换完之后,j还是一个未探索的不知道是什么的数值
+                swap(nums, j, k--);
+            }
+        }
+
+    }
+
+    public void swap(int[ ] nums, int a, int b){
+        int tmp = nums[a];
+        nums[a] = nums[b];
+        nums[b] = tmp;
+    }
+
+
+
+
+    public static void main(String[] argc) {
+    }
+
+}
