@@ -1,0 +1,58 @@
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Stack;
+
+//224. Basic Calculator
+//leetcode
+//
+public class Solution {
+    public int calculate(String s) {
+        if(s == null || s.length() < 1){
+            return 0;
+        }
+        //用来存放符号和数字
+        Stack<Integer> stack = new Stack<Integer>();
+
+        //初始化符号为正， num是用来记录单个数字有多长
+        int sign = 1;
+        int res = 0;
+        int num = 0;
+
+        for(int i = 0 ; i < s.length(); i++){
+            //当碰到数字的时候
+            if(s.charAt(i) >='0' && s.charAt(i) <= '9'){
+                //因为数值不仅仅是一位数，还可能有好几位， “9”， “99”， 所以需要*10
+                num = num*10 + s.charAt(i) - '0';
+            }else if( s.charAt(i) =='+'){
+                //遇到符号，先把前面的数字先梳理掉， 例如 9 + 1， 可以看成是+9 + 1, 先把+9放进结果，然后在更新当前遇到的sign和重设num
+                res += num*sign;
+                num = 0;
+                sign = 1;
+            }else if(s.charAt(i) =='-'){
+                res += num*sign;
+                num =0;
+                sign = -1;
+            }else if ( s.charAt(i) == '('){
+                //先把"(" 之前计算的push进stack, 注意顺序， 要先push res, 再push 符号
+                stack.push(res);
+                stack.push(sign);
+                //重新设置res, 和sign, 重新设置sign
+                res = 0;
+                sign =1;
+                num = 0;
+            }else if(s.charAt(i) == ')'){
+                //把当前数值都计算一下，然后加起来，重新设置num
+                res += num*sign;
+                num = 0;
+                res = res*stack.pop();
+                res = res + stack.pop();
+            }
+        }
+
+        if(num != 0){
+            //9+ 8， 遇到数值只会计算num ,所以最后要判断一下
+            res += num*sign;
+        }
+        return res;
+    }
+}
