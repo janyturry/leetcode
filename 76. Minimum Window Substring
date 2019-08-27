@@ -1,58 +1,72 @@
-
 import java.util.HashMap;
+import java.util.Map;
 
 //76. Minimum Window Substring
 //leetcode
-//基本思路是设置一个hashmap, 然后把目标小的那个char放进去hashmap <Character, Integer>, 计算count. 然后设存在于目标char的count+1. 然后设置条件
-//end < s.length. end 一直往右滑， 遇到存在目标的 ，count--,
-public class minWindow {
-	public String minWindow(String s, String t) {
-		int count = 0;
-        HashMap<Character, Integer> map  = new HashMap<Character, Integer>();
-        for(char c : s.toCharArray()){
-            map.put(c , 0);    	
+//基本思路是先设置MAP来计算t需要匹配的字符的个数, 设计fast 跟slow pointer, 外层loop fast, 一旦碰到需要匹配的字符，从map里面取值
+// 一旦碰到 map 里面count 1 -> 0 的过程， 表示那个字符的匹配成功了， matCount 都要增加
+//然后内层要做一个while, 当matchcount == map.size() , 先更新一个minlength, 然后 slow pointer 一直往右边移动,遇到匹配的字，matchCount--, 
+//
+public class Solution {
+    public String minWindow(String s, String t) {
+        if(s.length() < t.length()){
+            return "";
         }
-        
-        for(char c : t.toCharArray()){
-        	if(map.containsKey(c)){
-        		map.put(c , map.get(c)+1);
-        		count++;
-        	}else{
-        		return "";
-        	}
-        }
-        
-        int start = 0;
-        int end = 0;
-        int min_len = Integer.MAX_VALUE;
-        int min_start = 0;
-        
-        while(end < s.length()){
-            char c  =  s.charAt(end);
-            if(map.get(c) > 0){
-            	count--;
+
+        Map<Character, Integer> map = buildMap(t);
+
+        int slow =0, fast = 0, minLength = Integer.MAX_VALUE, index=0, matchCount = 0;
+
+        for(fast = 0;  fast <= s.length()-1; fast++){
+            char fastChar = s.charAt(fast);
+            Integer fastCount = map.get(fastChar);
+
+            if(fastCount == null){
+                continue;
             }
-            map.put(c , map.get(c)-1);
-            end++;
-            
-            
-            while(count==0){
-            	if( (end - start) < min_len){
-                	min_len = end - start;
-                	min_start = start;
+
+            map.put(fastChar, fastCount -1);
+            if(fastCount ==1){
+                //1 -> 0
+                matchCount++;
+
+                while(matchCount == map.size()){
+                    if(fast - slow + 1 < minLength){
+                        index=  slow;
+                        minLength = fast - slow + 1;
+                    }
+
+
+                    char leftMost = s.charAt(slow++);
+                    Integer left = map.get(leftMost);
+                    if(left ==  null){
+                        continue;
+                    }
+
+                    map.put(leftMost , left + 1);
+                    //0 -> 1 
+                    if(left == 0){
+                        matchCount--;
+                    }
                 }
-            	
-            	char d = s.charAt(start);
-            	map.put(d, map.get(d) + 1);
-            	
-            	if(map.get(d) >0){
-            		count++;
-            	}
-            	start++;
+
             }
- 
         }
-        return min_len == Integer.MAX_VALUE ?   ""  : s.substring(min_start, min_len + min_start);
-        
-	}
+
+        return minLength ==Integer.MAX_VALUE ? ""  :  s.substring(index, index + minLength);
+
+    }
+
+    private Map<Character, Integer> buildMap (String t){
+        Map<Character, Integer> map = new HashMap();
+        for(char c : t.toCharArray()){
+            Integer  count = map.get(c);
+            if(count == null){
+                map.put(c, 1);
+            }else{
+                map.put(c ,count+1);
+            }
+        }
+        return map;
+    }
 }
