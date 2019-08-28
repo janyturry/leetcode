@@ -1,0 +1,84 @@
+
+
+//516. Longest Palindromic Subsequence
+//leetcode
+
+
+
+//solution 1:
+/*
+M[i][j] = the length of the longest palindromic subsequence in s[i....j]
+
+Algorithm:
+base case: 对角线的值都为1，M[i][i-1] 意味着对象线左边那一半的值都为0， 因为是subsequence, j比i大的都不成立subsequence, 所以都为0
+M[i][i] = 1,
+M[i][i-1] = 0;
+
+
+
+
+Case 1 首尾字母一样:          s[i] ==s[j], M[i][j] = 2 + M[i+1][j-1]
+Case 2 首尾字母不一样         s[i] != s[j], M[i][j] = Max(M[i+1][j], M[i][j-1])
+
+
+O(n^2) time and O(n^2)
+ */
+
+class Solution {
+    /*
+    public int longestPalindromeSubseq(String s) {
+        int len = s.length();
+
+        int dp [][] = new int[len][len];
+
+        for(int i = len-1; i >=0 ; i--){
+            //对角线全部赋值为1
+            dp[i][i] = 1;
+            for(int j = i+1 ; j <=len-1; j++){
+                if(s.charAt(i) == s.charAt(j)){
+                    dp[i][j] = 2 + dp[i+1][j-1];
+                }else{
+                    dp[i][j] = Math.max(dp[i][j-1], dp[i+1][j]);
+                }
+            }
+        }
+
+        return dp[0][len-1];
+    }
+
+    */
+
+
+
+    /*节省空间复杂度， 使用一维数组
+    dp[i][j] only depends on dp[i+1][j-1](down-left), dp[i+1][j](down) and dp[i][j-1](left).
+    So if we reduce dp[n][m] to dp[m], that means, for dp[j],
+    its down is itself, its left is dp[j-1]. Its down-left is a little tricky.
+    As its down-left dp[i+1][j-1] is now dp[j-1], so we need to preserve it before updating to dp[j-1]
+    */
+
+    public int longestPalindromeSubseq(String s) {
+        int len = s.length();
+        int [] dp =  new int[len];
+
+        for(int i = len-1; i >=0 ; i--){
+            //pre表示 dp[i-1][j-1]
+            int pre =0;
+            //对角线为1
+            dp[i] =1;
+            for(int j = i +1 ; j <= len-1; j++){
+                int tmp = dp[j];
+                if(s.charAt(i) == s.charAt(j)){
+                    dp[j] = 2 + pre;
+                }else{
+                    dp[j] = Math.max(dp[j], dp[j-1]);
+                }
+
+                pre = tmp;
+            }
+        }
+
+        return dp[len-1];
+    }
+
+}
