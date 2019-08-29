@@ -2,6 +2,7 @@
 //leetcode
 
 
+import java.util.Map;
 
 //solution 1 : native
 class Solution {
@@ -79,7 +80,36 @@ class Solution {
             time : O(n)
 
 */
+
+
+    //Time complexity O(n), Space complexity O(n).
     public int subarraySum(int[] nums, int k) {
+        if(nums == null || nums.length < 1){
+            return 0;
+        }
+
+        Map<Integer, Integer> map = new HashMap<>();
+
+        int preFixSum = 0;
+        int count = 0;
+        /*
+        "Those (sum - k) == 0 calculations" actually means the subarrays that begins at index 0 with sum == k. That is, it's for handling the corner cases at index 0.
+Since the hashmap solution is indeed to subtract subarray(0, j) with subarray(0,i-1), "preSum.put(0, 1)" is just for the corner case when i = 0.
+We did the same in brute force O(n^2) solution. We let sums.size() = n+1 and sums[0] = 0.
+From this point of view, I think "preSum.put(0, 1)" is easier to understand than "if (sum == k) count++;" .
+         */
+        map.put(0,1);
+        for(int tmp : nums){
+            preFixSum+=tmp;
+            count+= map.getOrDefault(preFixSum- k, 0);
+
+            map.put(preFixSum, map.getOrDefault(preFixSum,0) + 1);
+
+        }
+
+        return count;
+
+
 
     }
 
