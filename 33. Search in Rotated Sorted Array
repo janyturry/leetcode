@@ -20,6 +20,7 @@ class search33 {
 			}
 
 			if (nums[mid] > nums[s]) {
+			//target >= nums[s]  等号很重要因为target可能就落在边界
 				if (target >= nums[s] && target <= nums[mid]) {
 					e = mid;
 				} else {
