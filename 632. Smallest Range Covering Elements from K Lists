@@ -1,0 +1,43 @@
+//632. Smallest Range Covering Elements from K Lists
+//leetcode
+//使用多指针的方法，刚开始每个LIST都放一个指针在最开始， 然后找出最小的，和最大的，求出MAX， 然后最小指针往前移动一位
+//PriorityQueue 顶端存放最小的值， 也就是
+//time: O(n*m*log(m))   n is average length of list, m is the number of list
+//space:O(m)
+
+import java.util.Comparator;
+import java.util.PriorityQueue;
+
+class Solution {
+    public int[] smallestRange(List<List<Integer>> nums) {
+        int max = Integer.MIN_VALUE;
+        int start = 0 ;
+        int end = Integer.MAX_VALUE;
+
+        PriorityQueue<int[]> p = new PriorityQueue<>(nums.size(), new Comparator<int[]> (){
+            public int compare(int [] a, int [] b){
+                return nums.get(a[0]).get(a[1]) - nums.get(b[0]).get(b[1]);
+            }
+        });
+
+        for(int i = 0 ; i< nums.size(); i++){
+            p.offer(new int[]{i, 0});
+            max = Math.max(max, nums.get(i).get(0));
+        }
+
+        while(p.size()  == nums.size()){
+            int [] tmp = p.poll();
+            if( end  - start > max - nums.get(tmp[0]).get(tmp[1])){
+                start = nums.get(tmp[0]).get(tmp[1]);
+                end = max;
+            }
+
+            if(tmp[1] + 1 < nums.get(tmp[0]).size()){
+                p.offer(new int[]{tmp[0], tmp[1] + 1});
+                max = Math.max(max, nums.get(tmp[0]).get(tmp[1] + 1));
+            }
+        }
+
+        return new int[]{start, end};
+    }
+}
