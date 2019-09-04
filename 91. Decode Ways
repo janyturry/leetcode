@@ -1,6 +1,13 @@
 
 //91. Decode Ways
 //leetcode
+/*
+62. Unique Paths
+70. Climbing Stairs
+509. Fibonacci Number
+
+*/
+
 //思路：DP， 设置dp数组，长度为n+1, dp[i] 表示一直到第I位置一共有多少个 decode方法， 因为只有1位数和2位数可以对应decode,所以只需要看当前位置的一位或者前两位
 public class numDecodings {
 	public int numDecodings(String s) {
