@@ -15,4 +15,24 @@ public class climbStairs {
 		}
 		return res[n];
 	}
+	
+	
+	
+	
+	
+	public int climbStairs(int n) {
+        	if(n <=2){
+                    return n;
+                 }
+        
+                 int pp = 1, p = 2, cur = 0;
+            
+                  for(int i = 3; i <=n; i++){
+                     cur = pp + p;
+                      pp = p;
+                      p = cur;
+                   }
+        
+        return cur;
+    }
 }
