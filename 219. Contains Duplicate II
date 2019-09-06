@@ -1,0 +1,55 @@
+//219. Contains Duplicate II
+//leetcode
+//sliding window
+
+import java.util.HashMap;
+import java.util.Set;
+
+class Solution {
+    //time: O(n)
+    //space: O(n)
+    //hashmap 做法
+    public boolean containsNearbyDuplicate(int[] nums, int k) {
+        if(nums == null || nums.length<2  ){
+            return false;
+        }
+
+        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+        for(int i = 0 ; i < nums.length; i++){
+            Integer tmp = map.get(nums[i]);
+            if(tmp != null && i - tmp <=k){
+                return true;
+            }
+            //替换老的，因为老的距离不会可能有及格的
+            map.put(nums[i], i);
+        }
+
+        return false;
+    }
+
+
+    //silding window
+    //time:O(n)
+    //space: O(k)  k is the input k
+    public boolean containsNearbyDuplicate(int[] nums, int k) {
+        if(nums == null || nums.length<2  ){
+            return false;
+        }
+
+        Set<Integer> set = new HashSet<>();
+
+        int n = nums.length;
+
+        for(int i = 0 ; i < n; i++){
+            //如果已经存在就会return false
+            if(!set.add(nums[i])){
+                return true;
+            }
+            //把超过window size的移除， 因为超过window size意味着这个距离不可能会找到符合要求的
+            if(i-k>=0){
+                set.remove(nums[i-k]);
+            }
+        }
+        return false;
+    }
+}
