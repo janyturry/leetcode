@@ -6,6 +6,8 @@ import java.util.List;
 //56. Merge Intervals
 //leetcode
 //基本思路是先从小到大把interval排序了，然后loop一遍,如果last.end 大于 cur.start的，更新last.end
+time: O(n*logn)
+space: O(n)
 public class mergeIntervals {
 	public class Interval {
 		int start;
