@@ -1,0 +1,84 @@
+//450. Delete Node in a BST
+
+
+
+import javax.swing.tree.TreeNode;
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+
+// time: O(height of tree).
+    //逐层寻找node, 然后判断node.val 跟key 的大小
+    //如果node.val > key , 表示要删除的点在node.left
+    //如果Node.val < key , 表示要删除的点在node.right
+    //如果node.val == key 要分情况， #1如果node的左节点是空的， 那么直接返回右节点。#2 如果node的右节点的空的，那么直接返回左节点
+    //#3 如果左右节点都不为空的话，找出右边节点的最小值， 代替node点，然后删去右边节点的最小值
+class Solution {
+    //recursive
+    public TreeNode deleteNode(TreeNode root, int key) {
+        if(root == null){
+            return root;
+        }
+
+        if(root.val > key){
+            root.left =     deleteNode(root.left, key);
+        }else if(root.val < key){
+            root.right =     deleteNode(root.right, key);
+        }else{
+            if(root.left  == null){
+                return root.right;
+            }else if(root.right == null){
+                return root.left;
+            } else {
+                TreeNode rightMin = findMin(root.right);
+                root.val = rightMin.val;
+                root.right = deleteNode(root.right, root.val);
+            }
+        }
+        return root;
+    }
+
+    public TreeNode findMin(TreeNode root){
+        while(root.left != null){
+            root = root.left;
+        }
+        return root;
+    }
+
+
+    //instead of calling recursion
+    public TreeNode deleteNode(TreeNode root, int key) {
+        if(root == null){
+            return root;
+        }
+
+        if(root.val > key){
+            root.left =     deleteNode(root.left, key);
+        }else if(root.val < key){
+            root.right =     deleteNode(root.right, key);
+        }else{
+            if(root.left  == null){
+                return root.right;
+            }else if(root.right == null){
+                return root.left;
+            } else {
+                //直接找出右边最小点， 然后把左子树挂在右边最小点的左边， 然后直接return root.right
+                TreeNode rightMin = root.right;
+                while(rightMin.left != null){
+                    rightMin = rightMin.left;
+                }
+
+                rightMin.left= root.left;
+                return root.right;
+            }
+        }
+        return root;
+    }
+}
