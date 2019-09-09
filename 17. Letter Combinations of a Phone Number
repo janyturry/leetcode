@@ -2,6 +2,7 @@
 //17. Letter Combinations of a Phone Number
 //思路：重点是一开始就建立linkedlist = new LinkedList<> ,这样 define 可以直接当成数组来用
 //char to integer: char c - '0'
+////TIME: O(branch factor ^ depth  ) < O(4^n)
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,3 +31,55 @@ public class letterCombinations {
         return res;
 	}
 }
+
+
+
+//TIME: O(branch factor ^ depth  ) < O(4^n)
+//DFS
+class Solution {
+    public  List<String> letterCombinations(String digits) {
+        List<String> res=  new ArrayList<String>();
+        if(digits == null || digits.length() <1){
+            return res;
+        }
+
+        Map<Integer, String> map= 	constructMap();
+
+        StringBuilder sb  = new StringBuilder();
+
+        dfsHelper(digits, map, res,0, sb);
+
+        return res;
+    }
+
+    public void dfsHelper(String digits, Map<Integer, String> map, List<String> res , int level, StringBuilder sb){
+        if(digits.length() ==  level){
+            res.add(sb.toString());
+            return;
+        }
+
+        int cur = digits.charAt(level)- '0';
+        String tmpStr = map.get(cur);
+        for(char a : tmpStr.toCharArray()){
+            sb.append(a);
+            dfsHelper(digits, map, res, level+1, sb);
+            sb.deleteCharAt(sb.length()-1);
+
+        }
+    }
+    
+    public Map<Integer, String>  constructMap(){
+        Map<Integer, String> map = new HashMap<Integer, String>();
+        map.put(0, "");
+        map.put(1, "");
+        map.put(2, "abc");
+        map.put(3, "def");
+        map.put(4, "ghi");
+        map.put(5, "jkl");
+        map.put(6, "mno");
+        map.put(7, "pqrs");
+        map.put(8, "tuv");
+        map.put(9, "wxyz");
+        return map;
+    }
+
