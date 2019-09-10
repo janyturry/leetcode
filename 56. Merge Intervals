@@ -56,4 +56,34 @@ public class mergeIntervals {
 	        return res;
 	            
 	}
+	
+	
+	
+	//updated version
+	  public int[][] merge(int[][] intervals) {
+        if(intervals  == null || intervals.length  <=0 ){
+            return new int[0][0];
+        }
+
+        List<int[]> res = new ArrayList<>();
+
+        Arrays.sort(intervals, (a,b) -> a[0] - b[0]);
+
+
+        int start = intervals[0][0];
+        int end = intervals[0][1];
+
+
+        for(int[] tmp : intervals){
+            if(tmp[0] <= end){
+                end = Math.max(tmp[1], end);
+            }else {
+                res.add(new int[]{start,end});
+                start = tmp[0];
+                end = tmp[1];
+            }
+        }
+        res.add(new int[]{start,end});
+        return res.toArray(new int[0][]);
+    }
 }
