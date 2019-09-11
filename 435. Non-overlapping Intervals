@@ -1,0 +1,32 @@
+//435. Non-overlapping Intervals
+// leetcode
+
+//time: O(nlogn)
+
+import java.util.Arrays;
+
+class Solution {
+    public int eraseOverlapIntervals(int[][] intervals) {
+        if(intervals  == null || intervals.length  <=0 ){
+            return 0;
+        }
+
+
+        Arrays.sort(intervals, (a,b) -> a[0] - b[0]);
+
+        int end = intervals[0][1];
+        int res = 0;
+
+        for(int i = 1; i <=intervals.length-1; i++){
+            if(intervals[i][0]<end){
+                //跟leetcode 56 不一样的是因为这里overlap 是需要移除的， 因为要求最小的，目的是不让他overlap
+                end = Math.min(intervals[i][1], end);
+                res++;
+
+            }else {
+                end = intervals[i][1];
+            }
+        }
+        return res;
+    }
+}
