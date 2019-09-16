@@ -1,0 +1,41 @@
+
+//time: O(nlogn)
+//O(1)
+class Solution {
+    public boolean containsDuplicate(int[] nums) {
+        	if (nums == null || nums.length ==0) {
+			return false;
+		}
+
+	    Arrays.sort(nums);
+        
+        for(int i = 1; i < nums.length; i++){
+            if(nums[i] == nums[i-1]){
+                return true;
+            }
+        }
+        
+        return false;
+    }
+}
+
+
+//Time complexity: O(N), memory: O(N)
+
+class Solution {
+    public boolean containsDuplicate(int[] nums) {
+        if(nums == null || nums.length <1){
+            return false;
+        }
+        
+        HashSet<Integer> set = new HashSet<>();
+        
+        for(int i : nums){
+            if(!set.add(i)){
+                return true;
+            }
+        }
+        
+        return false;
+    }
+}
