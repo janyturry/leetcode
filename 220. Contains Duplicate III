@@ -1,0 +1,79 @@
+//220. Contains Duplicate III
+
+
+//treeset
+//time:O(nlogk)
+//space: O(k)
+
+class Solution {
+    public boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
+          if(nums == null || nums.length <1 || k <=0 || t < 0){
+             return false;
+         }
+
+        TreeSet<Long> set = new TreeSet<>();
+
+         for(int i = 0 ; i < nums.length; i++){
+             Long floor = set.floor((long)nums[i] + t);
+             Long ceil = set.ceiling((long)nums[i] -t);
+             if((floor != null && floor >= (long)nums[i] )||  (ceil != null && ceil <= (long)nums[i])){
+                 return true;
+             }
+
+             set.add((long)nums[i]);
+
+             if(set.size() > k){
+            // if(i>= k){
+                 set.remove((long)nums[i-k]);
+             }
+
+         }
+         
+         return false;
+    }
+}
+
+
+
+
+
+//220. Contains Duplicate III
+//leetcode
+
+
+import java.util.HashMap;
+
+//time  O(N)
+//space: O(bucket_size)   worst case:O( (max_number- min_number)/t)
+
+class Solution {
+    public boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
+        if(nums == null || nums.length < 1 || k <=0  || t < 0){
+            return false;
+        }
+
+        HashMap<Long, Long> map  = new HashMap<>();
+
+        for(int i = 0 ; i < nums.length ; i++){
+            //egative ints are allowed. A simple num / t just shrinks everything towards 0. Therefore, we can just reposition every element to start from Integer.MIN_VALUE.
+            //确保renum之后都是positive
+            long reMapNum = (long)nums[i] - Integer.MIN_VALUE;
+            long bucketindex =  reMapNum /( (long)t+1);
+            //因为/t+1 ，所以在同一个bucket 肯定是 复合  <=t
+            if(    (map.containsKey(bucketindex)   )
+                    //注意这里是前一个bucket 所以是 map.get(bucketindex+1) - reMapNum
+                    //落到旁边bucket的也有可能满足<=t
+                    || (map.containsKey(bucketindex+1)   &&  ( map.get(bucketindex+1) - reMapNum <= t) )   ||
+                    (  map.containsKey(bucketindex-1)  &&  (  reMapNum - map.get(bucketindex-1) <= t) ))
+            {
+                return true;
+            }
+            //确保size一直保持是k个
+            if(i>= k ){
+                map.remove(((long)nums[i-k] - Integer.MIN_VALUE)/ ( (long)t+1));
+            }
+            map.put(bucketindex ,  reMapNum );
+        }
+        return false;
+    }
+}
