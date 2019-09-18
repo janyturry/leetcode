@@ -1,0 +1,50 @@
+//1169. Invalid Transactions
+//leetcode
+//["alice,20,800,mtv"]   name, time (in minutes), amount, and city
+
+
+//directly add below
+class Solution {
+    public List<String> invalidTransactions(String[] transactions) {
+        List<String> res = new LinkedList<>();
+        int n = transactions.length;
+        String[] name = new String[n];
+        int[] time = new int[n];
+        int[] amount = new int[n];
+        String[] city = new String[n];
+        boolean[] add = new boolean[n];
+
+        int index = 0;
+        while (index < n) {
+            String[] items = transactions[index].split(",");
+            name[index] = items[0];
+            time[index] = Integer.valueOf(items[1]);
+            amount[index] = Integer.valueOf(items[2]);
+            city[index] = items[3];
+
+            index++;
+        }
+
+
+        for (int i = 0; i < n; i++) {
+            //the amount exceeds $1000
+            if (amount[i] > 1000) {
+                add[i] = true;
+            }
+            for (int j = i + 1; j < n; j++) {
+                //if it occurs within (and including) 60 minutes of another transaction with the same name in a different city.
+                if (name[i].equals(name[j]) && !city[i].equals(city[j]) && Math.abs(time[i] - time[j]) <= 60) {
+                    add[i] = true;
+                    add[j] = true;
+                }
+            }
+        }
+
+        for (int i = 0; i < n; i++) {
+            if (add[i]) {
+                res.add(transactions[i]);
+            }
+        }
+        return res;
+    }
+}
