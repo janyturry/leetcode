@@ -1,0 +1,32 @@
+//49. Group Anagrams
+
+
+
+//time: nlog(n)
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+         List<List<String>> res = new ArrayList<List<String>>();
+		 if(strs == null || strs.length == 0){
+		     return res;
+		 }
+		 
+		 HashMap<String, List<String>> map = new HashMap<String, List<String>>();
+		 
+		 for(String s : strs){
+		     char[] tmp = s.toCharArray();
+			 Arrays.sort(tmp);
+			 String tmpS = Arrays.toString(tmp);
+			 
+             List<String> list = map.getOrDefault(tmpS, new ArrayList<String>() );
+             list.add(s);
+             map.put(tmpS , list);
+		 }
+		 
+		 for(String s : map.keySet()){
+		     res.add(map.get(s));
+		 }
+		 return res;
+    }
+}
+
+
