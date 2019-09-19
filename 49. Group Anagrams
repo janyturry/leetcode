@@ -30,3 +30,34 @@ class Solution {
 }
 
 
+
+
+//time:O(m*n)
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+        List<List<String>> res = new ArrayList<List<String>>();
+        if(strs == null || strs.length == 0){
+            return res;
+        }
+
+        HashMap<String, List<String>> map = new HashMap<String, List<String>>();
+
+        for(String s : strs){
+            int count[] = new int[26];
+            for(int i = 0 ; i< s.length();i++){
+                count[s.charAt(i) - 'a']++;
+            }
+            String key = Arrays.toString(count);
+
+            List<String> subRes = map.getOrDefault(key, new ArrayList<String>());
+
+            subRes.add(s);
+            map.put(key, subRes);
+        }
+
+        for(String l : map.keySet()){
+            res.add(map.get(l));
+        }
+        return res;
+    }
+}
