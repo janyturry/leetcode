@@ -1,0 +1,35 @@
+//442. Find All Duplicates in an Array
+//leetcode
+
+import java.util.LinkedList;
+import java.util.List;
+
+//time : O(n)
+//每次碰到一个数先求出对应的index, 因为 每个数1 ≤ a[i] ≤ n (n = size of array), 所以 nums[index] 一定存在， 然后检查是否为负数， 因为原本每个数都是负数，
+//所以只要碰到为负数的，一定是之前已经映射过的数字。 最后要把当前映射数变成负数
+class Solution {
+    public static List<Integer> findDuplicates(int[] nums) {
+        List<Integer> res = new LinkedList<Integer>();
+
+        if(nums == null || nums.length < 0 ){
+            return res;
+        }
+
+        for(int i = 0 ; i< nums.length; i++){
+            int index = Math.abs(nums[i]) -1;
+            if(nums[index] < 0){
+                res.add(index + 1);
+            }
+            //变负数的是需要当前映射的数
+            //nums[i] = -nums[i];
+            nums[index] = -nums[index];
+        }
+
+        return res;
+    }
+
+    public static void main(String [] argc){
+        int[] test = new int[]{4,3,2,7,8,2,3,1};
+        findDuplicates(test);
+    }
+}
