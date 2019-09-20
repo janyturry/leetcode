@@ -1,0 +1,74 @@
+import javax.swing.tree.TreeNode;
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+
+//DFS
+class Solution {
+    public TreeNode invertTree(TreeNode root) {
+        if(root == null){
+            return null;
+        }
+
+        TreeNode dummy = root.left;
+        root.left = root.right;
+        root.right = dummy;
+        
+        invertTree(root.left);
+        invertTree(root.right);
+
+        return root;
+    }
+}
+
+
+//BFS
+
+import javax.swing.tree.TreeNode;
+import java.util.Queue;
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public TreeNode invertTree(TreeNode root) {
+        if(root == null){
+            return root;
+        }
+
+        Queue<TreeNode> q = new LinkedList<>();
+
+        q.offer(root);
+
+        while(!q.isEmpty()){
+            TreeNode tmp = q.poll();
+
+            TreeNode dummy = tmp.left;
+            tmp.left = tmp.right;
+            tmp.right = dummy;
+
+            if(tmp.left!= null){
+                q.offer(tmp.left);
+            }
+
+            if(tmp.right!= null){
+                q.offer(tmp.right);
+            }
+        }
+
+        return root;
+    }
+}
