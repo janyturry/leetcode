@@ -1,0 +1,92 @@
+import javax.swing.tree.TreeNode;
+import java.util.*;
+
+//987. Vertical Order Traversal of a Binary Tree
+//leetcode
+
+//思路就是新建pair class, 记录x, y轴和node. root的坐标是(0, 0) ，left 节点是( x-1 , y+1), 右节点是(x+1, y+1)
+//level orrder ,算出左右X的范围，  然后从左到右从map 当中拿出来计算。 因为近queue的时候已经level by level 递增,
+//所以只需要关注x
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    class pair{
+        TreeNode node;
+        int x;
+        int y;
+
+        pair(TreeNode node, int x, int y){
+            this.x = x;
+            this.y = y;
+            this.node = node;
+        }
+    }
+
+    public List<List<Integer>> verticalTraversal(TreeNode root) {
+        List<List<Integer>> res = new LinkedList<>();
+
+        if(root == null){
+            return res;
+        }
+
+        int min =0,max=0;
+
+        Queue<pair> q= new LinkedList<>();
+        //MAP存放key是X坐标，VALUE是
+        Map<Integer, List<pair>> map = new HashMap<>();
+
+
+        q.offer(new pair(root, 0,0));
+
+        while(!q.isEmpty()){
+            pair cur = q.poll();
+
+            min = Math.min(cur.x, min);
+            max = Math.max(cur.x, max);
+
+            if(!map.containsKey(cur.x)){
+                map.put(cur.x, new ArrayList<>());
+            }
+            map.get(cur.x).add(cur);
+
+
+
+            if(cur.node.left != null){
+                q.offer(new pair(cur.node.left, cur.x -1 , cur.y +1));
+            }
+
+            if(cur.node.right != null){
+                q.offer(new pair(cur.node.right, cur.x +1 , cur.y +1));
+            }
+
+        }
+
+
+        for(int i = min; i <=max; i++){
+            List<pair> tmp = map.get(i);
+
+            Collections.sort(map.get(i),new Comparator<pair>(){
+                public int compare(pair a, pair b)
+                {
+                    if(a.y==b.y) //when y is equal, sort it by value
+                        return a.node.val - b.node.val;
+                    return 0; //otherwise don't change the order as BFS ganrantees that top nodes are visited first
+                }
+            });
+            List<Integer> l = new ArrayList<Integer>();
+
+            for(pair j : tmp){
+                l.add(j.node.val);
+            }
+            res.add(l);
+        }
+        return res;
+    }
+}
