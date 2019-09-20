@@ -1,0 +1,62 @@
+//678. Valid Parenthesis String
+
+/*
+The basic idea is to track the index of the left bracket and star position.
+Push all the indices of the star and left bracket to their stack respectively.
+STEP 1
+Once a right bracket comes, pop left bracket stack first if it is not empty. If the left bracket stack is empty, pop the star stack if it is not empty. A false return can be made provided that both stacks are empty.
+
+STEP 2
+Now attention is paid to the remaining stuff in these two stacks. Note that the left bracket CANNOT appear after the star as there is NO way to balance the bracket. In other words, whenever there is a left bracket index appears after the Last star, a false statement can be made. Otherwise, pop out each from the left bracket and star stack.
+
+STEP 3
+A correct sequence should have an empty left bracket stack. You don't need to take care of the star stack.
+
+Final Remarks:
+Greedy algorithm is used here. We always want to use left brackets to balance the right one first as the * symbol is a wild card. There is probably an O(1) space complexity but I think this is worth mentioning.
+
+
+
+ */
+
+class Solution {
+    public boolean checkValidString(String s) {
+        if(s == null){
+            return false;
+        }
+
+        if(s.length() ==0){
+            return true;
+        }
+        //关键是stack存放的是index,用来后面比较'（' 不能放在'*' 的右边，匹配的时候
+        Stack<Integer> left = new Stack<>();
+        Stack<Integer> star = new Stack<>();
+
+        for(int i =0 ; i< s.length();i++){
+            char tmp = s.charAt(i);
+
+            if(tmp == '('){
+                left.push(i);
+            }else if(tmp == '*'){
+                star.push(i);
+            }else {
+                if(left.isEmpty() && star.isEmpty()){
+                    return false;
+                }
+                if(!left.isEmpty()){
+                    left.pop();
+                }else if(!star.isEmpty()){
+                    star.pop();
+                }
+            }
+        }
+//匹配的时候'('必须出现在'*'的左边
+        while(!left.isEmpty() && !star.isEmpty()){
+            //POP出来检查INDEX
+            if(left.pop() > star.pop()){
+                return false;
+            }
+        }
+        return left.isEmpty();
+    }
+}
