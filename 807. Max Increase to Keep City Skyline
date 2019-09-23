@@ -1,0 +1,36 @@
+//807. Max Increase to Keep City Skyline
+//leetcode
+//time: O(m*n)
+//思路：求出每个数每行每列的最大，然后再LOOP求最下然后求差值
+class Solution {
+    public int maxIncreaseKeepingSkyline(int[][] grid) {
+        if (grid == null || grid.length <1 || grid[0].length <1){
+            return 0;
+        }
+
+
+
+        int m = grid.length;
+        int n = grid[0].length;
+
+        int row [] = new int[m];
+        int col [] = new int[n];
+        int res = 0;
+
+        for(int i = 0 ;i < m; i++){
+            for(int j =0; j < n; j++){
+                row[i] = Math.max(grid[i][j], row[i]);
+                col[j] = Math.max(grid[i][j], col[j]);
+            }
+        }
+
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+            //因为这里求出来的是自己的最大
+                res+= Math.min(col[j], row[i]) - grid[i][j];
+            }
+        }
+
+        return res;
+    }
+}
