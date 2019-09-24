@@ -31,6 +31,7 @@ public class Codec {
         String charSet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         StringBuilder sb = new StringBuilder();
         for(int i = 0 ; i < 6;i++){
+        //generate 随机数    0<= 随机数<charSet.length()
             int k = (int)(Math.random()*charSet.length());
             sb.append(charSet.charAt(k));
         }
