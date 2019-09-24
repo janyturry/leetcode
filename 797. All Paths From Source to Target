@@ -1,0 +1,32 @@
+//797. All Paths From Source to Target
+//graph[0] 代表node 0  能指向的所有点
+
+class Solution {
+    public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
+        List<List<Integer>> res= new LinkedList<>();
+        if(graph == null || graph.length == 0){
+            return res;
+        }
+        List<Integer> path = new LinkedList<>();
+        path.add(0);
+        
+        dfs(graph, 0, path,res);
+        
+        return res;
+    }
+    
+    public void dfs(int[][] graph, Integer node,List<Integer> path,List<List<Integer>> res){
+        if(node == graph.length -1){
+            res.add(new LinkedList<Integer>(path));
+            return;
+        }
+        
+        for(Integer tmp : graph[node]){
+           path.add(tmp);
+           dfs(graph, tmp, path,res);
+           path.remove(path.size()-1);
+        }
+        
+        return;
+    }
+}
