@@ -1,0 +1,32 @@
+import java.util.Arrays;
+
+//406. Queue Reconstruction by Height
+//leetcode
+
+
+//思路:先按照身高排序 高到矮，然后如果身高相等的话, 按照深度排序
+
+class Solution {
+    public int[][] reconstructQueue(int[][] people) {
+        int[][] res = new int[people.length][2];
+
+        Arrays.sort(people, (a, b)-> {
+            if(a[0] != b[0]){
+                return b[0] - a[0];
+            }
+            return a[1]- b[1];
+        });
+
+        List<int[]> list = new LinkedList<>();
+        for(int[] a : people){
+            list.add(a[1], a );
+        }
+
+        int i = 0;
+        for(int[]  tmp : list){
+            res[i++] = tmp;
+        }
+
+        return res;
+    }
+}
