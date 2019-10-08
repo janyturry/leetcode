@@ -1,0 +1,81 @@
+//347. Top K Frequent Elements
+//leetcode
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+class Solution {
+    public List<Integer> topKFrequent(int[] nums, int k) {
+        List<Integer> res = new LinkedList<Integer>();
+        if(nums == null || nums.length < 1){
+            return res;
+        }
+
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+
+        for(int tmp : nums){
+            map.put(tmp, map.getOrDefault(tmp,0) + 1);
+        }
+
+        List<Integer>[] fre = new List[nums.length+1];
+
+        for(int tmp : map.keySet()){
+            int count = map.get(tmp);
+            if(fre[count] == null){
+                fre[count] = new LinkedList<Integer>();
+            }
+            fre[count].add(tmp);
+
+        }
+
+        for(int i = fre.length -1; i>0; i--){
+            if(fre[i] != null) {
+                List<Integer> sub = fre[i];
+                for (int j = 0; j < sub.size() && res.size() < k; j++) {
+                    res.add(sub.get(j));
+                }
+            }
+        }
+
+        return res;
+    }
+}
+
+
+
+
+
+//priorityQueue
+import java.util.*;
+
+class Solution {
+    public List<Integer> topKFrequent(int[] nums, int k) {
+        List<Integer> res = new LinkedList<Integer>();
+        if(nums == null || nums.length < 1){
+            return res;
+        }
+
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+
+        for(int tmp : nums){
+            map.put(tmp, map.getOrDefault(tmp,0) + 1);
+        }
+
+        PriorityQueue<Map.Entry<Integer, Integer>> p = new PriorityQueue<>((a, b) -> (a.getValue() - b.getValue()));
+
+        for(Map.Entry<Integer, Integer>  entry : map.entrySet()  ){
+            p.offer(entry);
+            if(p.size() >k){
+                p.poll();
+            }
+        }
+
+        while(p.size()>0){
+            res.add(p.poll().getKey());
+        }
+
+        return res;
+    }
+}
