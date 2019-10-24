@@ -41,3 +41,37 @@ public class permute {
 		}
 	}
 }
+
+
+
+
+
+
+
+class Solution {
+    public List<List<Integer>> permute(int[] nums) {
+          List<List<Integer>> res = new ArrayList<List<Integer>>();
+		  if(nums ==null || nums.length ==0){
+		      return res;
+		  }
+		  Arrays.sort(nums);
+		  helper(res, nums, new ArrayList<Integer>());
+		  return res;
+    }
+	
+	public void helper(List<List<Integer>> res,int[] nums, ArrayList<Integer> tmp){
+	    if(tmp.size() == nums.length){
+		    res.add(new ArrayList<Integer>(tmp));
+			return;
+		}else {
+		    for(int i = 0; i < nums.length; i++){
+                if(tmp.contains(nums[i]))continue;
+				tmp.add(nums[i]);
+				helper(res, nums, tmp);
+				tmp.remove(tmp.size()-1); 
+			   }
+			  	  
+			} 
+		
+	}
+}
