@@ -1,0 +1,40 @@
+//39. Combination Sum
+//backtracking
+
+import java.util.LinkedList;
+
+public class Solution {
+
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> res =  new LinkedList<List<Integer>>();
+        if(candidates == null || candidates.length  < 1 ){
+            return res;
+        }
+        helper(candidates , target, res,  0, new LinkedList<Integer> () , 0);
+        return res;
+    }
+
+    public void helper(int[] candidates, int target, List<List<Integer>> res  , int start, LinkedList<Integer> tmp, int sum){
+        if( sum > target){
+            return;
+        }
+
+        if(sum == target){
+            res.add(new LinkedList<Integer>(tmp));
+            return;
+        }
+
+        for(int i = start; i < candidates.length; i++){
+            tmp.add(candidates[i]);
+            //instead of i + 1, use i, because each element can be reused.
+            helper(candidates , target, res,  i, tmp , sum+candidates[i]);
+            tmp.remove(tmp.size()-1);
+        }
+
+    }
+
+
+    public static void main(String[] argc){
+
+    }
+}
