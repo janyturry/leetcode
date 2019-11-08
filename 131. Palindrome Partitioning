@@ -1,0 +1,49 @@
+131. Palindrome Partitioning
+//backtracking
+
+import java.util.Arrays;
+import java.util.LinkedList;
+
+public class Solution {
+    public List<List<String>> partition(String s) {
+        List<List<String>> res  = new LinkedList<List<String>>();
+        if(s == null || s.length() < 1){
+            return res;
+        }
+        helper(s, res ,new LinkedList<String>(), 0);
+
+        return res;
+
+    }
+
+    public void helper(String s, List<List<String>> res, LinkedList<String> tmp, int start){
+        if(start  == s.length()){
+            res.add(new LinkedList<String>(tmp));
+            return;
+        }
+
+        for(int i = start; i <=s.length() -1 ; i++){
+            if(check(s, start, i)){
+                tmp.add(s.substring(start, i+1));
+                helper(s, res ,tmp, i+1);
+                tmp.remove(tmp.size()-1);
+            }
+        }
+    }
+
+    public boolean check(String s, int x, int y){
+        while(x >=0 && x <=s.length()-1  && y >=0 && y <=s.length()-1 && x<=y){
+            if(s.charAt(x) != s.charAt(y)){
+                return false;
+            }else{
+                x++;
+                y--;
+            }
+        }
+        return true;
+    }
+    
+    public static void main(String[] argc){
+
+    }
+}
