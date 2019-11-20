@@ -1,0 +1,26 @@
+//153. Find Minimum in Rotated Sorted Array
+
+class Solution {
+    public int findMin(int[] nums) {
+        	int s = 0;
+		    int e = nums.length - 1;
+        
+        while(s + 1 < e){
+            int mid = s + (e-s)/2;
+            if(nums [s] < nums[e]){
+                return nums[s];
+            }
+            
+            if(nums[s] < nums[mid]){
+                s  = mid;
+            }else{
+                e = mid;
+            }
+        }
+        
+        return Math.min(nums[s], nums[e]);
+        
+		
+
+    }
+}
