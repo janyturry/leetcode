@@ -1,0 +1,37 @@
+//24. Swap Nodes in Pairs
+
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode swapPairs(ListNode head) {
+        if(head == null || head.next == null){
+            return head;
+        }
+        
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode tmp = dummy;
+        ListNode one = dummy;
+        ListNode two = dummy;
+        
+        while(tmp != null && tmp.next != null && tmp.next.next != null){
+            one = tmp.next;
+            two = tmp.next.next;
+            one.next = two.next;
+            two.next = one;
+            tmp.next = two;
+            tmp = one;
+        }
+        
+        return dummy.next;
+        
+        
+    }
+}
