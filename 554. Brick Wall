@@ -1,0 +1,26 @@
+class Solution {
+    public int leastBricks(List<List<Integer>> wall) {
+        if(wall.size() == 0){
+            return 0;
+        }
+        
+        int count = 0;
+        
+        Map<Integer, Integer> map = new HashMap<>();
+        
+        for(List<Integer> l : wall){
+        //len是缝隙到左边远点的距离， 最终目的就是求出出现频率最高的缝隙
+            int len = 0 ;
+            for(int i = 0 ; i < l.size()-1; i ++){
+                len+=l.get(i);
+                map.put(len, map.getOrDefault(len,0)+1);
+                //记录出现频率最高的缝隙
+                count = Math.max(count, map.get(len));
+            }
+        }
+        //行数 减去 出现的缝隙 就是需要穿过的转头数目
+        return wall.size() - count;
+        
+        
+    }
+}
