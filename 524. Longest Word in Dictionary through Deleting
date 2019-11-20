@@ -1,0 +1,42 @@
+//524. Longest Word in Dictionary through Deleting
+
+class Solution {
+    public String findLongestWord(String s, List<String> d) {
+        if(s == null || d == null || d.size() < 1){
+            return "";
+        }
+        
+        String res = "";
+        
+        for(String tmp : d){
+            if(sub(tmp, s)){
+                if(res.length() < tmp.length()){
+                    res = tmp;
+                    //tmp.compareTo(res)<0代表lexi order tmp 小于res
+                }else if(res.length() == tmp.length() && tmp.compareTo(res)<0){
+                    res = tmp;
+                }
+            }
+        }
+        return res;
+        
+        
+    }
+    //decide substring
+    public boolean sub (String a , String b){
+        int i =0;
+        int j = 0;
+        while(i < a.length() && j < b.length()){
+            if(a.charAt(i) == b.charAt(j)){
+                i++;
+            }
+            j++;
+        }
+        
+        if(i == a.length()){
+            return true;
+        }
+        
+        return false;
+    }
+}
