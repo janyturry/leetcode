@@ -1,0 +1,45 @@
+//81. Search in Rotated Sorted Array II
+class Solution {
+    public boolean search(int[] nums, int target) {
+        if(nums == null || nums.length <1){
+            return false;
+        }
+
+        int s = 0;
+        int e = nums.length-1;
+
+        while( s + 1 < e){
+            int mid = s + (e-s)/2;
+            if(nums[mid] == target){
+                return true;
+            }
+            //因为排除了==target, 这种情况无法判断哪边是递增， 所以pass duplicate
+            if(nums[mid] == nums[s] && nums[mid] == nums[e]){
+                s++;
+                e--;
+            }else if( nums[mid] > nums[s]){
+                if(nums[s] <= target && nums[mid] > target){
+                    e = mid;
+                }else{
+                    s = mid;
+                }
+
+            } else if(nums[mid] == nums[s]){
+                //这种情况是只会存在于 nums[s] --> nums[mid] 都是重复的， 所以排除nums[mid] != target ,所有在另外一边找
+                s = mid;
+            }else{
+                if(nums[mid] < target && nums[e] >= target){
+                    s = mid;
+                }else{
+                    e  = mid;
+                }
+            }
+        }
+
+        if(nums[e] == target || nums[s] == target){
+            return true;
+        }else{
+            return false;
+        }
+    }
+}
