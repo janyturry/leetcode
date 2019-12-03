@@ -1,0 +1,87 @@
+//417. Pacific Atlantic Water Flow
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
+class Solution {
+    class point{
+        int x;
+        int y;
+        public point(int x, int y){
+            this.x = x;
+            this.y = y;
+        }
+    }
+
+    public List<List<Integer>> pacificAtlantic(int[][] matrix) {
+        List<List<Integer>> res = new LinkedList<List<Integer>>();
+        if(matrix == null ||  matrix.length <1  || matrix[0] == null || matrix[0].length < 1){
+            return res;
+        }
+
+        int m = matrix.length-1;
+        int n  = matrix[0].length-1;
+
+        int dirX[] = new int[]{0,0,1,-1};
+        int dirY[] = new int[]{1,-1,0,0};
+
+        boolean [][] v1 = new boolean[m+1][n+1];
+        boolean [][] v2 = new boolean [m+1][n+1];
+
+        Queue<point> q1= new LinkedList<>();
+        Queue<point> q2 = new LinkedList<>();
+
+
+        for(int i =0 ; i <=m; i++){
+            q1.offer(new point(i, 0));
+            v1[i][0] = true;
+            q2.offer(new point(i, n));
+            v2[i][n] = true;
+        }
+
+        for(int i =0 ; i <=n; i++){
+            q1.offer(new point(0, i));
+            v1[0][i] = true;
+            q2.offer(new point(m, i));
+            v2[m][i] = true;
+        }
+
+
+        while(!q1.isEmpty()){
+            point cur = q1.poll();
+            for(int i =0 ;i <4; i++){
+                point newPoint  = new point(cur.x + dirX[i], cur.y+ dirY[i]);
+                if(newPoint.x >=0 && newPoint.x <= m && newPoint.y >=0 && newPoint.y <=n && !v1[newPoint.x][newPoint.y] &&  matrix[cur.x][cur.y] <= matrix [newPoint.x][newPoint.y]){
+                    v1[newPoint.x][newPoint.y] = true;
+                    q1.offer(newPoint);
+                }
+            }
+        }
+
+        while(!q2.isEmpty()){
+            point cur = q2.poll();
+            for(int i =0 ;i <4; i++){
+                point newPoint  = new point(cur.x + dirX[i], cur.y+ dirY[i]);
+                if(newPoint.x >=0 && newPoint.x <= m && newPoint.y >=0 && newPoint.y <=n && !v2[newPoint.x][newPoint.y] && matrix[cur.x][cur.y] <= matrix [newPoint.x][newPoint.y]){
+                    v2[newPoint.x][newPoint.y] = true;
+                    q2.offer(newPoint);
+                }
+            }
+        }
+
+        for(int i = 0; i <=m; i++){
+            for(int j = 0 ; j <=n; j++){
+                if(v1[i][j]  && v2[i][j]){
+                    List<Integer> sub = new LinkedList<Integer>();
+                    sub.add(i);
+                    sub.add(j);
+                    res.add(new LinkedList<>(sub));
+                }
+            }
+        }
+
+        return res;
+
+    }
+}
