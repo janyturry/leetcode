@@ -1,0 +1,41 @@
+//253. Meeting Rooms II
+/*
+Here is my thought. whenever there is a start meeting, we need to add one room. 
+But before adding rooms, we check to see if any previous meeting ends, which is why 
+we check start with the first end. When the start is bigger than end, it means at this
+time one of the previous meeting ends, and it can take and reuse that room. Then the next
+meeting need to compare with the second end because the first end's room is already taken. One thing is also good to know: meetings 
+start is always smaller than end. Whenever we pass a end, one room is released.
+*/
+
+
+class Solution {
+    public int minMeetingRooms(int[][] intervals) {
+        if(intervals == null || intervals.length < 1 || intervals[0] == null || intervals[0].length <1){
+            return 0;
+        }       
+        
+        int n = intervals.length;
+        int[] s = new int[n];
+        int[] e = new int[n];
+        int index= 0;
+        for(int [] tmp : intervals){
+            s[index] = tmp[0];
+            e[index] = tmp[1];
+            index++;
+        }
+        Arrays.sort(s);
+        Arrays.sort(e);
+        int room = 0;
+        int pre = 0;
+        for(int i = 0; i < n; i++ ){
+            room++;
+            if(s[i] >= e[pre]){
+                room--;
+                pre++;
+            }
+        }
+        
+        return room;
+    }
+}
