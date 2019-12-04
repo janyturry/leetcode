@@ -1,0 +1,39 @@
+import javax.swing.tree.TreeNode;
+
+//250. Count Univalue Subtrees
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    int count = 0;
+    public int countUnivalSubtrees(TreeNode root) {
+        if(root == null){
+            return 0;
+        }
+
+        helper(root, 0);
+
+        return count;
+    }
+
+    //判断root 的 val 跟 val 是不是一样
+    public boolean helper(TreeNode root, int val){
+        if(root == null){
+            return true;
+        }
+//"|" ensures the recursion do both sides instead of "||" only dose recursion on left side if it is wrong(it will miss the count from right side).
+        if( !helper(root.left , root.val) |  !helper(root.right, root.val)){
+            return false;
+        }
+
+        count++;
+
+        return root.val == val;
+    }
+}
