@@ -1,0 +1,35 @@
+//1060. Missing Element in Sorted Array
+
+class Solution {
+    public int missingElement(int[] nums, int k) {
+        int len = nums.length;
+        //total missig number
+        int numberMissing = (nums[len-1] - nums[0]) - (len -1);
+//意味着求出的missing number 超出了数组的最右边
+        if(numberMissing < k){
+            return  nums[len-1]  + ( k -numberMissing);
+        }
+
+        int low = 0;
+        int high = len-1;
+
+        while(low + 1 < high){
+            int mid = low + (high-low)/2;
+            //means the total number of missing numbers between nums[mid] and nums[left]
+            int missingBetweenLowAndMid = (nums[mid] - nums[low]) - (mid - low) ;
+            if( k <= missingBetweenLowAndMid){
+                high = mid;
+            }else{
+                low = mid;
+                k-=missingBetweenLowAndMid;
+            }
+        }
+
+        if(nums[low] + k >= nums[len-1]){
+            // "+1" is used to skip nums[right], try this example [3, 5], k = 6.
+            return nums[low] + k +1;
+        }else{
+            return nums[low] + k;
+        }
+    }
+}
