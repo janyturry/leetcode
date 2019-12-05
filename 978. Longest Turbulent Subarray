@@ -1,0 +1,94 @@
+//978. Longest Turbulent Subarray
+
+/*
+Time Complexity: O(n). n = A.length.
+
+Space: O(n).
+*/
+class Solution {
+    public int maxTurbulenceSize(int[] A) {
+        int len = A.length;
+
+        int [] dp = new int[len+1];
+
+        if(A == null){
+            return 0;
+        }
+
+        if(A.length < 2){
+            return A.length;
+        }
+
+        dp[1] = 1;
+
+        if(A[0] != A[1]){
+            dp[2] = 2;
+        }else{
+            dp[2]= 1;
+        }
+
+        int res = dp[2];
+        for(int i =3 ; i <=len; i++){
+            if( (A[i-3] > A[i-2] && A[i-2] < A[i-1])  ||  (A[i-3] < A[i-2] && A[i-2] > A[i-1] ) ){
+                dp[i] = dp[i-1] +1;
+                res = Math.max(dp[i], res);
+            }else if(A[i-1] == A[i-2]){
+                dp[i] = 1;
+            }else{
+                dp[i] = 2;
+            }
+        }
+
+        return res;
+    }
+}
+
+
+
+
+
+
+/*
+It only cares about dp[i-1]. Thus it could reduce dimension.
+
+Time Complexity: O(n).
+
+Space: O(1).
+
+*/
+class Solution {
+    public int maxTurbulenceSize(int[] A) {
+        int len = A.length;
+
+        int dp = 1;
+        if(A == null){
+            return 0;
+        }
+
+        if(A.length < 2){
+            return A.length;
+        }
+
+      
+
+        if(A[0] != A[1]){
+           dp = 2;
+        }else{
+           dp= 1;
+        }
+
+        int res = dp;
+        for(int i =3 ; i <=len; i++){
+            if( (A[i-3] > A[i-2] && A[i-2] < A[i-1])  ||  (A[i-3] < A[i-2] && A[i-2] > A[i-1] ) ){
+                dp = dp +1;
+                res = Math.max(dp, res);
+            }else if(A[i-1] == A[i-2]){
+                dp = 1;
+            }else{
+                dp = 2;
+            }
+        }
+
+        return res;
+    }
+}
