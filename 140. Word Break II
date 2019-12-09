@@ -1,0 +1,38 @@
+//140. Word Break II
+//leetcode
+
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+class Solution {
+    public List<String> wordBreak(String s, List<String> wordDict) {
+        return helper(s, wordDict, new HashMap<String, List<String>>());
+    }
+
+    List<String> helper(String s,List<String> wordDict, Map<String, List<String>> map){
+        if(map.get(s) != null){
+            return map.get(s);
+        }
+
+        List<String> res = new LinkedList<String>();
+
+        for(String dict :wordDict ){
+            if(s.startsWith(dict)){
+                String next = s.substring(dict.length());
+                if(next == null || next.length() <1){
+                    res.add(dict);
+                }else{
+                    for(String sub : helper(next, wordDict, map)){
+                        res.add(dict + " " + sub);
+                    }
+                }
+            }
+        }
+        map.put(s, res);
+        return res;
+    }
+}
+
