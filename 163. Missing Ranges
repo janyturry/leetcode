@@ -1,0 +1,51 @@
+//163. Missing Ranges
+//leetcode
+
+
+/*
+1.Find the range between lower and first element in the array.
+2.Find ranges between adjacent elements in the array.
+3.Find the range between upper and last element in the array.
+ */
+//根据题目， lower 肯定 <= nums[0];
+//upper 肯定 >= nums[nums.length -1]
+
+import java.util.LinkedList;
+import java.util.List;
+
+class Solution {
+    public List<String> findMissingRanges(int[] nums, int lower, int upper) {
+        List<String> res = new LinkedList<>();
+        if(nums == null || nums.length <1){
+            res.add(helper (lower, upper));
+            return res;
+        }
+
+        if(lower < nums[0]){
+            res.add(helper(lower, nums[0] -1));
+        }
+
+        for(int i =0; i < nums.length-1; i++){
+            //test case : [-2147483648,2147483647]
+            //-2147483648
+            //2147483647
+            //nums[i+1]  - nums[i] = 2147483647 - (-2147483648) which is 超越了int, 所以要转换成long
+            if(nums[i] < nums[i+1] && (long)nums[i+1]  - (long)nums[i] >1 ){
+                res.add(helper(nums[i]+1, nums[i+1] -1));
+            }
+        }
+
+        if(upper >   nums[nums.length-1]){
+            res.add(helper(nums[nums.length -1] + 1, upper));
+        }
+
+        return res;
+
+
+
+    }
+
+    public String helper(int down , int up){
+        return down == up ? String.valueOf(down) : (down + "->" + up);
+    }
+}
