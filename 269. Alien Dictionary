@@ -1,0 +1,91 @@
+//269. Alien Dictionary
+//leetcode
+import java.util.*;
+
+
+
+//time : O(average_len_of_word*len_list)  + O(V+E)
+ //O(V+E) in topological sort
+//space complexity: O(max(V, E)) while degree use O(V) and map uses O(E).
+class Solution {
+    public String alienOrder(String[] words) {
+        if(words == null || words.length <1){
+            return "";
+        }
+        //<字母， 排在字母后面的字母集合>
+        Map<Character, HashSet<Character>> map = new HashMap<>();
+        //<字母， 有多少个字母排在它前面>
+        Map<Character, Integer> graph = new HashMap<>();
+
+
+        //因为有些字母是直接在最前面， 没有字母排在他得前面，所以要先初始化
+        for(String s : words){
+            for(char c : s.toCharArray()){
+                graph.putIfAbsent(c , 0);
+            }
+        }
+
+
+    //比较当前词语是后一个词语
+        //build map and graph
+        for(int j = 0; j <= words.length -2; j++){
+            String cur = words[j];
+            String next = words[j+1];
+            //
+            int minLen = Math.min(cur.length() , next.length());
+
+            for(int i =0; i < minLen; i++){
+                //
+                if(cur.charAt(i) != next.charAt(i)){
+                    char  curc = cur.charAt(i);
+                    char nextc = next.charAt(i);
+                    map.putIfAbsent(curc , new HashSet<Character>());
+
+                    HashSet<Character> set = map.get(curc);
+                    //
+                    if(!set.contains(nextc)){
+                        //nextc顺序是跟在curc之后
+                        set.add(nextc);
+                        map.put(curc , set);
+                        //同时更新nextc多了一个字母跟在他的前面
+                        graph.put(nextc ,graph.get(nextc) +1);
+                    }
+                    break;
+                }
+            }
+        }
+
+        Queue<Character> q = new LinkedList<>();
+        StringBuilder sb = new StringBuilder();
+        //把前面没有字母的字母， 也就是开头的字母放近queue
+        for(char c :   graph.keySet()){
+            if(graph.get(c) ==0){
+                q.offer(c);
+            }
+        }
+
+        while(!q.isEmpty()){
+            char curc = q.poll();
+            sb.append(curc);
+            if(map.get(curc) != null){
+                for(char nextc : map.get(curc)){
+                    int nextCount = graph.get(nextc) - 1;
+                    graph.put(nextc , nextCount);
+                    if( nextCount == 0){
+                        q.offer(nextc);
+                    }
+                }
+            }
+
+        }
+//If there is a cycle in the map, then it must have one edge left,
+// so there must be a character whose degree!=0, so it will not be
+// added into Queue q, so the result does not contain this character, so the length will not equal to degree.size().
+        //// avoid the loop
+        if(sb.length() != graph.size()){
+            return "";
+        }
+
+        return sb.toString();
+    }
+}
