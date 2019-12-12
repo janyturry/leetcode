@@ -1,0 +1,29 @@
+///1029. Two City Scheduling
+
+class Solution {
+    public int twoCitySchedCost(int[][] costs) {
+        int len = costs.length/2;
+        //p[i][j] represents the cost when considering first (i + j) people in which i people assigned to city A and j people assigned to city B.
+        int[][] dp = new int[len+1][len+1];
+
+        for(int i =1; i <=len; i++){
+            dp[i][0] = dp[i-1][0] + costs[i-1][0];
+            dp[0][i] = dp[0][i-1] + costs[i-1][1];
+        }
+
+        for(int i =1; i <=len; i++){
+            for(int j =1; j <=len; j++){
+                /*
+                for (i+j)th people, he/she can be assigned either to A city or B city,
+the min cost if he is assigned to A city: dp[i-1][j]+costs[i+j-1][0]; //because it is to A, so we should use i-1
+the min cost if he is assigned to B city: dp[i][j-1]+costs[i+j-1][1]; //because it is to B, so we should use j-1
+so dp[i][j] = Math.min(dp[i-1][j]+costs[i+j-1][0] , dp[i][j-1]+costs[i+j-1][1]);
+                 */
+                dp[i][j] = Math.min(  dp[i-1][j] + costs[ i+j -1][0], dp[i][j-1] + costs[i+j-1][1] );
+            }
+        }
+
+        return dp[len][len];
+
+    }
+}
