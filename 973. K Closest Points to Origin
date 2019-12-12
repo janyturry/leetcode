@@ -1,0 +1,53 @@
+//973. K Closest Points to Origin
+//Average case: pivot is generally near the mid of l and r; therefore we have n + (n/2 + n/4 +...) <= n + (n) = 2 * n = O(n).
+//As for worst case: K = n, and points is already sorted by the distance to origin. @Frimish's code will cost n - 1 + ... + 1 = (n - 1) * n / 2 = O(n^2) time.
+
+//quick select is a beautiful algorithm, but without randomization of input. It could end up as the worst case of quick sort.
+//solution : quick select
+class Solution {
+    public int[][] kClosest(int[][] points, int K) {
+        int l = 0;
+        int r = points.length-1;
+
+        while( l < r){
+            int mid = helper(points,l , r );
+            if(mid == K-1){
+                break;
+            } else if(mid < K-1){
+                l = mid + 1;
+            }else{
+                r = mid -1;
+            }
+        }
+
+        int [][] res = new int[K][2];
+        for(int i = 0; i <K;i++) {
+            res[i] = points[i];
+        }
+        return res;
+
+    }
+
+
+    public int helper(int[][] points , int l , int r){
+        int[] pivot = points[l];
+        while(l < r){
+            while(l < r && dis(points[r], pivot)>=0)r--;
+            points[l] = points[r];
+            while(l<r && dis(points[l] , pivot) <=0)l++;
+            points[r] = points[l];
+        }
+        points[l] = pivot;
+        return l;
+    }
+
+
+    public int dis(int[] a, int[] b){
+        return (a[0]*a[0] + a[1]*a[1]) - (b[0]*b[0] + b[1]*b[1]);
+    }
+}
+
+
+
+
+
