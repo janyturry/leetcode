@@ -1,0 +1,35 @@
+//957. Prison Cells After N Days
+
+//因为第一个和最后一个在第二个状态就会变成0, 所以只需要计算6个cell的状态， 一共2^6 = 64 种状态
+//因为有可能会有loop, 所以碰到loop,只需要计算mod多少， 可以skip loop
+/*
+Runtime: O(2 ^ n), where n is the number of cells (not days). For 8 cells, we can have 64 different states.
+Memory: O(n). We need to remember a single state of all cells for the loop detection. For 8 cells, the complexity is O(1).
+ */
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+class Solution {
+    public int[] prisonAfterNDays(int[] cells, int N) {
+        //记录碰见的cell, 天数
+        Map<String, Integer> map= new HashMap<>();
+        int len = cells.length;
+        while(N>0){
+            map.put(Arrays.toString(cells), N--);
+            int [] next = new int[len];
+            for(int i =1; i <7 ;i++){
+                next[i] = cells[i+1] == cells[i-1] ? 1 : 0;
+            }
+            cells = next;
+            //碰见遇过的cell
+            if(map.containsKey(Arrays.toString(cells))){
+                //map.get(Arrays.toString(cells)) - N 表达cycle的长度
+                N = N%(map.get(Arrays.toString(cells)) - N);
+            }
+        }
+
+        return cells;
+    }
+}
