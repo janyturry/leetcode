@@ -51,3 +51,37 @@ class Solution {
 
 
 
+
+import java.util.PriorityQueue;
+
+//solution 2 : max -heap
+//maintain a max-heap with size K
+/*
+
+Theoretically, the time complexity is O(NlogK), but pratically, the real time it takes on leetcode is 134ms.
+
+The advantage of this solution is it can deal with real-time(online) stream data. It does not have to know the size of the data previously.
+The disadvatage of this solution is it is not the most efficient solution.
+
+ */
+class Solution {
+    public int[][] kClosest(int[][] points, int K) {
+        PriorityQueue<int[]> p  =new PriorityQueue<>( (a, b)-> b[0]*b[0] + b[1]*b[1] - a[0]*a[0] - a[1]*a[1]);
+
+        for(int [] tmp : points){
+            p.offer(tmp);
+            while(p.size()>K){
+                p.poll();
+            }
+        }
+
+        int [][] res = new int[K][2];
+        for(int i = K-1; i >=0 ; i--){
+            res[i] = p.poll();
+        }
+
+        return res;
+
+    }
+}
+
