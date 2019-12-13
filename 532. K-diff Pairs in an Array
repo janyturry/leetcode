@@ -1,0 +1,36 @@
+//532. K-diff Pairs in an Array
+import java.util.HashMap;
+import java.util.Map;
+
+
+//key is to avoid duplicate
+class Solution {
+    public int findPairs(int[] nums, int k) {
+        if(nums == null || nums.length < 1 ||  k< 0){
+            return 0;
+        }
+
+        int count = 0;
+        //<整数，出现的次数>
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int i : nums){
+            map.put(i , map.getOrDefault(i, 0)+1);
+        }
+
+        for(int cur: map.keySet()){\
+            //两个相同整数的组合
+            if(k ==0){
+                if(map.get(cur)>=2){
+                    count++;
+                }
+            }else{
+            //两个不同数的组合
+                if(map.containsKey(cur + k)){
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
+}
