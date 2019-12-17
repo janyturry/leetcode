@@ -1,0 +1,79 @@
+import javax.swing.tree.TreeNode;
+import java.util.*;
+
+//先建hashmap. 存储 <点， 可以连接到的点>
+//time : O(点+ 边) = O(n- 1+  n)  = O(n)
+//space: O(n)
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    Map<TreeNode, List<TreeNode>> map  = new HashMap<>();
+    public List<Integer> distanceK(TreeNode root, TreeNode target, int K) {
+        List<Integer> res = new LinkedList<>();
+
+        buildMap(root, null);
+
+        if(!map.containsKey(target)){
+            return res;
+        }
+        HashSet<TreeNode> set =  new HashSet<>();
+
+        Queue<TreeNode> q = new LinkedList<>();
+
+        q.offer(target);
+        set.add(target);
+
+        while(!q.isEmpty()){
+            if(K == 0){
+                for(TreeNode tmp : q){
+                    res.add(tmp.val);
+                }
+            }
+
+            int size = q.size();
+
+            for(int i = 0 ; i < size; i++){
+                TreeNode tmp = q.poll();
+                if(map.get(tmp) != null && map.get(tmp).size()>0){
+                    for(TreeNode sub : map.get(tmp)){
+                        if(!set.contains(sub)){
+                            q.offer(sub);
+                            set.add(sub);
+                        }
+                    }
+                }
+            }
+            K--;
+        }
+
+        return res;
+
+    }
+
+    public void buildMap(TreeNode root, TreeNode parent){
+        if(root == null){
+            return;
+        }
+
+        if(!map.containsKey(root)){
+            map.put(root, new LinkedList<TreeNode>());
+        }
+
+        if(root !=null && parent != null){
+            map.get(root).add(parent);
+            map.get(parent).add(root);
+        }
+
+        buildMap(root.left, root);
+        buildMap(root.right, root);
+
+    }
+}
