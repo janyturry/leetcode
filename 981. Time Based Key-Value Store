@@ -1,0 +1,82 @@
+//981. Time Based Key-Value Store
+/*
+Time Complexity: O(1)O(1) for each set operation, and O(\log N)O(logN) for each get operation, where NN is the number of entries in the TimeMap.
+Space Complexity: O(N)O(N).
+
+*/
+
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+class data{
+    int time;
+    String val;
+
+    public data (String val, int time){
+        this.time = time;
+        this.val  = val;
+
+    }
+}
+class TimeMap {
+    Map<String, List<data>> map ;
+    /** Initialize your data structure here. */
+    public TimeMap() {
+        map = new HashMap<>();
+    }
+
+    public void set(String key, String value, int timestamp) {
+        if(!map.containsKey(key)){
+            map.put(key, new ArrayList<data>());
+        }
+        map.get(key).add(new data(value, timestamp));
+    }
+
+    public String get(String key, int timestamp) {
+        if(!map.containsKey(key)){
+            return "";
+        }
+        return helper(key, timestamp);
+    }
+
+    public String helper(String key, int timestamp){
+        if(key == ""){
+            return "";
+        }
+
+        List<data> list = map.get(key);
+        int low = 0;
+        int high = list.size()-1;
+        while(low + 1 < high){
+            int mid  =  low + (high - low)/2;
+            if(list.get(mid).time == timestamp){
+                return list.get(mid).val;
+            }else if( list.get(mid).time < timestamp){
+                if(list.get(mid+1).time > timestamp ){
+                    return list.get(mid).val;
+                }else{
+                    low = mid+1;
+                }
+            }else{
+                high = mid -1;
+            }
+        }
+        if(list.get(high).time > timestamp &&list.get(low).time > timestamp ){
+            return "";
+        }else if(list.get(high).time <= timestamp){
+            return list.get(high).val;
+        }else {
+            return list.get(low).val;
+        }
+    }
+}
+
+/**
+ * Your TimeMap object will be instantiated and called as such:
+ * TimeMap obj = new TimeMap();
+ * obj.set(key,value,timestamp);
+ * String param_2 = obj.get(key,timestamp);
+ */
