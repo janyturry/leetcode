@@ -1,0 +1,84 @@
+//545. Boundary of Binary Tree
+
+
+// left boundary, left leaves, right leaves, right boundary
+
+//time: o(H);H refers to the height of the tree
+import javax.swing.tree.TreeNode;
+import java.util.LinkedList;
+import java.util.List;
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    List<Integer> res;
+    public List<Integer> boundaryOfBinaryTree(TreeNode root) {
+        res = new LinkedList<>();
+        if (root == null) {
+            return res;
+        }
+
+        res.add(root.val);
+        left(root.left);
+        leaves(root.left);
+        leaves(root.right);
+        right(root.right);
+
+        return res;
+    }
+
+    public void left(TreeNode node) {
+        //left boundry 不会计算叶子
+        if (node == null || node.left == null && node.right == null) {
+            return;
+        }
+
+        res.add(node.val);
+
+        if (node.left == null) {
+            left(node.right);
+        } else {
+            left(node.left);
+        }
+
+    }
+
+
+    public void right(TreeNode node) {
+        //right boundry 不会计算叶子
+        if (node == null || node.left == null && node.right == null) {
+            return;
+        }
+
+
+        if (node.right == null) {
+            right(node.left);
+        } else {
+            right(node.right);
+        }
+        res.add(node.val);
+
+
+    }
+
+    public void leaves(TreeNode node) {
+        if(node == null){
+            return ;
+        }
+
+        if(node.left == null && node.right == null){
+            res.add(node.val);
+            return;
+        }
+
+        leaves(node.left );
+        leaves(node.right );
+    }
+}
