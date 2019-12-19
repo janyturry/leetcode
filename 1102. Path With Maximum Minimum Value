@@ -1,0 +1,49 @@
+import java.util.PriorityQueue;
+
+//1102. Path With Maximum Minimum Value
+
+//complexity: Runtime O(mn*log(mn)) ,
+// takes up space of maximum O(mn) entries in that PQ though entries get popped off the top often enough to
+// keep it lower than that at any time.
+class Solution {
+    public int maximumMinimumPath(int[][] A) {
+        if(A == null || A.length < 1 || A[0] == null || A[0].length < 1){
+            return -1;
+        }
+
+        int[] dirX = new int[]{0,0,1,-1};
+        int[] dirY = new int[]{1,-1,0,0};
+
+        boolean[][] visit = new boolean[A.length][A[0].length];
+//保证每次都先走最大的下一步， 所以从大往小的排序
+        PriorityQueue <int[]> q = new PriorityQueue<>((a,b)-> b[2] - a[2]);
+
+        q.offer(new int[]{0,0,A[0][0]});
+        visit[0][0]= true;
+
+        while(!q.isEmpty()){
+            int[] tmp = q.poll();
+
+            int row = tmp[0];
+            int col = tmp[1];
+
+            if(row == A.length-1 && col == A[0].length-1){
+                return tmp[2];
+            }
+
+            for(int i = 0; i <4; i++){
+                int newX = row+ dirX[i];
+                int newY = col + dirY[i];
+
+                if(newX > A.length-1 || newX <0 || newY> A[0].length-1 || newY <0 || visit[newX][newY]){
+                    continue;
+                }
+
+                q.offer(new int[]{newX, newY, Math.min(tmp[2], A[newX][newY])});
+                visit[newX][newY] = true;
+            }
+        }
+
+        return -1;
+    }
+}
