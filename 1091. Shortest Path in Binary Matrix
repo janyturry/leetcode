@@ -1,0 +1,51 @@
+import java.util.LinkedList;
+import java.util.Queue;
+
+class Solution {
+    public int shortestPathBinaryMatrix(int[][] grid) {
+        if(grid == null || grid.length < 1 || grid[0] == null || grid[0].length < 1 || grid[0][0] ==1){
+            return -1;
+        }
+
+        int [] dirX = new int[]{0,0,1, -1,1,-1,-1,1};
+        int [] dirY = new int[]{1,-1,0,0, 1,-1,1,-1};
+        int m = grid.length;
+
+        boolean[][] visit = new boolean[m][m];
+
+        Queue<int[]> q = new LinkedList<>();
+
+        q.offer(new int[]{0,0});
+        visit[0][0] = true;
+
+        int res = 0;
+
+        while(!q.isEmpty()){
+            int size = q.size();
+            for(int j = 0; j < size; j++){
+                int[] tmp = q.poll();
+
+                if(tmp[0] == m-1 && tmp[1] == m-1){
+                    return res+1;
+                }
+
+                for(int i =0 ;i < 8; i++){
+                    int newX = tmp[0] + dirX[i];
+                    int newY = tmp[1] + dirY[i];
+
+                    if(newX <0 || newX >=m || newY<0 || newY >=m || visit[newX][newY] || grid[newX][newY] ==1){
+                        continue;
+                    }
+
+                    q.offer(new int[]{newX, newY});
+                    visit[newX][newY]= true;
+                }
+            }
+            res++;
+
+
+
+        }
+        return -1;
+    }
+}
