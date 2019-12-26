@@ -1,0 +1,73 @@
+import com.sun.org.apache.bcel.internal.generic.RETURN;
+
+import javax.swing.tree.TreeNode;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Codec {
+
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        StringBuilder sb = new StringBuilder();
+        helperS(root, sb);
+        return sb.toString();
+    }
+
+    public void helperS(TreeNode root, StringBuilder sb){
+        if(root == null ){
+            return;
+        }
+
+        sb.append(root.val).append(",");
+
+
+        helperS(root.left, sb);
+        helperS(root.right,sb);
+
+        return;
+
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        if(data == null ||data.length()<1) {
+            return null;
+        }
+        Queue<String> q = new LinkedList<>(Arrays.asList(data.split(",")));
+        return helperD(q, Integer.MIN_VALUE, Integer.MAX_VALUE);
+    }
+
+    public TreeNode helperD(Queue<String> q, int low, int high){
+        if(q.isEmpty()){
+            return null;
+        }
+
+        String tmp = q.peek();
+        int val = Integer.parseInt(tmp);
+
+        if(val < low || val > high){
+            return null;
+        }
+        q.poll();
+        TreeNode cur = new TreeNode(val);
+        cur.left = helperD(q, low, val);
+        cur.right = helperD(q, val, high);
+
+        return cur;
+
+    }
+}
+
+// Your Codec object will be instantiated and called as such:
+// Codec codec = new Codec();
+// codec.deserialize(codec.serialize(root));
