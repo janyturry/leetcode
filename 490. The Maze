@@ -1,0 +1,68 @@
+//490. The Maze
+
+/*
+
+Time complexity : O(mn)O(mn). Complete traversal of maze will be done in the worst case. Here, mm and nn refers to the number of rows and coloumns of the maze.
+
+Space complexity : O(mn)O(mn). visitedvisited array of size m*nm∗n is used and queuequeue size can grow upto m*nm∗n in worst case.
+
+ */
+import java.util.LinkedList;
+import java.util.Queue;
+
+class Solution {
+    class point{
+        int x;
+        int y;
+
+        public point(int x, int y){
+            this.x = x;
+            this.y = y;
+        }
+
+    }
+
+    public boolean hasPath(int[][] maze, int[] start, int[] destination) {
+        if(maze ==  null || maze.length< 1 || maze[0] == null || maze[0].length<1){
+            return false;
+        }
+
+        int m = maze.length;
+        int n = maze[0].length;
+
+        boolean [][] visit = new boolean[m][n];
+
+        Queue<point> q = new LinkedList<>();
+
+        q.offer(new point(start[0], start[1]));
+
+        int dir[][] = new int[][]{{1,0},{-1,0}, {0,1}, {0,-1}};
+
+        while(!q.isEmpty()){
+            int size = q.size();
+            for(int i = 0;  i< size; i++){
+                point cur = q.poll();
+                visit[cur.x][cur.y] = true;
+
+                if(cur.x == destination[0] && cur.y == destination[1]){
+                    return true;
+                }
+
+                for(int j = 0; j < 4; j++){
+                    int newX = cur.x + dir[j][0];
+                    int newY = cur.y + dir[j][1];
+                    while(newX >=0 && newY >=0 && newX <=m-1 && newY <=n-1 && maze[newX][newY] == 0){
+                        newX +=dir[j][0];
+                        newY +=dir[j][1];
+                    }
+                    if(!visit[newX- dir[j][0]][newY- dir[j][1]]){
+                        q.offer(new point(newX - dir[j][0], newY - dir[j][1]));
+                    }
+                }
+            }
+
+        }
+
+        return false;
+    }
+}
