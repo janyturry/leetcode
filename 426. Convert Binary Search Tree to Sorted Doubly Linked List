@@ -1,0 +1,70 @@
+/*
+426. Convert Binary Search Tree to Sorted Doubly Linked List
+
+
+Step 1: Divide:
+We divide tree into three parts: left subtree, root node, right subtree.
+Convert left subtree into a circular doubly linked list as well as the right subtree.
+Be careful. You have to make the root node become a circular doubly linked list.
+
+Step 2: Conquer:
+Firstly, connect left circular doubly linked list with the root circular doubly linked list.
+Secondly, connect them with the right circular doubly linked list. Here we go!
+*/
+
+
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public Node left;
+    public Node right;
+
+    public Node() {}
+
+    public Node(int _val) {
+        val = _val;
+    }
+
+    public Node(int _val,Node _left,Node _right) {
+        val = _val;
+        left = _left;
+        right = _right;
+    }
+};
+*/
+class Solution {
+    public Node treeToDoublyList(Node root) {
+        if(root == null){
+            return root;
+        }
+        
+        Node leftHead = treeToDoublyList(root.left);
+        Node rightHead = treeToDoublyList(root.right);
+        
+        root.left = root;
+        root.right = root;
+        
+        return connect(connect(leftHead, root), rightHead);
+    }
+    //这里pass进来的leftHead和rightHead都已经是头尾相连的double linkedlist
+    public Node connect (Node leftHead , Node rightHead){
+        if(leftHead  == null){
+            return rightHead;
+        }
+        
+        if(rightHead == null){
+            return leftHead;
+        }
+        
+        Node leftTail = leftHead.left;
+        Node rightTail = rightHead.left;
+        
+        leftTail.right = rightHead;
+        rightHead.left = leftTail;
+        rightTail.right = leftHead;
+        leftHead.left = rightTail;
+        
+        return leftHead;
+    }
+}
