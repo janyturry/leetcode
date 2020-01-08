@@ -1,0 +1,36 @@
+//
+
+class Solution {
+    public int[] exclusiveTime(int n, List<String> logs) {
+        int res[]  = new int[n];
+        
+        //stack 存放id， 只存放还没有end的id
+        Stack<Integer> stack = new Stack<>();
+        //pre 是当前start time of interval
+          int pre = 0;
+        for(String s : logs){
+            String[] tmp = s.split(":");
+            
+            int id = Integer.parseInt(tmp[0]);
+            int time = Integer.parseInt(tmp[2]);
+          
+                
+            if(tmp[1].equals("start")){
+                if(!stack.isEmpty()){
+                    res[stack.peek()]+= time - pre;
+                   
+                }
+                 pre = time;
+                    stack.push(id);
+                
+            }else{
+                    res[stack.pop()] += time - pre + 1;
+                    pre = time+1;
+                }
+            }
+        
+        
+        return res;
+        
+    }
+}
