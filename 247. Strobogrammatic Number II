@@ -1,0 +1,31 @@
+//"00" 不算是一个数
+
+
+class Solution {
+    public List<String> findStrobogrammatic(int n) {
+       if(n ==0){
+           return new LinkedList<String>();
+       }
+        
+        List<String> res = n%2 ==0 ? Arrays.asList("") : Arrays.asList("0", "1","8");
+        
+        for(; n > 1; n-=2){
+            List<String> cur = res;
+            res = new LinkedList<String>();
+            for(String tmp : cur){
+                if(n>3){
+                    res.add("0"+ tmp +"0");
+                }
+                
+                res.add("1" +tmp + "1");
+                res.add("8" +tmp+ "8");
+                res.add("6"+ tmp + "9");
+                res.add("9" + tmp + "6");
+            }
+            
+            
+        }
+        
+        return res;
+    }
+}
