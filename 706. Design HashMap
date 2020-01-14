@@ -1,0 +1,87 @@
+class MyHashMap {
+    class ListNode{
+        int key;
+        int val;
+        ListNode next;
+        
+        public  ListNode (int key, int val){
+            this.key = key;
+            this.val = val;
+        }
+    }
+    
+    public final ListNode[] nodes = new ListNode[10000] ;
+    
+    
+    public int getIndex(int key){
+        return Integer.hashCode(key)%nodes.length;
+    }
+    
+    
+    
+
+    /** Initialize your data structure here. */
+    public MyHashMap() {
+        
+    }
+    
+    /** value will always be non-negative. */
+    public void put(int key, int value) {
+        int idx = getIndex(key);
+        if(nodes[idx] == null){
+            nodes[idx] = new ListNode(-1,-1);
+        }
+        ListNode pre = find(nodes[idx], key);
+        //基于这个key之前有没有值
+        if(pre.next == null){
+            pre.next = new ListNode(key,value);
+        }else{
+            pre.next.val = value;
+        }
+        
+    }
+    
+    /** Returns the value to which the specified key is mapped, or -1 if this map contains no mapping for the key */
+    public int get(int key) {
+        int idx = getIndex(key);
+        if(nodes[idx] == null){
+            return -1;
+        }
+        
+        ListNode pre = find(nodes[idx], key);
+        return pre.next == null ? -1 : pre.next.val;
+        
+    }
+    
+    /** Removes the mapping of the specified value key if this map contains a mapping for the key */
+    public void remove(int key) {
+        int idx = getIndex(key);
+        if(nodes[idx] == null){
+            return;
+        }
+        
+        ListNode pre = find(nodes[idx], key);
+        if(pre.next != null){
+             pre.next = pre.next.next;
+        }
+    }
+    
+    public ListNode find(ListNode bucket, int key){
+        ListNode pre = null;
+        ListNode node = bucket;
+        while(node != null && node.key != key){
+            pre = node;
+            node = node.next;
+        }
+        
+        return pre;
+    }
+}
+
+/**
+ * Your MyHashMap object will be instantiated and called as such:
+ * MyHashMap obj = new MyHashMap();
+ * obj.put(key,value);
+ * int param_2 = obj.get(key);
+ * obj.remove(key);
+ */
