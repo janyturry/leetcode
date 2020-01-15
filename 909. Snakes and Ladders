@@ -1,0 +1,61 @@
+//
+
+
+class Solution {
+    public int snakesAndLadders(int[][] board) {
+        if(board ==null ||  board.length < 1){
+            return -1;
+        }
+        
+        int len = board.length;
+        int[] ar = new int [(len*len)+1];
+        boolean [] visit = new boolean[(len*len)+1];
+        
+        int i = len-1; 
+        int j = 0;
+        int flag = 1;
+       int idx = 1;
+        while(idx <= (len * len)){
+		ar[idx++] = board[i][j];
+		if(flag ==1 && j == len-1){
+			flag = -1;
+			i--;
+		}else if(flag == -1 && j == 0){
+			flag = 1;
+			i--;
+		}else{
+			j +=flag;
+		}
+
+	}
+
+	Queue<Integer> q = new LinkedList<>();
+	int start = ar[1] == -1? 1 : board[len-1][0];
+	visit[1] = true;
+	q.offer(start);
+
+	int move =0;
+	while(!q.isEmpty()){
+		int size = q.size();
+		for(int s = 0 ; s< size; s++){
+			int index = q.poll();
+			if(index == len*len){
+				return move;
+			}
+			for(int in = index+1 ; in <= Math.min(index+6, len*len); in++){
+				int next = ar[in] ==-1? in : ar[in];
+				if(!visit[next]){
+					visit[next] = true;
+					q.offer(next);
+				}
+			
+			}
+
+		}
+
+	move++;
+	}
+
+	return -1;
+    }
+}
