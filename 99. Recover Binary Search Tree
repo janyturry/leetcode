@@ -1,0 +1,59 @@
+import javax.swing.tree.TreeNode;
+import java.util.ArrayDeque;
+import java.util.Deque;
+/*
+
+Time complexity : O(1) in the best case, and O(N) in the worst case when one of the swapped nodes is a rightmost leaf.
+Space complexity : up to O(H) to keep the stack where H is a tree height.
+
+*/
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public void swap(TreeNode x, TreeNode y){
+        int tmp = x.val;
+        x.val = y.val;
+        y.val = tmp;
+    }
+
+    public void recoverTree(TreeNode root) {
+        Deque<TreeNode> stack = new ArrayDeque<TreeNode>();
+
+        TreeNode pre = null,  x= null, y = null;
+
+        while(root != null){
+            stack.add(root);
+            root = root.left;
+        }
+
+        while(!stack.isEmpty()){
+            TreeNode cur = stack.removeLast();
+            if(pre != null && cur.val < pre.val){
+                y = cur;
+                if(x == null){
+                    x = pre;
+                }else{
+                    break;
+                }
+            }
+            pre = cur;
+            if(cur.right != null){
+                cur = cur.right;
+                while(cur!= null){
+                    stack.add(cur);
+                    cur = cur.left;
+                }
+            }
+
+        }
+
+        swap(x, y);
+    }
+}
