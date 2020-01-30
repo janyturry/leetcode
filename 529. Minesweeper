@@ -1,0 +1,88 @@
+import java.util.LinkedList;
+import java.util.Queue;
+
+//BFS
+
+/*
+//地图中M表示未探明的地雷
+//E表示未探明的安全区
+//B表示已探明且周围8个格子均没有地雷的安全区
+//X表示点击中了地雷
+
+*/
+class Solution {
+    public char[][] updateBoard(char[][] board, int[] click) {
+        Queue<int[]> q = new LinkedList<>();
+
+        int m  = board.length;
+        int n = board[0].length;
+
+        q.offer(new int[]{click[0], click[1]});
+
+        while(!q.isEmpty()){
+            int[] cur = q.poll();
+
+            int row = cur[0];
+            int col = cur[1];
+
+
+            if(board[row][col] == 'M' ){
+                board[row][col] = 'X';
+            }else{
+                int count = 0;
+
+                for(int  i = -1; i < 2;  i++){
+                    for(int j = -1; j < 2; j++){
+                        if(i ==0 && j ==0){
+                            continue;
+                        }
+                        int newRow = row + i;
+                        int newCol = col+j;
+
+                        if(newRow < 0 ||  newRow >= m || newCol <0 || newCol >=n){
+                            continue;
+                        }
+
+                        if(board[newRow][newCol] == 'M' || board[newRow][newCol] == 'X'){
+                            count++;
+                        }
+
+                    }
+                }
+
+                if(count> 0){
+                    board[row][col] = (char) (count + '0');
+                }
+
+                else {
+                    board[row][col] = 'B';
+                    for (int i = -1; i < 2; i++) {
+                        for (int j = -1; j < 2; j++) {
+                            if (i == 0 && j == 0) {
+                                continue;
+                            }
+                            int newRow = row + i;
+                            int newCol = col + j;
+
+                            if (newRow < 0 || newRow >= m || newCol < 0 || newCol >= n) {
+                                continue;
+                            }
+
+                            if (board[newRow][newCol] == 'E') {
+                                q.offer(new int[]{newRow, newCol});
+                                board[newRow][newCol] = 'B';
+                            }
+
+
+                        }
+                    }
+
+
+                }
+            }
+
+
+        }
+        return board;
+    }
+}}
