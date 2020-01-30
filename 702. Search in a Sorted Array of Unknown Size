@@ -1,0 +1,33 @@
+
+//Time complexity : O(logT), where TT is an index of target value.
+//Space complexity :O(1) since it's a constant space solution.
+
+class Solution {
+    public int search(ArrayReader reader, int target) {
+        int s = 0;
+        int e = 1;
+        
+        while(reader.get(e) < target){
+            e = e*2;
+        }
+        
+        while(s  +1 < e){
+            int mid = s +  (e-s)/2;
+            if(reader.get(mid) == target){
+                return mid;
+            }else if(reader.get(mid) < target){
+                s  = mid;
+            }else{
+                e = mid;
+            }
+        }
+        
+        if(reader.get(s) == target){
+            return s;
+        }else if(reader.get(e)== target){
+            return e;
+        }else{
+            return -1;
+        }
+    }
+}
