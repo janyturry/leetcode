@@ -1,0 +1,59 @@
+
+//先给字母拍序， 频率从大到小
+class Solution {
+    public String reorganizeString(String S) {
+        if (S == null || S.length()< 1) {
+            return "";
+        }
+
+        Map<Character, Integer> map = new HashMap<>();
+
+        PriorityQueue<Map.Entry<Character, Integer>> p = new PriorityQueue<>(
+                (a,b) -> (b.getValue() - a.getValue())
+        );
+
+        for(char c : S.toCharArray()){
+            map.put(c , map.getOrDefault(c, 0) + 1);
+        }
+
+
+        for(Map.Entry<Character,Integer> en : map.entrySet()){
+            p.offer(en);
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        while(!p.isEmpty()){
+            Map.Entry <Character, Integer> cur = p.poll();
+            if(sb.length()== 0 ||  (cur.getKey() != sb.charAt(sb.length() -1))   ){
+                sb.append(cur.getKey());
+
+                cur.setValue(cur.getValue() -1);
+
+                if(cur.getValue()  > 0){
+                    p.offer(cur);
+                }
+
+
+            }else{
+                Map.Entry <Character, Integer> second  = p.poll();
+
+                if(second  == null){
+                    return "";
+                }
+
+                sb.append(second.getKey());
+                second.setValue(second.getValue()-1);
+
+                if(second.getValue() >0 ){
+                    p.offer(second);
+                }
+
+                p.offer(cur);
+
+            }
+        }
+
+        return sb.toString();
+    }
+}
