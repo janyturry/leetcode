@@ -1,0 +1,36 @@
+/*
+
+Intuition
+Since we only have 1,001 stops, we can just figure out how many people get it and out in each location.
+
+Solution
+Process all trips, adding passenger count to the start location, and removing it from the end location. After processing all trips, a positive value for the specific location tells that we are getting more passengers; negative - more empty seats.
+
+Finally, scan all stops and check if we ever exceed our vehicle capacity.
+
+Complexity Analysis
+Runtime: O(n), where n is the number of trips.
+Memory: O(m), where m is the number of stops.
+
+*/
+
+
+class Solution {
+    public boolean carPooling(int[][] trips, int capacity) {
+        int[] stops = new int[1001];
+        
+        for(int[] cur : trips){
+            stops[cur[1]] +=cur[0];
+            stops[cur[2]] -=cur[0];
+        }
+        
+        for(int i = 0 ; i < 1001; i++){
+            capacity-=stops[i];
+            if(capacity <0){
+                return false;
+            }
+        }
+        
+        return capacity >=0;
+    }
+}
