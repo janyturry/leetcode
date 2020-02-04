@@ -1,0 +1,37 @@
+//uinion find
+
+class Solution {
+    public int[] findRedundantConnection(int[][] edges) {
+        int[] parent = new int[edges.length+1];
+        //表明parent[i] 表示 节点i的上一级节点
+        //先初始化为自己
+        for(int i = 1 ; i <= edges.length; i++){
+            parent[i] = i;
+        }
+
+        for(int[] cur : edges){
+            int m  = cur[0];
+            int n =  cur[1];
+            //指向同一个root, 表明出现第一个环.直接return
+            //因为刚开始不可能
+            if(find(parent,m) == find(parent,n)){
+                return cur;
+            }else{
+                //联通，让他们指向同一个根节点
+                parent[find(parent, m)] = find(parent, n);
+            }
+        }
+
+        return new int[2];
+
+    }
+
+    public int find(int[] parent, int a){
+        if(parent[a] != a){
+            //path compression
+            parent[a]  =  find(parent, parent[a]);
+        }
+
+        return parent[a];
+    }
+}
