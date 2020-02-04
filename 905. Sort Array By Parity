@@ -1,0 +1,23 @@
+class Solution {
+    public int[] sortArrayByParity(int[] A) {
+        int s = 0;
+        int e = A.length-1;
+        
+        for(int i = 0; i <= e;){
+            if(A[i]%2 ==0){
+                i++;
+                continue;
+            }else{
+                swap(A, i,e);
+                e--;
+            }
+        }
+        return A;
+    }
+    
+    public void swap(int[] A, int a , int b){
+        int tmp = A[a];
+        A[a] = A[b];
+        A[b] = tmp;
+    }
+}
