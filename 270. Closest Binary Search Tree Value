@@ -1,0 +1,28 @@
+
+/*
+
+Time complexity : O(H) since here one goes from root down to a leaf.
+
+Space complexity : O(1).
+
+ */
+class Solution {
+    public int closestValue(TreeNode root, double target) {
+        int close = root.val;
+
+        while(root != null){
+            int val = root.val;
+
+            close = Math.abs(val - target) < Math.abs(close - target)? val: close;
+            if(val < target){
+                root = root.right;
+            }else if(val == target){
+                return val;
+            }else{
+                root = root.left;
+            }
+        }
+
+        return close;
+    }
+}
