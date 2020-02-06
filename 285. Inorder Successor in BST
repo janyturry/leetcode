@@ -1,0 +1,53 @@
+import javax.swing.tree.TreeNode;
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+
+/*
+The key idea is that
+(1) if p node has a right subtree, successor would be the smallest note in p's right subtree (in a BST, it is just the leftmost node);
+(2) if p doesn't have a right subtree, it is the last node whose left subtree it is are under (this can be done through standard BST search and record its last right parent).
+ */
+
+class Solution {
+    public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
+        if(root ==null){
+            return root;
+        }
+        //pre 利于 root 作为一个left sub tree 的 parent
+        TreeNode pre = null;
+
+        while(root.val  !=  p.val){
+            if(root.val > p.val){
+                pre = root;
+                root = root.left;
+            }else if (root.val < p.val){
+                root = root.right;
+            }
+        }
+
+        //no right sub tree
+        if(root.right == null){
+            return pre;
+        }
+
+        return leftMost(root.right);
+
+
+
+    }
+
+    public TreeNode leftMost (TreeNode root){
+        while (root.left != null){
+            root = root.left;
+        }
+        return root;
+    }
+}
