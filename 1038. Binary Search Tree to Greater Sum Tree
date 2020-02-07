@@ -1,0 +1,25 @@
+//reversed in-order
+
+class Solution {
+    public TreeNode bstToGst(TreeNode root) {
+        Deque<TreeNode> stack = new ArrayDeque<>();
+
+
+        TreeNode cur = root;
+        int sum = 0;
+
+        while(!stack.isEmpty() || cur != null){
+            while(cur != null){
+                stack.push(cur);
+                cur = cur.right;
+            }
+
+            cur = stack.pop();
+
+            cur.val+=sum;
+            sum= cur.val;
+            cur = cur.left;
+        }
+        return root;
+    }
+}
