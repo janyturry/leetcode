@@ -1,0 +1,50 @@
+//BFS
+
+import java.util.*;
+
+class Solution {
+    public int numBusesToDestination(int[][] routes, int S, int T) {
+        if(S== T){
+            return 0;
+        }
+
+        Map<Integer, ArrayList<Integer>> bus = new HashMap<>();
+        Queue<Integer> q = new LinkedList<>();
+        HashSet<Integer> set  = new HashSet<>();
+
+        for(int i = 0 ; i < routes.length;i ++){
+            for(int j = 0 ; j < routes[i].length; j++){
+                ArrayList<Integer>  cur =  bus.getOrDefault(routes[i][j], new ArrayList<Integer>());
+                cur.add(i);
+                bus.put(routes[i][j], cur );
+            }
+        }
+
+
+        q.offer(S);
+
+        int res = 0;
+        while(!q.isEmpty()){
+            int size = q.size();
+            res++;
+            for(int i = 0 ; i < size; i++){
+                int curStop = q.poll();
+
+                ArrayList<Integer> busAvailable = bus.get(curStop);
+                for(int busCur : busAvailable){
+                    if(set.contains(busCur)){
+                        continue;
+                    }
+                    set.add(busCur);
+                    for(int z =0 ; z < routes[busCur].length ;z++){
+                        if(routes[busCur][z] == T){
+                            return res;
+                        }
+                        q.offer(routes[busCur][z]);
+                    }
+                }
+            }
+        }
+        return -1;
+    }
+}
