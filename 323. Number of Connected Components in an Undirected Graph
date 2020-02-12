@@ -1,0 +1,30 @@
+//union find
+
+class Solution {
+    public int countComponents(int n, int[][] edges) {
+        int [] parent = new int[n];
+
+        for(int i = 0 ; i < n; i++){
+            parent[i] = i;
+        }
+
+        int res = n;
+        for(int[] edge : edges){
+            int e1 = edge[0];
+            int e2 = edge[1];
+            if(find(parent, e1) != find(parent,e2)){
+                parent[find(parent, e1)] = find(parent, e2);
+                res--;
+            }
+        }
+        return res;
+    }
+
+    public int find(int[] parent, int node){
+        if(parent[node] != node){
+            parent[node] = find(parent, parent[node]);
+        }
+
+        return parent[node];
+    }
+}
