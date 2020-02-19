@@ -1,0 +1,37 @@
+//Time: O(k * 4 ^ k + m * n), space: O(m * n), where k = number of gold cells, m = grid.length, n = grid[0].length.
+
+class Solution {
+    public int getMaximumGold(int[][] grid) {
+        int maxGold = 0;
+
+        for(int i = 0; i < grid.length; i++){
+            for(int j =0 ; j < grid[0].length; j++){
+                maxGold = Math.max(maxGold, dfs(grid, i,j,0));
+            }
+        }
+
+        return maxGold;
+    }
+
+    public int dfs(int[][] grid, int x, int y, int maxGold){
+        if(x <0 || x >=grid.length || y <0 || y>=grid[0].length || grid[x][y] ==0){
+            return maxGold;
+        }
+
+        maxGold+= grid[x][y];
+
+        int tmp = grid[x][y];
+        grid[x][y] = 0;
+
+        int res = maxGold;
+
+        maxGold = Math.max(maxGold, dfs(grid, x+1, y,res));
+        maxGold = Math.max(maxGold, dfs(grid, x-1, y,res));
+        maxGold = Math.max(maxGold, dfs(grid, x, y+1,res));
+        maxGold = Math.max(maxGold, dfs(grid, x, y-1,res));
+
+        grid[x][y] = tmp;
+
+        return maxGold;
+    }
+}
