@@ -1,0 +1,84 @@
+
+
+//union find
+/*
+先找出所有能 互换 位置的 下标集合
+遍历所有 下标集合：
+将当前 下标集合中所有下标对应的字符“抽出”，构成1个字符集合；
+将字符集合 排序(字典序)
+将字符集合 按顺序(从左到右) 插入回原字符串。
+下标 0 1 2 3
+字符 b d a c
+能互换的下标集合为{0, 2, 3}，则取下标对应字符 作为1个字符集合{b, a, c}，
+将字符集合 排序，得{a, b, c}，
+按序插入回原字符串，得：
+下标 0 1 2 3
+字符 a d b c
+ */
+class Solution {
+    public String smallestStringWithSwaps(String s, List<List<Integer>> pairs) {
+        DSU dsu = new DSU(100000);
+
+        for(List<Integer> l : pairs){
+            dsu.union(l.get(0), l.get(1));
+        }
+
+        HashMap<Integer, List<Integer>> map = new HashMap<>();
+
+        int len = s.length();
+
+        for(int i =0; i < len;i++){
+            int key = dsu.find(i);
+            map.putIfAbsent(key, new ArrayList<Integer>());
+            List<Integer> tmp  = map.get(key);
+            tmp.add(i);
+        }
+
+
+        StringBuilder sb = new StringBuilder(s);
+        for(Integer in : map.keySet()){
+            List<Integer> tmp =  map.get(in);
+            sort(tmp, sb);
+        }
+
+        return sb.toString();
+    }
+
+    public void sort(List<Integer> list , StringBuilder sb){
+        int len = list.size();
+        char[] ar = new char[len];
+        for(int i = 0 ; i< len; i++){
+            ar[i] = sb.charAt(list.get(i));
+        }
+
+        Arrays.sort(ar);
+
+        for(int i = 0; i < len; i++){
+            sb.setCharAt(list.get(i),ar[i]);
+        }
+    }
+}
+
+class DSU{
+    int[] parent;
+
+    public DSU(int len){
+        parent = new int[len];
+
+        for(int i = 0 ; i < len; i++){
+            parent[i] = i;
+        }
+    }
+
+    public int find(int x){
+        if(parent[x] != x){
+            parent[x] = find(parent[x]);
+        }
+        return parent[x];
+    }
+
+    public void union (int x , int y){
+        parent[find(x)] =  parent[find(y)];
+    }
+}
+
