@@ -1,0 +1,44 @@
+
+//finding the shortest distances between two elements in a circular array.
+//
+class Solution {
+    public int findMinDifference(List<String> timePoints) {
+        boolean [] mark = new boolean[24*60];
+        int min  = Integer.MAX_VALUE;
+        int max  = Integer.MIN_VALUE;
+
+        int res = Integer.MAX_VALUE;
+
+        for(String s : timePoints){
+            String[]str = s.split(":");
+            int h  = Integer.parseInt(str[0]);
+            int m  = Integer.parseInt(str[1]);
+            min = Math.min(min, h*60+m);
+            max = Math.max(max, h*60+m);
+            //重复出现同样的时间点， 直接最短距离为0
+            if(mark[h * 60 + m]){
+                return 0;
+            }
+
+            mark[h*60+m] = true;
+        }
+
+        int pre = 0;
+////set the range from min to max as an optimization.
+        for(int i = min; i <=max; i++){
+            if(mark[i]){
+                //the min and max is the special case, it looks like :
+                //0---min----max-----1440, so we have two directions to calculate the distance
+                if(i == min){
+                    res = Math.min(res, Math.min(max- min, 24*60 - max + min));
+                }else{
+                    //normal case: just one direction.
+                    res = Math.min(res, i-pre);
+                }
+                pre = i;
+            }
+        }
+        return res;
+
+    }
+}
