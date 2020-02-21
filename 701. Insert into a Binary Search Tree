@@ -1,0 +1,42 @@
+
+
+
+
+
+
+
+Approach 2: Iteration
+
+//Space complexity : O(1) since it's a constant space solution.
+//Time complexity : O(H), where HH is a tree height. 
+//That results in O(logN) in the average case, and O(N) in the worst case.
+
+class Solution {
+    public TreeNode insertIntoBST(TreeNode root, int val) {
+        if(root == null){
+            return new TreeNode(val);
+        }
+
+        TreeNode dummy = root;
+
+
+        while(dummy != null){
+            if(dummy.val < val){
+                if(dummy.right == null){
+                    dummy.right = new TreeNode(val);
+                    return root;
+                }else{
+                    dummy = dummy.right;
+                }
+            }else{
+                if(dummy.left == null){
+                    dummy.left = new TreeNode(val);
+                    return root;
+                }else{
+                    dummy = dummy.left;
+                }
+            }
+        }
+        return root;
+    }
+}
