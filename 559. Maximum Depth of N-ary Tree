@@ -1,0 +1,56 @@
+
+/*
+Complexity analysis
+
+Time complexity : O(N).
+
+Space complexity : O(N).
+*/
+
+
+//DFS
+
+class Solution {
+    public int maxDepth(Node root) {
+        if(root == null){
+            return 0;
+        }
+        int max = 0;
+        for(Node cur : root.children){
+            max = Math.max(max, maxDepth(cur));
+        }
+        
+        return max + 1;
+    }
+}
+
+
+
+//BFS
+class Solution {
+    public int maxDepth(Node root) {
+        if(root == null){
+            return 0;
+        }
+
+        int level =0;
+        Queue<Node> q = new LinkedList<>();
+        
+        q.offer(root);
+
+        while(!q.isEmpty()){
+            int size =  q.size();
+
+            for(int i = 0 ; i < size; i++){
+                Node tmp = q.poll();
+                if(tmp.children != null){
+                    for(Node cur : tmp.children){
+                        q.offer(cur);
+                    }
+                }
+            }
+            level++;
+        }
+        return level;
+    }
+}
