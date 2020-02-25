@@ -1,0 +1,46 @@
+import java.awt.*;
+import java.util.HashSet;
+import java.util.Set;
+
+//time: M-N, M is emoty cell, N is block cell. Because we only vosit empty cell.
+class Solution {
+
+    //方向是连续的顺时针或者逆时针
+    int  [][] dir = { {-1,0}, {0, -1}, {1,0}, {0,1}};
+
+    public void cleanRoom(Robot robot) {
+        Set<String> set = new HashSet<>();
+        dfs(robot,set,0,0,0);
+        return;
+    }
+
+    public void dfs(Robot robot, Set<String> set, int x, int y, int d){
+        String path = x + "#"+ y;
+        if(set.contains(path)){
+            return;
+        }
+        set.add(path);
+        robot.clean();
+
+        for(int i = 0 ; i < 4; i++){
+            if(robot.move()) {
+                //go all the way till cannot move, then back one step
+
+                int newX = x + dir[d][0];
+                int newY = y + dir[d][1];
+
+                dfs(robot, set, newX, newY, d);
+                //trace back
+//回到原来的点并且方向也跟原来一样
+                robot.turnRight();
+                robot.turnRight();
+                robot.move();
+                robot.turnRight();
+                robot.turnRight();
+            }
+            //顺时针四个方向
+            robot.turnRight();
+            d = (1 + d)%4;
+        }
+    }
+}
