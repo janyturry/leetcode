@@ -1,0 +1,30 @@
+class Solution {
+    public int numKLenSubstrNoRepeats(String S, int K) {
+        int len  = S.length();
+        if (K>len){
+            return 0;
+        }
+
+        HashMap<Character, Integer> map = new HashMap<>();
+        int start = 0;
+        int count = 0;
+
+        for(int end  =0 ;  end< len; end++){
+            char rightChar = S.charAt(end);
+            if(map.containsKey(rightChar)){
+                //move the pointer to the character right before the second repeating character
+                start = Math.max(start,map.get(rightChar) + 1);
+            }
+
+            map.put(rightChar, end);
+
+            if(end-start + 1 ==K){
+                count++;
+                char leftChar = S.charAt(start);
+                map.remove(leftChar);
+                start++;
+            }
+        }
+        return count;
+    }
+}
