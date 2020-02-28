@@ -1,0 +1,64 @@
+import java.util.LinkedList;
+import java.util.List;
+import java.util.PriorityQueue;
+
+/*
+// Definition for an Interval.
+class Interval {
+    public int start;
+    public int end;
+
+    public Interval() {}
+
+    public Interval(int _start, int _end) {
+        start = _start;
+        end = _end;
+    }
+};
+*/
+
+/*
+
+Time Complexity: O(ClogN),
+where NN is the number of employees,
+and CC is the number of jobs across all employees.
+The maximum size of the heap is NN, so each push and pop operation is O(logN), and there are O(C) such operations.
+Space Complexity: O(N) in additional space complexity.
+ */
+
+
+/*
+因为每个employee的list 里面都是按照开始时间排序的，并且不重叠， 所以只要按照开始时间一个个出队列， 更新pre的时间
+找出cur.start > pre 就是符合条件的， 然后没出一个就检查一下这个employer id 有没有下一个 job 需要加进去
+ */
+class Solution {
+    public List<Interval> employeeFreeTime(List<List<Interval>> schedule) {
+        PriorityQueue<int[]> p   =  new PriorityQueue<>( (a,b)-> schedule.get(a[0]).get(a[1]).start  - schedule.get(b[0]).get(b[1]).start);
+
+
+        List<Interval> res = new LinkedList<>();
+//[employee id , job id]
+        for(int i = 0;  i< schedule.size(); i++){
+            p.add(new int[]{i, 0});
+        }
+
+
+        int pre = schedule.get(p.peek()[0]).get(p.peek()[1]).start;
+
+        while(!p.isEmpty()){
+            int[] tmp = p.poll();
+
+            if(schedule.get(tmp[0]).get(tmp[1]).start > pre){
+                res.add(new Interval(pre, schedule.get(tmp[0]).get(tmp[1]).start));
+            }
+
+            pre = Math.max(pre, schedule.get(tmp[0]).get(tmp[1]).end);
+
+            if(schedule.get(tmp[0]).size() > tmp[1] +1){
+                p.add(new int[]{tmp[0], tmp[1] + 1});
+            }
+
+        }
+        return res;
+    }
+}
