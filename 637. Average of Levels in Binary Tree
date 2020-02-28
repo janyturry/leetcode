@@ -1,0 +1,42 @@
+import javax.swing.tree.TreeNode;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
+
+/*
+
+Time complexity :O(n). The whole tree is traversed atmost once.
+ Here, nn refers to the number of nodes in the given binary tree.
+
+Space complexity : O(m). The size of queuequeue or temptemp can grow upto atmost the maximum number of nodes at
+any level in the given binary tree. Here, mm refers to the maximum mumber of nodes at any level in the input tree.
+
+ */
+class Solution {
+    public List<Double> averageOfLevels(TreeNode root) {
+        List<Double> res = new LinkedList<>();
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+
+        while(!q.isEmpty()){
+            int size = q.size();
+            double sum = 0;
+            double count = 0;
+            for(int i = 0 ; i < size; i++){
+                TreeNode tmp = q.poll();
+                sum+=tmp.val;
+                count++;
+                if(tmp.left != null){
+                    q.offer(tmp.left);
+                }
+                if(tmp.right != null){
+                    q.offer(tmp.right);
+                }
+            }
+            res.add( (sum/count) );
+        }
+
+        return res;
+    }
+}
