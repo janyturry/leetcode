@@ -1,0 +1,55 @@
+import java.util.HashMap;
+import java.util.Stack;
+
+
+/*
+Complexity Analysis
+
+Time Complexity: O(1) for both push and pop operations.
+
+Space Complexity: O(N), where N is the number of elements in the FreqStack.
+
+
+ */
+class FreqStack {
+    //<element, frequency>
+    HashMap<Integer, Integer> fre ;
+    //<frequency, element list with that frequency>
+    HashMap<Integer, Stack<Integer>> group ;
+    int maxFre;
+    public FreqStack() {
+        fre = new HashMap<>();
+        group = new  HashMap<>();
+        maxFre = 0;
+    }
+
+    public void push(int x) {
+        int cur   = fre.getOrDefault(x, 0) + 1;
+        fre.put(x, cur);
+        if(cur > maxFre){
+            maxFre = cur;
+        }
+
+        if(!group.containsKey(cur)){
+            group.put(cur, new Stack<Integer>());
+        }
+
+        group.get(cur).push(x);
+    }
+
+    public int pop() {
+        int cur = group.get(maxFre).pop();
+        fre.put(cur, fre.get(cur)-1);
+/*
+if (m.get(maxfreq).size() == 0) maxfreq--; 这个厉害了，主要是HashMap<Integer, Stack> m = new HashMap<>();
+ 这个数据结构用的比较巧妙。比如5，3，5，5 这个将是
+1 <5,3>
+2 <5>
+3 <5>
+ */
+        if(group.get(maxFre).size() ==0){
+            maxFre--;
+        }
+        return cur;
+    }
+}
