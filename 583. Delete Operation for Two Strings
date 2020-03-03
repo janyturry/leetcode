@@ -1,0 +1,32 @@
+/*
+**Complexity Analysis**
+Time complexity : O(m*n). We need to fill in the dpdp array of size mmxnn. Here, mm and nn refer to the lengths of s1s1 and s2s2.
+
+Space complexity : O(m*n). dpdp array of size mmxnn is used.
+
+用的是Longest Common Subsequence 的方法
+dp[i][j] 是代表在 text1 (0....i) , text2(0...j) 的Longest Common Subsequence
+
+
+ */
+
+class Solution {
+    public int minDistance(String word1, String word2) {
+        int len1 = word1.length();
+        int len2 = word2.length();
+
+        int[][]dp = new int[len1+1][len2+1];
+        for(int i = 1; i <=len1; i++){
+            for(int j = 1; j <=len2; j++){
+                if(word1.charAt(i-1) ==word2.charAt(j-1)){
+                    dp[i][j] = dp[i-1][j-1] + 1;
+                }else{
+                    dp[i][j] = Math.max(dp[i][j-1] , dp[i-1][j]);
+                }
+            }
+        }
+
+        int maxSub = dp[len1][len2];
+        return ((len1 - maxSub) + (len2- maxSub));
+    }
+}
