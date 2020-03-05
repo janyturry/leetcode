@@ -1,0 +1,39 @@
+
+/*
+O(N) Time, O(N) Space
+ */
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public int[] nextLargerNodes(ListNode head) {
+        List<Integer> val = new ArrayList<>();
+
+        while(head != null){
+            val.add(head.val);
+            head = head.next;
+        }
+
+        int len = val.size();
+        int[] res = new int[len];
+
+        //store the index
+        Stack<Integer> stack = new Stack<>();
+
+
+        //loop the index, every time meet a new index, try to search the index whihc stored in the stack, it is the next largest.
+        for(int i = 0 ; i < len ; i++){
+            while(!stack.isEmpty() && val.get(stack.peek()) < val.get(i)){
+                res[stack.pop()] = val.get(i);
+            }
+            stack.push(i);
+        }
+
+        return res;
+    }
+}
