@@ -1,0 +1,56 @@
+class Solution {
+    public int shipWithinDays(int[] weights, int D) {
+        int left = 0;
+        int right = 0;
+        //因为船的载重量肯定会在[最大单个货物的重量， 全部货物加载一起的重量] 这个区间里面
+        for(int  cur : weights){
+            left = Math.max(cur, left);
+            right +=cur;
+        }
+        int res  = 0;
+        while(left + 1  < right){
+            int mid =  left + (right- left)/2;
+            int need= 1;
+            int sum = 0;
+            for(int cur : weights){
+                if(sum + cur > mid){
+                    sum = 0;
+                    need++;
+                }
+                sum+=cur;
+            }
+            //不符合的天数不用留， 所以是mid+1
+            if(need > D){
+                 left = mid+1;
+             
+            }else{
+                //符合条件可以留下， 所以是Mid
+                   right = mid;
+            }
+        }
+        
+        if(check(weights, D, left)){
+            return left;
+       }else{
+            return right;
+        }
+        
+    }
+    
+    public boolean check(int[] weights, int D, int mid){
+        int sum = 0;
+        int need =1;
+        for(int cur : weights){
+                if(sum + cur > mid){
+                    sum = 0;
+                    need++;
+                }
+                sum+=cur;
+            }
+        if(need <=D){
+            return true;
+        }else{
+            return false;
+        }
+    }
+}
