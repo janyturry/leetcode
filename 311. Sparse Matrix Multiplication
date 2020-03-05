@@ -1,0 +1,29 @@
+//直接套用公式
+
+class Solution {
+    public int[][] multiply(int[][] A, int[][] B) {
+        
+        int m = A.length;
+        int n = A[0].length;
+        int k = B[0].length;
+        
+        int [][] res= new int[m][k];
+        
+        for(int i =0 ; i < m; i++){
+            for(int j = 0 ; j < n; j++){
+                //检查不等于0是因为可以避免后面相乘都是0， 节省时间
+                //without this condition, will be slow.
+                if(A[i][j]!= 0){
+                    for(int l = 0; l < k; l++){
+                        if(B[j][l] != 0){
+                            res[i][l]+=A[i][j]* B[j][l];
+                        }
+                    }
+                }
+            }
+        }
+        
+        return res;
+        
+    }
+}
