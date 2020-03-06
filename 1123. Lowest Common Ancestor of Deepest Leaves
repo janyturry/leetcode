@@ -1,0 +1,26 @@
+//One pass, Time O(N) Space O(H)
+class Solution {
+    TreeNode lca ;
+    int deepest = 0;
+    public TreeNode lcaDeepestLeaves(TreeNode root) {
+        helper(root, 0);
+        return lca;
+
+    }
+
+    public int helper(TreeNode root, int deep){
+        deepest = Math.max(deep, deepest);
+        if(root == null){
+            return deep;
+        }
+
+        int left = helper(root.left, deep+1);
+        int right = helper(root.right, deep+1);
+
+        if(left == right && left ==deepest ){
+            lca = root;
+        }
+
+        return Math.max(left, right);
+    }
+}
