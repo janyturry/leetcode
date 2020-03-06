@@ -1,0 +1,24 @@
+import java.util.LinkedList;
+
+class MovingAverage {
+
+    Queue<Integer> q;
+    double sum;
+    int capacity;
+    /** Initialize your data structure here. */
+    public MovingAverage(int size) {
+        q = new LinkedList<>();
+        capacity = size;
+
+    }
+
+    public double next(int val) {
+        q.add(val);
+        int curSize = q.size();
+        if(curSize  > capacity){
+            sum-=q.poll();
+        }
+        sum+=val;
+        return  (double)(sum/(q.size()));
+    }
+}
