@@ -1,0 +1,70 @@
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public Node next;
+
+    public Node() {}
+
+    public Node(int _val) {
+        val = _val;
+    }
+
+    public Node(int _val, Node _next) {
+        val = _val;
+        next = _next;
+    }
+};
+*/
+
+/*
+Time Complexity: O(N) where N is the size of list. In the worst case, we would iterate through the entire list.
+Space Complexity: O(1). It is a constant space solution.
+ */
+class Solution {
+    public Node insert(Node head, int insertVal) {
+        //全部点为empty
+        if(head == null){
+            Node res = new Node(insertVal, null);
+            res.next = res;
+            return res;
+        }
+
+        Node pre = head;
+        //因为是循环链表， 所以head不为空的话，这个就不会为空
+        Node cur = head.next;
+        boolean insert = false;
+
+        do{
+            //case 1:要插入的值落在 min val 和 max val 之间， 直接插入
+            if(insertVal  >= pre.val && insertVal <= cur.val){
+                insert = true;
+
+            }
+            //要插入的值落在 最大值之后 ，最小值之前
+            else if( cur.val < pre.val){
+                if(insertVal >= pre.val || insertVal <= cur.val){
+                    insert = true;
+                }
+            }
+
+            if(insert){
+                Node res = new Node(insertVal, cur);
+                pre.next = res;
+                return head;
+            }
+            pre = cur;
+            cur = cur.next;
+
+
+        }while(pre != head);
+
+        //链表的每个值都是相等的， 随便找一个地方插入
+        if(!insert){
+            Node res = new Node (insertVal, cur);
+            pre.next = res;
+
+        }
+        return head;
+    }
+}
