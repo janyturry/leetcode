@@ -1,0 +1,54 @@
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+
+/*
+若设二叉树的深度为 h，除第 h 层外，其它各层 (1～h-1) 的结点数都达到最大个数，
+第 h 层所有的结点都连续集中在最左边，这就是完全二叉树。（注：第 h 层可能包含 1~ 2h 个节点。）
+
+
+ */
+
+
+/*
+
+When level-order traversal in a complete tree, after the last node, all nodes in the queue should be null.
+Otherwise, the tree is not complete.
+
+Time Complexity: O(N), where N is the number of nodes.
+Space Complexity: O(N)
+ */
+class Solution {
+    public boolean isCompleteTree(TreeNode root) {
+        boolean res =  false;
+
+        Queue<TreeNode> q = new LinkedList<>();
+
+        q.offer(root);
+
+        while(q.size()>0){
+            TreeNode cur = q.poll();
+
+            if(cur == null){
+                res = true;
+            }else{
+                if(res){
+                    return false;
+                }
+
+                q.offer(cur.left);
+                q.offer(cur.right);
+
+            }
+        }
+
+        return res;
+    }
+}
