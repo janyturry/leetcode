@@ -1,0 +1,28 @@
+import javax.swing.tree.TreeNode;
+
+//DFS
+//Maintain a min and max seen so far as we explore the tree in DFS fashion.
+// At every node, we can update the ret by comparing it with min and max.
+
+//基本思路是保持最大值和最小值 ，然后一直传下去， 一直比较找出最大的差值
+class Solution {
+    //最后返回的全局变量
+    int res = 0;
+    public int maxAncestorDiff(TreeNode root) {
+        helper(root, root.val, root.val);
+        return res;
+    }
+
+    public void helper(TreeNode root, int min, int max){
+        res = Math.max(res, Math.abs(root.val - min));
+        res = Math.max(res, Math.abs(root.val - max));
+
+        if(root.left != null){
+            helper(root.left, Math.min(min, root.left.val), Math.max(max, root.left.val));
+        }
+
+        if(root.right != null){
+            helper(root.right, Math.min(min, root.right.val), Math.max(max, root.right.val));
+        }
+    }
+}
