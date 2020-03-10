@@ -1,0 +1,41 @@
+class Solution {
+    public String addBoldTag(String s, String[] dict) {
+        int len = s.length();
+        boolean[] flag = new boolean[len];
+
+        for(String dic : dict){
+            int start = 0;
+            while(start>=0){
+                start = s.indexOf(dic, start);
+                if(start<0){
+                    break;
+                }
+
+                int end  = start + dic.length();
+                //注意是从start开始
+                for(int i =start ; i < end; i++){
+                    flag[i] = true;
+                }
+// Just start from next index, instead of iterating through entire string
+                start++;
+            }
+        }
+
+
+        StringBuilder sb = new StringBuilder();
+
+        for(int i = 0 ; i< len; i++){
+            if(flag[i] && (  i ==0  ||!flag[i-1])){
+                sb.append("<b>");
+            }
+
+            sb.append(s.charAt(i));
+// Just go character by character rather than cutting up the string
+            if(flag[i] && ( (i == len-1)   ||  !flag[i+1] )){
+                sb.append("</b>");
+            }
+        }
+
+        return sb.toString();
+    }
+}
