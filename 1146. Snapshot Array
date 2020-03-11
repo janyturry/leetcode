@@ -1,0 +1,42 @@
+import java.util.TreeMap;
+/*
+
+Complexity
+Time O(logS)
+Space O(S)
+where S is the number of set called.
+
+SnapshotArray(int length) is O(N) time
+set(int index, int val) is O(1) in Python and O(logSnap) in Java
+snap() is O(1)
+get(int index, int snap_id) is O(logSnap)
+ */
+
+//基本思路是建立数组 tree map, 记录每个cell的变化
+class SnapshotArray {
+    int snapId = 0;
+    //<snapId, value>
+    TreeMap<Integer, Integer>[] map;
+    public SnapshotArray(int length) {
+        map  = new TreeMap[length];
+        for(int i = 0 ; i < length; i++){
+            map[i] = new TreeMap<Integer, Integer>();
+            //incase we get null pointer
+            map[i].put(0,0);
+        }
+
+    }
+
+    public void set(int index, int val) {
+        map[index].put(snapId, val);
+    }
+
+    public int snap() {
+        return snapId++;
+    }
+
+    public int get(int index, int snap_id) {
+        //floorEntry: It returns a key-value mapping associated with the greatest key less than or equal to the given key, or null if there is no such key.
+        return map[index].floorEntry(snap_id).getValue();
+    }
+}
