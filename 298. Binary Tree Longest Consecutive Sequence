@@ -1,0 +1,47 @@
+import javax.swing.tree.TreeNode;
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    int max = 1;
+    public int longestConsecutive(TreeNode root) {
+        if(root == null){
+            return 0;
+        }
+        if(root.left != null){
+            helper(root.left, root, 1);
+        }
+
+        if(root.right != null){
+            helper(root.right, root, 1);
+
+        }
+        return max;
+    }
+
+    public void helper(TreeNode cur,TreeNode pre,  int count){
+            if(cur.val  == (pre.val+1) ){
+                max = Math.max(max, count+1);
+                if(cur.left != null){
+                    helper(cur.left, cur, count+1);
+                }
+                if(cur.right != null){
+                    helper(cur.right, cur, count+1);
+                }
+            }else{
+                if(cur.left != null){
+                    helper(cur.left, cur, 1);
+                }
+                if(cur.right != null){
+                    helper(cur.right, cur, 1);
+                }
+            }
+    }
+}
