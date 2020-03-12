@@ -1,0 +1,52 @@
+/*
+
+Complexity Analysis
+
+Time complexity : O(n). The whole tree is traversed only once.
+Space complexity : O(n). The recursion goes upto a depth of nn in the worst case.
+
+ */
+
+//基本思路是先算左边到根节点的最大上升或者最大下降， 然后再算右边到根节点的最大上升或者下降
+
+class Solution {
+    int max = 0;
+    public int longestConsecutive(TreeNode root) {
+        helper(root);
+        return max;
+    }
+
+    public int[] helper(TreeNode root){
+        if(root == null){
+            return  new int[]{0,0};
+        }
+
+        //连续上升或者下降的计数
+        int asc = 1;
+        int desc = 1;
+
+        //从左边子树到根节点的上升或者下降
+        if(root.left != null){
+            int[] left = helper(root.left);
+            if(root.val + 1 == root.left.val ){
+                asc = left[0] + 1;
+            }else if(root.val - 1 == root.left.val){
+                desc = left[1] + 1;
+            }
+        }
+
+        if(root.right != null){
+            int[] right = helper(root.right);
+            if(root.val + 1 == root.right.val ){
+                //注意这里是需要取最大值
+                asc = Math.max(asc, right[0] + 1);
+            }else if(root.val - 1 == root.right.val){
+                desc = Math.max(desc, right[1] + 1);
+            }
+        }
+
+        //因为连续的话肯定是一遍递增一遍递减， 所以刚好是两边相加
+        max = Math.max(max , asc + desc -1);
+        return new int[]{asc, desc};
+    }
+}
