@@ -1,0 +1,50 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+
+
+/*
+Complexity Analysis
+Time Complexity: O(N) where N is the number of nodes in the tree.
+Space Complexity: O(N)
+
+
+First Root to Leaf: return the deep level of every node
+Then Leaf to Root: only when the its left node and right node both have the deepthest level, update the result node
+
+
+*/
+
+//题目基本上是要求包含所有最深深度的最低的共有父节点
+class Solution {
+    int maxDep = 0;
+    TreeNode res;
+    public TreeNode subtreeWithAllDeepest(TreeNode root) {
+        //helper得出当前点可以到达的最深深度
+        helper(root,1);
+        return res;
+    }
+    
+    public int helper(TreeNode root, int dep){
+        if(root == null){
+            return dep-1;
+        }
+        
+        int left = helper(root.left, dep+1);
+        int right = helper(root.right, dep+1);
+        
+        int cur = Math.max(left,right);
+        maxDep = Math.max(maxDep,cur);
+        //因为这个是从低到上， 所以最深深度左右一样的话这个可以成为答案
+        if(left ==maxDep && right ==  maxDep){
+            res = root;
+        }
+        return cur;    
+    }
+}
