@@ -1,0 +1,65 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+
+//DFS
+class Solution {
+    public List<Integer> largestValues(TreeNode root) {
+        List<Integer>  res = new LinkedList<Integer>();
+        dfs(root,0, res);
+        return res;
+    }
+
+    public void dfs(TreeNode root, int level, List<Integer> res){
+        if(root == null){
+            return;
+        }
+        if(res.size() == level){
+            res.add(root.val);
+        }else{
+            int max = Math.max(res.get(level), root.val);
+            res.set(level, max);
+        }
+        dfs(root.left,level+1, res);
+        dfs(root.right,level+1, res);
+    }
+}
+
+
+
+
+//BFS
+class Solution {
+    public List<Integer> largestValues(TreeNode root) {
+        List<Integer> res = new LinkedList<Integer>();
+        Queue<TreeNode> q = new LinkedList<TreeNode>();
+        if(root == null){
+            return res;
+        }
+        q.offer(root);
+        while(!q.isEmpty()){
+            int size = q.size();
+            int max = Integer.MIN_VALUE;
+            for(int i = 0 ; i< size; i++){
+                TreeNode tmp = q.poll();
+                if(tmp.val > max){
+                    max = tmp.val;
+                }
+                if(tmp.left != null){
+                    q.offer(tmp.left);
+                }
+                if(tmp.right != null){
+                    q.offer(tmp.right);
+                }
+            }
+            res.add(max);
+        }
+        return res;
+    }
+}
