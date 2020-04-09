@@ -1,0 +1,45 @@
+\/*
+For the best case when input string contains not more than k distinct characters the answer is yes.
+It's the only one pass along the string with N characters and the time complexity is 
+O(N)
+
+For the worst case when the input string contains n distinct characters, the answer is no. In that case at each step one uses 
+O(k) time to find a minimum value in the hashmap with k elements and so the overall time complexity is 
+O(Nk)
+
+Time complexity : 
+O(N) in the best case of k distinct characters in the string and 
+O(Nk) in the worst case of N distinct characters in the string.
+
+Space complexity : 
+O(k) since additional space is used only for a hashmap with at most k + 1 elements. 
+
+
+ */
+
+//silding window + hashmap
+class Solution {
+    public int lengthOfLongestSubstringKDistinct(String s, int k) {
+        Map<Character, Integer>  map = new HashMap<>();
+
+        int left = 0;
+        int right = 0;
+        int res = 0;
+
+        while(right < s.length()){
+            char cur = s.charAt(right);
+            map.put(cur, map.getOrDefault(cur,0)+1);
+            if(map.size()>k){
+                char leftC = s.charAt(left);
+                map.put(leftC , map.get(leftC)-1);
+                if(map.get(leftC) ==0){
+                    map.remove(leftC);
+                }
+                left++;
+            }
+            res = Math.max(res, right - left +1);
+            right++;
+        }
+        return res;
+    }
+}
