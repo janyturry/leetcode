@@ -1,0 +1,38 @@
+/*
+
+Complexity Analysis
+Time Complexity:
+O(M+N), where M,N  are the lengths of S and T respectively.
+Space Complexity: O(M+N)
+
+
+*/
+
+class Solution {
+    public boolean backspaceCompare(String S, String T) {
+        if(S == null && T == null){
+            return true;
+        }
+
+        String a = helper(S);
+        String b = helper(T);
+
+        return a.equals(b);
+
+    }
+
+    public String helper(String s){
+        Stack<Character> stack = new Stack<>();
+        for(char c : s.toCharArray()){
+            if( c != '#'){
+                stack.push(c);
+            }else{
+                if(!stack.isEmpty()){
+                    stack.pop();
+                }
+            }
+        }
+
+        return String.valueOf(stack);
+    }
+}
