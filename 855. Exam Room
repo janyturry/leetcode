@@ -1,0 +1,57 @@
+/*
+Time Complexity:
+O(N) for seat() and leave()
+*/
+
+class ExamRoom {
+
+    int n;
+    ArrayList<Integer>  list = new ArrayList<>();
+    public ExamRoom(int N) {
+        n = N;
+    }
+
+    public int seat() {
+        if (list.size() == 0){
+            list.add (0);
+            return 0;
+        }
+        
+        //插入元素要不插入在开头， 要不插入在结尾， 要不插入在两个元素之间
+        
+        //计算开头跟链表第一个目标的距离， 结尾和链表最后一个目标的距离
+        int d = Math.max(list.get(0), n - 1 - (list.get(list.size()-1)));
+
+        //计算链表元素之间最大距离
+        for(int i = 0 ; i < list.size()-1; i++){
+            d = Math.max(d, (list.get(i+1) - list.get(i))/2);
+        }
+
+        //链表为空， 直接插入在开头
+        if(d == list.get(0)){
+            list.add(0,0);
+            return 0;
+        }
+
+        //最大距离在两个元素之间产生， 就插入在两个元素之间
+        for(int i = 0 ; i< list.size()-1; i++){
+            if( d ==  (list.get(i+1) - list.get(i))/2 ){
+                int mid  = list.get(i) + (list.get(i+1) - list.get(i))/2;
+                list.add(i+1,  mid );
+                return mid;
+            }
+        }
+
+        //最大距离在结尾， 插入在结尾
+        list.add(n-1);
+        return n-1;
+    }
+
+    public void leave(int p) {
+        for(int i = 0 ; i < list.size();i++){
+            if(p == list.get(i)){
+                list.remove(i);
+            }
+        }
+    }
+}
