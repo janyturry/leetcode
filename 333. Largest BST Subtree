@@ -1,0 +1,51 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+
+//time : O(n)
+class Solution {
+    // return array for each node:
+    //     [0] --> min
+    //     [1] --> max
+    //     [2] --> largest BST in its subtree(inclusive)
+    public int largestBSTSubtree(TreeNode root) {
+        int [] res = helper(root);
+        return res[2];
+    }
+
+    public int[] helper(TreeNode root){
+        if(root == null){
+            //当前点是0，要确保父亲节点的ROOT.VAL > RES[1], 意思就是父节点能成功把自己设置成BST
+            return new int[]{Integer.MAX_VALUE, Integer.MIN_VALUE,0};
+        }
+
+        int[] left  = helper(root.left);
+        int[] right = helper(root.right);
+
+        if(root.val > left[1] && root.val < right[0]){
+            //case valid
+            //使用Math.min(left[0],root.val) 是因为有两种情况， 一种是左右节点都为空，这时候是取ROOT.VAL， 然后左右节点不为空， 这时候取left[0]
+            return new int[]{Math.min(left[0],root.val), Math.max(root.val,right[1]), left[2]+ right[2] + 1 };
+        }else{
+            //case not valid
+            //Math.max(left[2], right[2]) 因为最后要返回所有子树里面已经成立的最大子树SIZE
+            //min == Integer.MIN_VALUE, max == Integer.MAX_VALUE  这样可以保证上面继续比较的时候会知道这个子树不及格
+            //因为没有可能是ROOT.VAL >  Integer.MAX_VALUE or root.val < Integer.MIN_VALUE
+            return new int[]{Integer.MIN_VALUE,Integer.MAX_VALUE, Math.max(left[2], right[2])};
+        }
+
+    }
+
+}
