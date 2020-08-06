@@ -1,0 +1,97 @@
+import java.util.LinkedList;
+import java.util.Queue;
+
+//BFS
+//time:  O(m^2*n^2)
+class Solution {
+    class point{
+        int x;
+        int y;
+        public point(int x, int y){
+            this.x = x;
+            this.y = y;
+        }
+    }
+    //count how many building totally
+    int numBuilding = 0;
+    //reach[x][y] : how many buildings can be reached by point (x,y)
+    int[][] reach;
+    //distance of point(x,y) to other buildings
+    int[][] dis;
+
+    //direction
+    int[][]dir = new int[][]{{0,1},{1,0},{0,-1},{-1,0}};
+    public int shortestDistance(int[][] grid) {
+        if(grid ==null || grid[0].length ==0){
+            return -1;
+        }
+
+        int m =  grid.length;
+        int n = grid[0].length;
+
+        reach = new int[m][n];
+        dis = new int[m][n];
+
+        for(int i = 0 ; i < m;i++){
+            for(int j =0;  j < n;j++){
+                //only do BFS when facing building
+                if(grid[i][j] == 1){
+                    numBuilding++;
+                    bfs(grid, new point(i,j));
+                }
+            }
+        }
+
+        int res = Integer.MAX_VALUE;
+
+        for(int i = 0 ; i< m;i++){
+            for(int j=0; j < n;j++){
+                if(grid[i][j] == 0 && reach[i][j] ==numBuilding ){
+                    res = Math.min(res, dis[i][j]);
+                }
+            }
+
+        }
+        return res == Integer.MAX_VALUE? -1 : res;
+    }
+
+    public void bfs(int[][] grid, point p){
+        int m = grid.length;
+        int n = grid[0].length;
+        Queue<point> q = new LinkedList<>();
+
+        q.offer(p);
+        boolean[][] visit = new boolean [m][n];
+        //distance from building to empty space
+        int step = 1;
+
+        while(!q.isEmpty()){
+            int size = q.size();
+            for(int z = 0; z < size; z++){
+                point cur  = q.poll();
+                for(int i = 0 ; i < 4; i++){
+                    int newX = dir[i][0] + cur.x;
+                    int newY = dir[i][1] + cur.y;
+
+                    //border check
+                    if(newX < 0 || newX >=m || newY <0 || newY >=n ){
+                        continue;
+                    }
+
+                    if(grid[newX][newY] !=0 || visit[newX][newY]){
+                        continue;
+                    }
+
+                    dis[newX][newY] +=step;
+                    reach[newX][newY]++;
+                    visit[newX][newY] = true;
+                    //trim if it can't reach current building
+                    if(reach[newX][newY] == numBuilding){
+                        q.offer(new point(newX,newY));
+                    }
+                }
+            }
+            step++;
+        }
+    }
+}
