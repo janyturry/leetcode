@@ -1,0 +1,29 @@
+Time and space: O(T.length())
+
+class Solution {
+    public String customSortString(String S, String T) {
+        int[] ar = new int[26];
+        
+        
+        StringBuilder  sb = new StringBuilder();
+        for(char c : T.toCharArray()){
+            ar[c-'a']++;
+        }
+        
+        for(char c : S.toCharArray()){
+            while(ar[c- 'a']-- >0){
+               sb.append(c); 
+            }
+        }
+        
+        for(char c : T.toCharArray()){
+            if(ar[c-'a']-->0){
+                sb.append(c);
+            }
+        }
+        
+        return sb.toString();
+        
+        
+    }
+}
