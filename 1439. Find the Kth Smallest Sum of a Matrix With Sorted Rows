@@ -1,0 +1,46 @@
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.PriorityQueue;
+
+//直接调用373的方法， 然后合并
+/*
+Time : O(k * logk * (m-1)).
+Space : O(200).
+ */
+class Solution {
+    public int kthSmallest(int[][] mat, int k) {
+        int []row  = mat[0];
+        for(int i =1; i <mat.length;i++){
+            row = kSmallestPairs(row, mat[i]);
+        }
+        return row[k-1];
+    }
+
+    public int[] kSmallestPairs(int[] nums1, int[] nums2) {
+        int k = 200;
+        List<Integer> res = new ArrayList<>();
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a,b)->(a[0]+a[1] - b[0]- b[1]));
+
+        for(int i = 0; i < nums1.length && i < k; i++){
+            pq.offer(new int[]{ nums1[i], nums2[0], 0});
+        }
+
+        while(!pq.isEmpty() && k-- > 0){
+            int[] cur = pq.poll();
+            res.add(cur[0]+cur[1]);
+            if(cur[2] + 1 >= nums2.length) continue;
+            pq.offer(new int[]{cur[0], nums2[cur[2]+1], cur[2]+1});
+        }
+        int[] ans = new int[res.size()];
+        for(int i = 0 ; i< res.size();i++){
+            ans[i] = res.get(i);
+        }
+        return ans;
+    }
+}
+
+
+
+
+
