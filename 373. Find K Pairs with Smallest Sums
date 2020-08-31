@@ -1,0 +1,34 @@
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.PriorityQueue;
+
+//The run time complexity is O(kLogk) since que.size <= k and we do at most k loop.
+class Solution {
+    public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
+        List<List<Integer>> res = new LinkedList<>();
+        if(nums1.length == 0 || nums2.length == 0 || k ==0 ){
+            return res;
+        }
+        //PQ的作用就是每次POLL出SUM 最少的
+        //从小到大排列， 先出的是sum 最小的
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a,b)->(a[0]+a[1] - b[0]- b[1]));
+        
+        for(int i = 0; i < nums1.length && i < k; i++){
+            pq.offer(new int[]{ nums1[i], nums2[0], 0});
+        }
+
+        while(!pq.isEmpty() && k-- > 0){
+            int[] cur = pq.poll();
+            res.add(Arrays.asList(cur[0],cur[1]));
+            //左边不变， 放进去右边的index的下一个
+            if(cur[2] + 1 >= nums2.length) continue;
+            pq.offer(new int[]{cur[0], nums2[cur[2]+1], cur[2]+1});
+        }
+        return res;
+    }
+
+    public static void main(String[]argc){
+
+    }
+}
