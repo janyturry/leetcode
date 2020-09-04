@@ -1,0 +1,42 @@
+//time: n*n*logn
+//这里找的就是最长的而且有重复出现的substring
+
+class Solution {
+    public int longestRepeatingSubstring(String S) {
+        if(S == null || S.length()<=1){
+            return 0;
+        //二分法是用来计算SUBSTRUNG的长度是多少比较合适， 因为最小是1，最大就是LEN-1
+
+        int maxLen = S.length()-1;
+        int low = 1;
+        int high = maxLen;
+
+        int ans = 0;
+        Set<String> set  = new HashSet<>();
+        while(low <=high){
+            //mid 就是最大的substring长度
+            int mid = low + (high-low)/2;
+            boolean found = false;
+            for(int i = 0;  i+mid <= S.length();i++){
+                //substring length = i+mid -i
+                String cur = S.substring(i,i+mid);
+                //出现重读的，记录长度，然后不用计算了
+                if(!set.add(cur)){
+                    found = true;
+                    ans = mid;
+                    break;
+                }else{
+                    set.add(cur);
+                }
+            }
+
+            if(found){
+                //找到重复的，可以让mid往右走表示有可能有更长的substring
+                low = mid +1;
+            }else{
+                high = mid-1;
+            }
+        }
+        return ans;
+    }
+}
