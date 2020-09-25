@@ -1,0 +1,33 @@
+class Solution {
+    public boolean isOneEditDistance(String s, String t) {
+        int m = s.length();
+        int n = t.length();
+
+        if(m - n ==1){
+            return delete(s,t);
+        }else if(n - m ==1){
+            return delete(t,s);
+        }else if( m ==n ){
+            return replace(s,t);
+        }
+        return false;
+    }
+
+    public boolean delete (String s, String t){
+        for(int i =0 ; i < t.length(); i++){
+            if(s.charAt(i) != t.charAt(i)){
+                return s.substring(i+1).equals(t.substring(i));
+            }
+        }
+        return true;
+    }
+
+    public boolean replace(String s, String t){
+        for(int i =0 ; i < t.length(); i++){
+            if(s.charAt(i) != t.charAt(i)){
+                return s.substring(i+1).equals(t.substring(i+1));
+            }
+        }
+        return false;
+    }
+}
