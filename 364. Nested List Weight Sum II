@@ -1,0 +1,31 @@
+/*
+基本思路就是从底部开始每往上一层就加一次，
+ */
+
+class Solution {
+    public int depthSumInverse(List<NestedInteger> nestedList) {
+        int levelSum = 0;
+        int res = 0;
+        Deque<NestedInteger> q = new ArrayDeque<>();
+        for(NestedInteger n  : nestedList){
+            q.offerFirst(n);
+        }
+
+        while(!q.isEmpty()){
+            int size = q.size();
+            for(int i = 0 ; i < size; i++){
+                NestedInteger cur = q.pollFirst();
+                if(cur.isInteger()){
+                    levelSum+=cur.getInteger();
+                }else{
+                    for(NestedInteger c : cur.getList()){
+                        q.offerLast(c);
+                    }
+                }
+            }
+            //levelsum不是临时的所以每一层都重新加了一次进去res
+            res+=levelSum;
+        }
+        return res;
+    }
+}
