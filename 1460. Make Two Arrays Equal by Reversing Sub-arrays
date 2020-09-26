@@ -1,0 +1,18 @@
+/*
+
+因为条件说了无论长度还是内容都是<=1000，所以只需要保证两个数组内容一样就可以
+ */
+class Solution {
+    public boolean canBeEqual(int[] target, int[] arr) {
+        int [] res= new int[1001];
+        for(int c: target){
+            res[c]++;
+        }
+        for(int c: arr){
+            if(--res[c]<0){
+                return false;
+            }
+        }
+        return true;
+    }
+}
