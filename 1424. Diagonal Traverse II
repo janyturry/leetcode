@@ -1,0 +1,40 @@
+//In a 2D matrix, elements in the same diagonal have same sum of their indices.
+
+/*
+Time: O(N), where N is the number of elements of nums
+Space: O(N)
+ */
+class Solution {
+    public int[] findDiagonalOrder(List<List<Integer>> nums) {
+        if(nums == null || nums.size() <1){
+            return new int[0];
+        }
+        //maxkey 记录最大的r+c,以便最后做循环出结果
+        int maxKey = 0;
+        //记录一共有最少个数字最后创建数组
+        int n = 0;
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        //从低向上因为对角线显示的方式就是最左下方的在最前面
+        for(int r = nums.size() -1; r >=0; r--){
+            for(int c = 0; c <=nums.get(r).size()- 1; c++){
+                map.putIfAbsent(r+c, new ArrayList<Integer>());
+                map.get(r+c).add(nums.get(r).get(c));
+                maxKey = Math.max(maxKey,r+c);
+                n++;
+            }
+        }
+
+        int [] res = new int[n];
+        int m = 0;
+        for(int i = 0; i <= maxKey; i++){
+            List<Integer> tmp = map.get(i);
+            if(tmp == null){
+                continue;
+            }
+            for(int k : tmp){
+                res[m++] = k;
+            }
+        }
+        return res;
+    }
+}
