@@ -1,0 +1,36 @@
+class SparseVector {
+    //index, value , only record the non-zero value because once there is zero, no need to calculate.
+    // O(nums.length) time.
+// O(num of Non Zero Values) space.
+    Map<Integer, Integer> map;
+    SparseVector(int[] nums) {
+        map = new HashMap<>();
+        for(int i =0; i < nums.length; i++){
+            if(nums[i] != 0){
+                map.put(i, nums[i]);
+            }
+        }
+    }
+
+    // Return the dotProduct of two sparse vectors
+    // O(min(vec1numNonZeroValues, vec2numNonZeroValues)) time because we iterate through non-zero values of the vector that has fewer non-zero values and for each value we check in O(1) time whether the other vector has a non-zero value at that index.
+    // O(1) space.
+    public int dotProduct(SparseVector vec) {
+        //because loop this.map, so choose the smaller map.
+        if(this.map.size() > vec.map.size()){
+            return vec.dotProduct(this);
+        }
+        int res = 0;
+        for(Integer index : this.map.keySet()){
+            if(vec.map.containsKey(index)){
+                res+= this.map.get(index) * vec.map.get(index);
+            }
+        }
+        return res;
+    }
+}
+
+// Your SparseVector object will be instantiated and called as such:
+// SparseVector v1 = new SparseVector(nums1);
+// SparseVector v2 = new SparseVector(nums2);
+// int ans = v1.dotProduct(v2);
