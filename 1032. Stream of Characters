@@ -1,0 +1,48 @@
+//reverse build trie, then in search also reverse
+
+class StreamChecker {
+    class node{
+        boolean isWord;
+        node[] next = new node[26];
+    }
+
+    node root = new node();
+    StringBuilder sb  = new StringBuilder();
+
+    public StreamChecker(String[] words) {
+        buildTrie(words);
+    }
+
+    public boolean query(char letter) {
+        sb.append(letter);
+        node cur = root;
+        for(int i = sb.length()-1; i>=0 && cur!=null; i--){
+            char c = sb.charAt(i);
+            cur = cur.next[c-'a'];
+            if(cur != null && cur.isWord){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void buildTrie(String [] words){
+        for(String s : words){
+            node cur = root;
+            for(int i = s.length()-1; i >=0; i--){
+                char c = s.charAt(i);
+                if(cur.next[c-'a'] == null ){
+                    cur.next[c-'a'] = new node();
+                }
+                cur = cur.next[c-'a'];
+            }
+            cur.isWord = true;
+        }
+    }
+}
+
+/**
+ * Your StreamChecker object will be instantiated and called as such:
+ * StreamChecker obj = new StreamChecker(words);
+ * boolean param_1 = obj.query(letter);
+ */
