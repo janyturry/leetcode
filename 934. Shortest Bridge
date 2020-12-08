@@ -1,0 +1,61 @@
+
+//totally we have 2 part of island, first dfs one island, then all all of them to queue, and mark as visit,
+//then bfs level  by level to find the other islands
+class Solution {
+    int [][] dirs = new int[][]{ {0,1}, {1,0}, {-1,0}, {0,-1}};
+    public int shortestBridge(int[][] A) {
+        Queue<int[]> q = new LinkedList<>();
+        boolean find = false;
+        int m = A.length;
+        int n = A[0].length;
+        boolean [][] visit = new boolean[m][n];
+
+
+        for(int i = 0;  i< m; i++){
+            if(find){
+                break;
+            }
+            for(int j = 0; j < n; j++){
+                if(A[i][j] == 1){
+                    dfs(A, visit, q, i,j);
+                    find = true;
+                    break;
+                }
+            }
+        }
+
+        int step = 0;
+        while(!q.isEmpty()){
+            int size = q.size();
+            for(int i = 0; i < size; i++){
+                int[] cur = q.poll();
+                for(int[] dir : dirs){
+                    int newX = cur[0] + dir[0];
+                    int newY = cur[1] + dir[1];
+                    if(newX>=0 && newX <=A.length-1 && newY>=0 && newY<=A[0].length-1 && !visit[newX][newY]){
+                        if(A[newX][newY] ==1){
+                            return step;
+                        }
+                        q.offer(new int[]{newX, newY});
+                        visit[newX][newY] = true;
+                    }
+                }
+            }
+            step++;
+        }
+        return -1;
+    }
+
+    void dfs(int[][] A, boolean[][] visit, Queue<int[]> q, int i, int j){
+        if(i>=0 && i <= A.length-1 && j>=0 && j<=A[0].length-1 && A[i][j] ==1&& !visit[i][j]){
+            q.offer(new int[]{i,j});
+            visit[i][j] = true;
+
+            for(int[] dir : dirs){
+                int newX = i+ dir[0];
+                int newY = j + dir[1];
+                dfs(A,visit, q, newX, newY);
+            }
+        }
+    }
+}
