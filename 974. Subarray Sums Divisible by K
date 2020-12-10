@@ -1,0 +1,31 @@
+//if sum[0, i] % K == sum[0, j] % K, sum[i + 1, j] is divisible by by K.
+class Solution {
+    public int subarraysDivByK(int[] A, int K) {
+         if(A.length == 0){
+            return 0;
+        }
+        
+        int m = A.length;
+        
+        int[] sum = new int[m+1];
+        
+        for(int i = 0; i < m;i++){
+            sum[i+1] = sum[i] + A[i];
+        }
+        
+        int [] c = new int[K];
+        for(int s : sum){
+            //s%k+k -> convert to positive
+           c[(s%K+K)%K]++; 
+        }
+        
+        int res = 0;
+        for(int a : c){
+            if(a>1){
+                res+= (a*(a-1))/2;
+            }
+        }
+        
+        return res;
+    }
+}
