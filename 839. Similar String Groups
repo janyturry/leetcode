@@ -1,0 +1,90 @@
+class Solution {
+    public int numSimilarGroups(String[] strs) {
+        UnionFind uf = new UnionFind(strs.length);
+        for (int i = 0; i < strs.length; ++i) {
+            for (int j = i + 1; j < strs.length; ++j) {
+                if (strs[i] == null || strs[j] == null) continue;
+                if (isSimilar(strs[i], strs[j])) {
+                    uf.union(i, j);
+                }
+            }
+        }
+        return uf.count();
+    }
+
+    public boolean isSimilar(String a, String b){
+        int count = 0;
+        for(int i=0; i<a.length(); i++){
+            if(a.charAt(i)!=b.charAt(i)) count++;
+            if(count>2) return false;
+        }
+
+        if(count == 0 || count ==2){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    private class UnionFind {
+
+        private int[] parent;
+        //weight is the size of the tree
+        private int[] weight;
+        private int count;
+
+        public UnionFind(int n) {
+            parent = new int[n];
+            weight = new int[n];
+            count = n;
+            for (int i = 0; i < parent.length; ++i) {
+                parent[i] = i;
+                weight[i] = 1;
+            }
+        }
+
+        // Merges the set containing element p with the set containing element q.
+        public void union(int p, int q) {
+            int pRoot = find(p);
+            int qRoot = find(q);
+            if (pRoot == qRoot) return;     // p and q are already in the same set.
+
+            //append smaller tree to the bigger tree 
+            // Weighted union: make the smaller tree a subtree of the greater tree (this way we only increase the depth of the deepest tree if we really have to).
+            if (weight[pRoot] < weight[qRoot]) {
+                parent[pRoot] = qRoot;
+                weight[qRoot] += weight[pRoot];
+            } else  {
+                parent[qRoot] = pRoot;
+                weight[pRoot] += weight[qRoot];
+            }
+            count--;
+        }
+
+        // Returns the ID of the set containing the given element p.
+        public int find(int p) {
+            int pRoot = p;
+            while (pRoot != parent[pRoot]) {
+                pRoot = parent[pRoot];          // Travel up the tree until we find the ID (root) of the set (tree) that element p belongs to.
+            }
+
+            // Path compression: set the parent of every node on the path from p to its root to the root. This speeds up future find operations because they only do one step (parent of a node is the root).
+            while (p != pRoot) {
+                int temp = parent[p];
+                parent[p] = pRoot;     // Compress the path.
+                p = temp;              // Move up one node in the path towards the root.
+            }
+            return pRoot;
+        }
+
+        // Returns true iff. the two given elements p and q are in the same set.
+        public boolean connected(int p, int q) {
+            return find(p) == find(q);
+        }
+
+        // Returns the number of sets.
+        public int count() {
+            return count;
+        }
+    }
+}
