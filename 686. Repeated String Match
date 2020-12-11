@@ -1,0 +1,40 @@
+class Solution {
+    public int repeatedStringMatch(String a, String b) {
+        StringBuilder sb = new StringBuilder();
+        int count = 0;
+        while(sb.length() < b.length()){
+            sb.append(a);
+            count++;
+        }
+
+        if(find(sb.toString(),b)){
+            return count;
+        }
+        //one more copy to fix the rotation problem.
+        //case #1 a:abc    b:cabcab
+        //case #2 a:abc    b:cabca
+        sb.append(a);
+        count++;
+        if(find(sb.toString(), b)){
+            return count;
+        }
+        return -1;
+    }
+
+    public boolean find(String a, String b){
+        int len = a.length();
+        for(int i = 0; i < len;i++){
+            int aStart = i;
+            int bStart = 0;
+            while(aStart<a.length() && bStart < b.length() && a.charAt(aStart)  == b.charAt(bStart)){
+                aStart++;
+                bStart++;
+            }
+            if(bStart == b.length()){
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
