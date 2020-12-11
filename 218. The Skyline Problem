@@ -1,0 +1,42 @@
+import java.util.Arrays;
+//https://www.youtube.com/watch?v=v5CMa5MUGCo
+
+class Solution {
+    public List<List<Integer>> getSkyline(int[][] buildings) {
+        List<List<Integer>> res  = new ArrayList<>();
+        List<int[]> point = new ArrayList<>();
+
+        for(int[] b : buildings){
+            point.add(new int[]{b[0], -b[2]});
+            point.add(new int[]{b[1], b[2]});
+        }
+        //横坐标一样，就按照纵坐标从小到大排列（先-10，后 -8）， 这样不会有高度差，不会有KEY POINT。
+        //横坐标不一样就按照横坐标排列， 从小到大
+        Collections.sort(point, (a,b)-> {
+                    if(a[0] != b[0]){
+                        return a[0]- b[0];
+                    }else{
+                        return   a[1] - b[1];
+                    }
+                }
+        );
+
+        PriorityQueue<Integer> q = new PriorityQueue<>((a,b)-> b-a );
+        q.add(0);
+
+        int preHight = 0;
+        for(int[] cur : point){
+            if(cur[1] < 0){
+                q.offer(-cur[1]);
+            }else{
+                q.remove(cur[1]);
+            }
+            int curHight = q.peek();
+            if(curHight != preHight){
+                res.add(Arrays.asList(cur[0], curHight));
+                preHight = curHight;
+            }
+        }
+        return res;
+    }
+}
