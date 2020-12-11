@@ -1,0 +1,45 @@
+class Solution {
+    public int maxDistance(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        boolean [][] visit = new boolean[m][n];
+
+        Queue<int[]> q  = new LinkedList<>();
+        for(int i = 0;i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(grid[i][j] == 1){
+                    q.offer(new int[]{i,j});
+                    visit[i][j] = true;
+                }
+            }
+
+        }
+
+        //missing 0 or missing 1 in the grid
+        if(q.size() == 0 || q.size() == m*n){
+            return -1;
+        }
+
+        //start with -1 because the first loop is looping the 1 not 0;
+        int res  = -1;
+        int[][] dirs = new int[][] {{0,1}, {1,0},{0,-1}, {-1,0}};
+        while(!q.isEmpty()){
+            int size = q.size();
+            for(int i = 0; i < size; i++){
+                int[] cur = q.poll();
+                int x = cur[0];
+                int y = cur[1];
+                for(int z  =0; z < 4; z++){
+                    int newX = x + dirs[z][0];
+                    int newY = y + dirs[z][1];
+                    if(newX >=0 && newX <=m-1 && newY >=0 && newY <=n-1 && !visit[newX][newY] && grid[newX][newY] == 0){
+                        q.offer(new int[]{newX, newY});
+                        visit[newX][newY] = true;
+                    }
+                }
+            }
+            res++;
+        }
+        return res;
+    }
+} 
