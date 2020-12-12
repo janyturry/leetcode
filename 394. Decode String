@@ -1,7 +1,10 @@
 //394. Decode String
 //leetcode
 
-
+/*
+follow up：如果数字也可以作为encoded string的一部分怎么做。如果数字在[]前，和原题一样视为次数，否则视为encoded string的一部分。
+比如: 3[a2b] -> a2ba2ba2b
+*/
 import java.util.Stack;
 
 class Solution {
