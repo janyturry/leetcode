@@ -1,0 +1,25 @@
+class Solution {
+    public int compress(char[] chars) {
+        int size = chars.length;
+
+        int left =0;
+        int right =0;
+
+        int resIndex = 0;
+        while(left < size){
+            while(right < size && chars[left] == chars[right]){
+                right++;
+            }
+            int count = right - left;
+            chars[resIndex++] = chars[left];
+            if(count>1){
+                for(char c: String.valueOf(count).toCharArray()){
+                    chars[resIndex++] = c;
+
+                }
+            }
+            left = right;
+        }
+        return resIndex;
+    }
+}
