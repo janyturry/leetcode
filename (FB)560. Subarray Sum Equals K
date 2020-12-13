@@ -90,3 +90,35 @@ value : sum 出现的次数
 
 
 
+
+//prefix sum
+//map <sum, frequency>
+
+//problem is how many sumarrays   , sum = k
+//we can get all the subarrays be sum(i,j) = sum(0...j) - sum(0...-1)
+//sum (0..j) - sum (0...i-1) = k
+//so we are checking when i < j , how many subarrays can become
+class Solution {
+    public int subarraySum(int[] nums, int k) {
+        if(nums == null || nums.length <1){
+            return 0;
+        }
+
+        Map<Integer, Integer> map = new HashMap<>();
+        //to handle case like 1, -1, 1, -1    --->    when k = 0 ,first two element sum =  -1+ 1 = 0, it means itself can become the answer.
+        //without this initial, -1 + 1 won't be count as answer.
+        map.put(0,1);
+
+        int count = 0;
+        int sum = 0;
+        for(int cur : nums){
+            sum+=cur;
+            if(map.containsKey(sum - k)){
+                count+= map.get(sum-k);
+            }
+            map.put(sum,map.getOrDefault(sum, 0) + 1 );
+        }
+        return count;
+    }
+}
+
