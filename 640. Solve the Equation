@@ -1,0 +1,45 @@
+/*
+Time complexity : O(n). Generating coefficients and finding lhslhs and rhsrhs will take O(n).
+Space complexity : O(n). ArrayList resres size can grow upto n.
+ */
+
+
+class Solution {
+    public String solveEquation(String equation) {
+        String[] e = equation.split("=");
+
+        int[] left = helper(e[0]);
+        int[] right = helper(e[1]);
+
+        if(left[0] == right[0]  && left[1] == right[1]){
+            return "Infinite solutions";
+        }else if(left[0] == right[0]){
+            return "No solution";
+        }else{
+            int r = (right[1] - left[1])/(left[0]- right[0]);
+            return "x="+String.valueOf(r);
+        }
+    }
+
+    public int[] helper(String s){
+        String[]  sub = s.replace("+", "#+").replace("-" , "#-").split("#");
+        //res[0] for x , res [1] for constant
+        int [] res = new int[2];
+        for(String str  : sub){
+            if(str == null || str.length() ==0){
+                continue;
+            }else if(str.equals("x")|| str.equals("+x")) {
+                res[0] += 1;
+                //in case we just have "x", then str.substring(0,str.length()-1) will return "" which cause nteger.valueOf exception
+            }else if(str.equals("-x")) {
+                res[0] -= 1;
+            }
+            else if(str.contains("x")){
+                res[0]+= Integer.valueOf(str.substring(0,str.length()-1));
+            }else{
+                res[1] += Integer.valueOf(str);
+            }
+        }
+        return res;
+    }
+}
