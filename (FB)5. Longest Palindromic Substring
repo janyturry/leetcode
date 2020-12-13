@@ -2,6 +2,9 @@
 //5. Longest Palindromic Substring, 先检查类似 aba, 在检查abba;
 //leetcode
 //思路：从左到右，每一个char都往左右两边扩展， 扩展的开始可以选取单一点和两个点， 例如"bab", "baab"
+
+Time complexity : O(n^2) Since expanding a palindrome around its center could take O(n) time, the overall complexity is O(n^2)
+Space complexity : O(1)
 public class longestPalindrome {
 	public String longestPalindrome(String s) {
 		if (s.length() <= 1 || s == null || s.isEmpty()) {
