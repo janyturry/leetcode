@@ -7,7 +7,9 @@
  *     ListNode(int x) { val = x; }
  * }
  */
+ // k is numer of list and n is total item nums
  //time: O(nlogk)
+ //spacecQ(k)
  //使用priority queue, 先把头都放进去 然后每次pop出最小的值，一直下去
 class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
@@ -57,6 +59,7 @@ class Solution {
  */
  
  //time: divide and conquer  O(nlogk)
+ //Space complexity : O(1)
 class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
         if(lists == null || lists.length <1 ){
