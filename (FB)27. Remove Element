@@ -1,0 +1,18 @@
+Complexity analysis
+
+Time complexity : O(n). Assume the array has a total of n elements, both and jj traverse at most 2n steps.
+
+Space complexity : O(1)
+
+class Solution {
+    public int removeElement(int[] nums, int val) {
+        int begin = 0;
+
+        for(int i = 0 ; i< nums.length; i++){
+            if(nums[i] != val){
+                nums[begin++] = nums[i];
+            }
+        }
+        return begin;
+    }
+}
