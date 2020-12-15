@@ -1,0 +1,49 @@
+
+//不要转化成Long
+//time : O(logn^2)
+class Solution {
+    public int divide(int dividend, int divisor) {
+        // int range : -2的31次方 到 2 的31次方-1
+        if (dividend == Integer.MIN_VALUE && divisor == -1) {
+            return Integer.MAX_VALUE;
+        }
+
+        // 判断结果是不是负数
+        boolean isNegative = false;
+        if((dividend >0 && divisor<0) ||  (dividend <0 && divisor>0)){
+            isNegative = true;
+        }
+
+        // 将除数和被除数都转为负数
+        dividend = dividend < 0 ? dividend : -dividend;
+        divisor = divisor < 0 ? divisor : -divisor;
+
+        //因为PASS进去的都是负数， 负负得正，所以最后出来的肯定是正数
+        int res = helper(dividend, divisor);
+
+        return isNegative ? -res : res;
+    }
+
+    private int helper(int dividend, int divisor) {
+        //例如  -5/-8
+        if (dividend > divisor) {
+            return 0;
+        }
+
+        int tmp = divisor;
+        int count = 1;
+
+        // 条件tmp + tmp < 0防止溢出
+        /*
+        我们不断的把tmp翻倍，并且如果翻倍后的结果比dividend大的话就可以继续循环（即如果满足tmp + tmp >= dividend），
+        但是翻倍之后有可能使得tmp溢出，即由负数变成正数，此时肯定有tmp + tmp >= dividend，但是这就不符合我们的要求了，
+        所以循环的条件除了tmp + tmp >= dividned之外还得加上tmp + tmp < 0，以此保证tmp + tmp没有发生溢出
+        */
+        while (tmp + tmp < 0 && dividend <= tmp + tmp) {
+            count += count;
+            tmp += tmp;
+        }
+
+        return count + helper(dividend - tmp, divisor);
+    }
+}
