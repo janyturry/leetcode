@@ -1,0 +1,47 @@
+//time: O(2^n)
+//space:O(k)
+/*
+Space complexity can be reduced to O(k).
+Time complexity should be O(n*k) where k is the largest length till n.
+If we assume the length is doubled every level,
+then O(2^n) will be a better upper bound because O(n*k) = O(n*2^(n-1)) = O(n*2^n) > O(2^n).
+
+the loose bound time complexity is O(n.k)
+
+Now coming to max value of k , from one level (n-1) to next level (n) the length can be at max twice.
+At each iteration we take atmost K iterations
+starting from 1, the maximum size can be 1,2^1 , 2^2 , .... , 2^(n-1)
+
+Total time Complexity 1 + 2^1 + 2^2 + ... + 2^(n-1) = 2^n -1 which is O(2^n) .
+ this is also loose bound as we know the length will not always be twice
+ */
+
+class Solution {
+ */
+    public String countAndSay(int n) {
+        if(n<1){
+            return new String("0");
+        }
+
+        String s = "1";
+
+        for(int i = 2; i <= n;i++){
+            StringBuilder sb = new StringBuilder();
+            int count  = 1;
+            char pre = s.charAt(0);
+            for(int j = 1; j <s.length();j++){
+                if(s.charAt(j) == pre){
+                    count++;
+                }else{
+                    sb.append(String.valueOf(count)).append(String.valueOf(pre));
+                    count =1;
+                    pre = s.charAt(j);
+
+                }
+            }
+            sb.append(String.valueOf(count)).append(String.valueOf(pre));
+            s = sb.toString();
+        }
+        return s;
+    }
+}
