@@ -1,0 +1,57 @@
+/*
+
+由于每个皇后必须位于不同列，因此已经放置的皇后所在的列不能放置别的皇后。第一个皇后有 N 列可以选择，
+第二个皇后最多有 N-1 列可以选择，第三个皇后最多有 N-2 列可以选择（如果考虑到不能在同一条斜线上，可能的选择数量更少），
+因此所有可能的情况不会超过 N! 种，遍历这些情况的时间复杂度是 O(N!)
+
+
+时间复杂度：O(N!)，其中 N 是皇后数量。
+空间复杂度：O(N)，其中 N 是皇后数量。空间复杂度主要取决于递归调用层数以及三个集合，递归调用层数不会超过 N，每个集合的元素个数都不会超过 N。
+ */
+
+class Solution {
+    int res = 0;
+    public int totalNQueens(int n) {
+        Set<Integer> col = new HashSet<>();
+        //正对角线
+        Set<Integer> diag1 = new HashSet<>();
+        //反对角线
+        Set<Integer> diag2 = new HashSet<>();
+
+        dfs(n,0, col, diag1, diag2);
+        return res;
+    }
+
+    public void dfs(int n, int row, Set<Integer> col, Set<Integer> diag1, Set<Integer> diag2){
+        if(row == n){
+            //找到符合的，结果+1
+            res++;
+            return;
+        }
+
+        for(int i = 0; i < n; i++){
+            //同一列检查
+            if(col.contains(i)){
+                continue;
+            }
+            //因为只要处在相同的正对角线，横坐标+纵坐标的值是固定的
+            int diag1Val = row + i;
+            if(diag1.contains(diag1Val)){
+                continue;
+            }
+            //因为只要处在相同的反对角线，横坐标-纵坐标的值是固定的
+            int diag2Val = row-i;
+            if(diag2.contains(diag2Val)){
+                continue;
+            }
+
+            col.add(i);
+            diag1.add(diag1Val);
+            diag2.add(diag2Val);
+            dfs(n ,row+1, col,diag1, diag2);
+            col.remove(i);
+            diag1.remove(diag1Val);
+            diag2.remove(diag2Val);
+        }
+    }
+}
