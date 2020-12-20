@@ -1,0 +1,91 @@
+
+//92. Reverse Linked List II
+//leetcode
+//思路: 设计pre,start, then 三个点
+
+public class reverseBetween {
+	public class ListNode {
+		int val;
+		ListNode next;
+
+		ListNode(int x) {
+			val = x;
+		}
+	}
+
+	public ListNode reverseBetween(ListNode head, int m, int n) {
+		if (head == null) {
+			return head;
+		}
+
+		ListNode dummy = new ListNode(0);
+		dummy.next  = head;
+
+		ListNode pre = dummy;
+
+		for (int i = 0; i < m - 1; i++) {
+			pre = pre.next;
+		}
+
+		ListNode start = pre.next;
+		ListNode then = start.next;
+
+		for (int i = 0; i <  n- m; i++) {
+			start.next = then.next;
+			then.next = pre.next;
+			pre.next = then;
+			then = start.next;
+		}
+
+		return dummy.next;
+	}
+}
+
+
+
+
+/*
+ 时间复杂度: O(N)。考虑包含 N 个结点的链表。对每个节点最多会处理 （第 n 个结点之后的结点不处理）。
+空间复杂度: O(1)。我们仅仅在原有链表的基础上调整了一些指针，只使用了 O(1) 的额外存储空间来获得结果。
+
+基本思路就是设置指针，先找到开始的位置，然后开始反转，最后头尾改变
+ */
+class Solution {
+    public ListNode reverseBetween(ListNode head, int m, int n) {
+        if(head == null || m == n){
+            return head;
+        }
+
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode pre = dummy;
+
+        int step = m;
+        while(step>1){
+            pre = pre.next;
+            step--;
+        }
+
+        ListNode left = pre.next;
+        ListNode right = pre.next.next;
+
+        ListNode subHead = left;
+
+        step = n - m ;
+
+        while(step>0){
+            ListNode temp = right.next;
+            right.next = left;
+            left = right;
+            right = temp;
+            step--;
+        }
+
+        pre.next = left;
+        subHead.next = right;
+
+        return dummy.next;
+
+
+    }
+}
