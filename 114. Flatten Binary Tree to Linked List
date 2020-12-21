@@ -1,31 +1,74 @@
-//114. Flatten Binary Tree to Linked List
+/*
+其实是分为三步：
 
+首先将根节点的左子树变成链表
+其次将根节点的右子树变成链表
+最后将变成链表的右子树放在变成链表的左子树的最右边
+这就是一个递归的过程，递归的一个非常重要的点就是：不去管函数的内部细节是如何处理的，我们只看其函数作用以及输入与输出。对于函数flatten来说：
 
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode(int x) { val = x; }
- * }
+函数作用：将一个二叉树，原地将它展开为链表
+输入：树的根节点
+输出：无
+那我们就直接根据三步来写程序就可以了
+
+time: O(n)
+空间复杂度：O(n)，其中 n 是二叉树的节点数。空间复杂度取决于栈的大小，栈内的元素个数不会超过 n。
  */
 class Solution {
     public void flatten(TreeNode root) {
-        TreeNode cur = root;
-        
-        while(cur != null){
-            if(cur.left!= null){
-                TreeNode last = cur.left;
-                while(last.right != null){
-                    last = last.right;
-                }
-                
-                last.right = cur.right;
-                cur.right = cur.left;
-                cur.left = null;
-            }
-                            cur = cur.right;
+        if(root == null){
+            return ;
         }
+        //将根节点的左子树变成链表
+        flatten(root.left);
+        //将根节点的右子树变成链表
+        flatten(root.right);
+        TreeNode temp = root.right;
+        //把树的右边换成左边的链表
+        root.right = root.left;
+        //记得要将左边置空
+        root.left = null;
+        //找到树的最右边的节点
+        while(root.right != null) root = root.right;
+        //把右边的链表接到刚才树的最右边的节点
+        root.right = temp;
+    }
+}
+
+
+
+
+/*
+时间复杂度：O(n)，其中 n 是二叉树的节点数。前序遍历的时间复杂度是 O(n)，前序遍历之后，需要对每个节点更新左右子节点的信息，时间复杂度也是 O(n)。
+空间复杂度：O(n)，其中 n 是二叉树的节点数。空间复杂度取决于栈（递归调用栈或者迭代中显性使用的栈）和存储前序遍历结果的列表的大小，栈内的元素个数不会超过 n，前序遍历列表中的元素个数是 n。
+ */
+
+/*
+基本上就是先序遍历，先序遍历把点存下来，然后改变指针，左指针全部为空，右指针全部指向下一个
+ */
+class Solution {
+    public void flatten(TreeNode root) {
+        if(root == null){
+            return;
+        }
+        List<TreeNode> res = new ArrayList<>();
+        dfs(res, root);
+        TreeNode  pre = res.get(0);
+        for(int i = 1; i < res.size(); i++){
+            TreeNode cur = res.get(i);
+            pre.right = cur;
+            pre.left = null;
+            pre = cur;
+        }
+    }
+
+    public void dfs(List<TreeNode> res, TreeNode root){
+        if(root == null){
+            return;
+        }
+
+        res.add(root);
+        dfs(res,root.left);
+        dfs(res,root.right);
     }
 }
