@@ -65,3 +65,42 @@ public class maxPathSum {
 
 	 */
 }
+
+
+
+
+
+
+
+
+/*
+时间复杂度：O(N)，其中 N 是二叉树中的节点个数。对每个节点访问不超过 2 次。
+空间复杂度：O(N)，其中 N 是二叉树中的节点个数。空间复杂度主要取决于递归调用层数，最大层数等于二叉树的高度，最坏情况下，二叉树的高度等于二叉树中的节点个数。
+ */
+
+/*
+基本思路就是这个路径 基本是root left + right , 基于left ,right的正负可以选择或者不选择
+然后递归求解，递归返回的是单边的路径和，解释如下
+ */
+class Solution {
+    //定义的结果全局变量， 经过某个根节点的路径的最大和（root + left + right）
+    int res = Integer.MIN_VALUE;
+    public int maxPathSum(TreeNode root) {
+        dfs(root);
+        return res;
+    }
+
+    public int dfs(TreeNode root){
+        if(root == null){
+            return 0;
+        }
+        // 递归求出最大的单边路径和
+        int left = Math.max(0,dfs(root.left));
+        int right  = Math.max(0, dfs(root.right));
+        //每个节点都计算最大的路径和
+        res =Math.max(res, root.val + left + right);
+        //helper返回的是单边的路径和，因为这个方法是用来返回子树的最大路径，这个返回值是用来+ root.val的，所以
+        //所以这个返回只能取一边，不然子树已经上下两边都做了，这样跟ROOT就不能构成路径了
+        return root.val  + Math.max(left, right);
+    }
+}
