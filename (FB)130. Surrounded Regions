@@ -51,3 +51,88 @@ class Solution {
         dfs(i,j-1,m,n,board);
     }
 }
+
+
+
+
+//BFS
+/*
+时间复杂度：O(n×m)，其中 n 和 m 分别为矩阵的行数和列数。广度优先搜索过程中，每一个点至多只会被标记一次。
+空间复杂度：O(n×m)，其中 n 和 m 分别为矩阵的行数和列数。主要为广度优先搜索的队列的开销。
+ */
+class Solution {
+    public class pos{
+        int x;
+        int y;
+        pos(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
+    public void solve(char[][] board) {
+        if(board == null  || board.length <2){
+            return ;
+        }
+
+        int m = board.length;
+        int n = board[0].length;
+
+        Queue<pos> q = new LinkedList<>();
+
+        for(int i = 0 ;  i<m; i++){
+            for(int j = 0 ;  j< n; j++){
+                boolean flag = (i ==0 || j ==0 || i == m-1 || j == n-1);
+                if(flag && board[i][j] == 'O'){
+                    bfs(board, i, j);
+                }
+            }
+        }
+
+        for(int i = 0 ; i< m; i++){
+            for(int j = 0 ; j <n; j++){
+                if(board[i][j] == 'O'){
+                    board[i][j] = 'X';
+                }
+
+                if(board[i][j]== '#'){
+                    board[i][j] = 'O';
+                }
+            }
+        }
+
+    }
+
+    public void bfs(char[][] board, int x, int y){
+        if(x < 0 || x >=board.length || y <0 || y >=board[0].length){
+            return;
+        }
+
+        Queue<pos>q = new LinkedList<>();
+
+        board[x][y] = '#';
+        q.offer(new pos(x,y));
+
+        while(!q.isEmpty()){
+            int size = q.size();
+            for(int i =0 ; i< size; i++){
+                pos cur = q.poll();
+
+                if(cur.x + 1 <= board.length-1 &&  cur.x+1 >=0 && cur.y >=0 && cur.y<=board[0].length-1 && board[cur.x+1][cur.y] =='O'){
+                    bfs(board,cur.x+1, cur.y);
+                }
+
+                if(cur.x - 1 <= board.length-1 &&  cur.x-1 >=0 && cur.y >=0 && cur.y<=board[0].length-1 && board[cur.x-1][cur.y] =='O'){
+                    bfs(board, cur.x -1, cur.y);
+                }
+
+                if(cur.x  <= board.length-1 &&  cur.x>=0 && cur.y+1 >=0 && cur.y +1 <=board[0].length-1 && board[cur.x][cur.y+1] =='O'){
+                    bfs(board, cur.x , cur.y+1);
+                }
+
+                if(cur.x  <= board.length-1 &&  cur.x>=0 && cur.y-1 >=0 && cur.y -1 <=board[0].length-1 && board[cur.x][cur.y-1] =='O'){
+                    bfs(board, cur.x , cur.y-1);
+                }
+            }
+        }
+    }
+}
