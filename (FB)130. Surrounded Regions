@@ -1,0 +1,53 @@
+/*
+时间复杂度：O(n×m)，其中 n 和 m 分别为矩阵的行数和列数。深度优先搜索过程中，每一个点至多只会被标记一次。
+空间复杂度：O(n×m)，其中 n 和 m 分别为矩阵的行数和列数。主要为深度优先搜索的栈的开销。
+*/
+
+/*
+基本思路就是全局扫描把边界联通的O全部找出来变成#，然后再全局扫描一次，把0变成X，把#变回O
+ */
+
+//DFS
+class Solution {
+    public void solve(char[][] board) {
+        if(board == null || board.length<2){
+            return;
+        }
+
+        int m = board.length;
+        int n = board[0].length;
+
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n ; j ++){
+                boolean flg  = (i  == 0 || j ==0 || i == m-1 || j == n-1);
+                if(flg && board[i][j] == 'O'){
+                    dfs(i,j,m,n,board);
+                }
+            }
+        }
+
+        for(int i = 0;  i< m; i++){
+            for(int j = 0 ; j < n; j++){
+                if(board[i][j] == 'O'){
+                    board[i][j] = 'X';
+                }
+
+                if(board[i][j] == '#'){
+                    board[i][j] = 'O';
+                }
+            }
+        }
+    }
+
+    public void dfs(int i , int j, int m, int n, char[][]board){
+        if(i<0 || i >= m || j <0 || j >=n || board[i][j] != 'O'){
+            return;
+        }
+
+        board[i][j] = '#';
+        dfs(i+1, j , m,n,board);
+        dfs(i-1,j,m,n,board);
+        dfs(i,j+1,m,n,board);
+        dfs(i,j-1,m,n,board);
+    }
+}
