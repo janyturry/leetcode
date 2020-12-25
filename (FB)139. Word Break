@@ -1,0 +1,88 @@
+
+import java.util.List;
+
+//139. Word Break
+//leetcode
+//Complexity：O(N^2) for DP
+//dp[i] 代表 0~i-1 的 string 可以被成功break; 
+//思路就是初始化dp[0] = true, 然后两层循环， 找出break 的地方
+//有空可以follow up一下九章算术的优化， 先求出最大长度的
+public class wordBreak {
+	public boolean wordBreak(String s, List<String> wordDict) {
+		if(s ==null ||s.length() ==0){
+			return false;
+		}
+		//dp[i] 代表 前 i-1 的单词都能成功分割
+		//需要一个初始化的值来给后面的条件用dp[j] && wordDict.contains(s.substring(j, i))
+		boolean []dp = new boolean[s.length() + 1];
+		dp[0] = true;
+		for(int i =1; i <= s.length(); i++){
+			for(int j = 0; j <i; j++){
+				//这就是保持连贯性的条件，一定要 0~j-1 的位置都能分割点函授 j~i-1的单词， 当前dp[i]才能表示可以分割
+				if(!dp[j]){
+				    continue;
+				}
+				if(wordDict.contains(s.substring(j, i))){
+				    	dp[i] = true;
+					break;
+				}
+				
+				/* old slow version
+				if(dp[j] && wordDict.contains(s.substring(j, i))){
+				    	dp[i] = true;
+				}
+				*/
+			}
+		}
+		return dp[s.length()];
+	}
+}
+
+
+
+
+/*
+
+前 i 个字符的子串，能否分解成单词 + 剩余子串，是否为单个单词
+
+dp[i] 代表的是index (0~ i-1 ) 能够全部完成拆分。 也就是说第I个字母的位置符合要求
+
+dp[0] = true。长度为 0 的s[0:-1]能拆分成单词表单词。
+看似荒谬，但这只是为了让边界情况也能满足状态转移方程。
+
+
+时间复杂度：O(n^2), 其中 n 为字符串 s 的长度。我们一共有 O(n) 个状态需要计算，每次计算需要枚举 O(n) 个分割点，
+哈希表判断一个字符串是否出现在给定的字符串列表需要 O(1)的时间，因此总时间复杂度为 O(n^2)
+空间复杂度：O(n)，其中 n 为字符串 s 的长度。我们需要 O(n) 的空间存放 dp 值以及哈希表亦需要 O(n) 的空间复杂度，因此总空间复杂度为 O(n)。
+ */
+
+class Solution {
+    public boolean wordBreak(String s, List<String> wordDict) {
+        if(s == null || s.length() < 1){
+            return true;
+        }
+
+        Set<String> word = new HashSet<>(wordDict);
+
+        int len = s.length();
+        boolean [] dp = new boolean[len+1];
+
+        dp[0] = true;
+
+        for(int i = 0; i <=len; i++){
+            /*
+            为啥j从i-1开始不从0开始：
+            官方题解也是从0开始的，没有问题。 我的想法是这样的，设最长的单词长度为maxLen，在能拆分的话情况下，
+            那么如果从j-1开始遍历，那么最多需maxLen次比较。而如果从0开始，最多需要j次。一般情况下，j一般是大于maxLen的吧，不过也并不绝对。
+             */
+            for(int j = i-1; j >=0; j--){
+                dp[i] =  dp[j] && word.contains(s.substring(j, i));
+                if(dp[i]){
+                    break;
+                }
+            }
+        }
+
+        return dp[len];
+    }
+}
