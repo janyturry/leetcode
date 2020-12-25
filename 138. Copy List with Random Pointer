@@ -61,3 +61,51 @@ public class copyRandomList {
         return copyHead;
 	}
 }
+
+
+
+
+/*
+复杂度分析
+时间复杂度：O(N)
+空间复杂度：O(1)
+ */
+class Solution {
+    public Node copyRandomList(Node head) {
+        if(head == null){
+            return head;
+        }
+
+        Node dummyHead = head;
+        while(dummyHead != null){
+            Node copyNode = new Node(dummyHead.val);
+            copyNode.next = dummyHead.next;
+            dummyHead.next = copyNode;
+            dummyHead = copyNode.next;
+        }
+
+        dummyHead = head;
+        while(dummyHead != null && dummyHead.next!= null){
+            if(dummyHead.random != null){
+                dummyHead.next.random = dummyHead.random.next;
+            }
+            dummyHead = dummyHead.next.next;
+        }
+
+        dummyHead = head;
+        Node resCopyHead = dummyHead.next;
+        Node copyHead = dummyHead.next;
+        while(copyHead.next != null){
+            dummyHead.next = dummyHead.next.next;
+            dummyHead = dummyHead.next;
+
+
+            copyHead.next = copyHead.next.next;
+            copyHead = copyHead.next;
+        }
+
+        dummyHead.next = null;
+
+        return resCopyHead;
+    }
+}
