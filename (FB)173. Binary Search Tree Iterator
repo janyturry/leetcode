@@ -1,0 +1,34 @@
+//BFS 遍历
+/*
+时间复杂度的话，对于 next 方法，大多数时候是 O(1)，但最坏情况因为最里边的 while 循环，
+其实有可能达到 O(n)。但如果算均摊时间复杂度的话，其实还是 O(1)，因为每个节点最多也就经过两次就出栈了。
+空间复杂度，这里只需要消耗栈的空间，也就是 O(h)
+ */
+class BSTIterator {
+    Stack<TreeNode> s ;
+    TreeNode cur;
+    public BSTIterator(TreeNode root) {
+        cur = root;
+        s = new Stack<TreeNode>();
+    }
+
+    public int next() {
+        int res = -1;
+        while(cur != null || !s.isEmpty()){
+            while(cur != null){
+                s.push(cur);
+                cur = cur.left;
+            }
+
+            cur = s.pop();
+            res = cur.val;
+            cur  = cur.right;
+            break;
+        }
+        return res;
+    }
+
+    public boolean hasNext() {
+        return (!s.isEmpty() || cur != null);
+    }
+}
