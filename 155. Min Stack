@@ -46,3 +46,43 @@ class MinStack {
 	}
 
 }
+
+
+
+
+
+//基本思路就是用一个全局变量MIN保存最小值，每次入栈一个x<=min的时候，在他之前先把MIN 入栈了，然后更新MIN = X
+class MinStack {
+    Stack<Integer> stack;
+    int min ;
+    /** initialize your data structure here. */
+    public MinStack() {
+        stack = new Stack<>();
+        min = Integer.MAX_VALUE;
+    }
+
+    public void push(int x) {
+        if(x < min){
+            stack.push(min);
+            min = x;
+            stack.push(x);
+        }else{
+            stack.push(x);
+        }
+    }
+
+    public void pop() {
+        if(min == stack.pop()){
+            min = stack.pop();
+        }
+    }
+
+    public int top() {
+        return stack.peek();
+    }
+
+    public int getMin() {
+        return min;
+    }
+}
+
