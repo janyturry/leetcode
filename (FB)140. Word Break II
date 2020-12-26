@@ -1,0 +1,87 @@
+//140. Word Break II
+//leetcode
+
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+class Solution {
+    public List<String> wordBreak(String s, List<String> wordDict) {
+        return helper(s, wordDict, new HashMap<String, List<String>>());
+    }
+
+    List<String> helper(String s,List<String> wordDict, Map<String, List<String>> map){
+        if(map.get(s) != null){
+            return map.get(s);
+        }
+
+        List<String> res = new LinkedList<String>();
+
+        for(String dict :wordDict ){
+            if(s.startsWith(dict)){
+                String next = s.substring(dict.length());
+                if(next == null || next.length() <1){
+                    res.add(dict);
+                }else{
+                    for(String sub : helper(next, wordDict, map)){
+                        res.add(dict + " " + sub);
+                    }
+                }
+            }
+        }
+        map.put(s, res);
+        return res;
+    }
+}
+
+
+
+
+
+/*
+
+https://leetcode-cn.com/problems/word-break-ii/solution/shou-hua-tu-jie-dan-ci-chai-fen-ii-cong-di-gui-dao/
+
+
+用DFS回溯，考察所有的拆分可能，如下图，指针从左往右扫描。
+如果指针左侧部分是单词，则对右侧的剩余子串，递归考察。
+如果指针左侧部分不是单词，不用往下递归，回溯，考察别的分支。
+ */
+class Solution {
+    Map<Integer, List<String>> map;
+    Set<String> word ;
+    public  List<String> wordBreak(String s, List<String> wordDict) {
+        map = new HashMap<>();
+        word = new HashSet<String>(wordDict);
+        return dfs(0,s);
+    }
+
+    public  List<String> dfs(int start, String s){
+        if(start >= s.length()){
+            List<String> tmp =  new ArrayList<String>();
+            tmp.add("");
+            return tmp;
+        }
+
+        //遇到"aaaa" 这种，使用MAP 可以避免重复计算
+        if(map.containsKey(start)){
+            return map.get(start);
+        }
+
+        List<String> res = new ArrayList<>();
+
+        for(int i = start+1 ; i <= s.length();i++){
+            String sub = s.substring(start, i);
+            if(word.contains(sub)){
+                List<String> subRes = dfs(i,s);
+                for(String cur : subRes){
+                    res.add(cur.equals("")?sub : sub+ " "+ cur);
+                }
+            }
+        }
+        map.put(start, res);
+        return res;
+    }
+}
