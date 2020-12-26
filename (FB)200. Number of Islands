@@ -1,0 +1,131 @@
+
+import java.util.LinkedList;
+import java.util.Queue;
+//200. Number of Islands
+//leetcode
+//BFS 方法
+/*
+时间复杂度：O(MN)，其中 M 和 N 分别为行数和列数。
+空间复杂度：O(min(M,N))，在最坏情况下，整个网格均为陆地，队列的大小可以达到 min(M,N)。
+
+深度优先算法是 像一条蛇一样，不停的往前走。 所以时间复杂度是所有的格子的数量M*N 。
+广度优先算法就是 二叉树中的按层遍历。每次扫描一层。在这个题目中，的按层遍历（广度优先）不是按行，
+也不是按列，而是按照斜率为45度的方向 斜着斜着的扫描。因为最长的斜线 斜着的格子的数量等于min（M, N） 所以，斜着扫描（广度优先）的空间复杂度等就是 min（M, N）
+*/
+
+class Solution {
+    class point{
+        int x;
+        int y;
+        public point(int x, int y){
+            this.x = x;
+            this.y = y;
+        }
+    }
+
+    int[][]dirs = new int[][]{{1,0}, {-1,0}, {0,-1}, {0,1}};
+    boolean [][] visited;
+    int m;
+    int n;
+    public int numIslands(char[][] grid) {
+        if(grid == null || grid[0].length <1){
+            return 0;
+        }
+
+        int res = 0;
+
+        m = grid.length;
+        n = grid[0].length;
+
+        visited = new boolean[m][n];
+
+        Queue<point> q = new LinkedList<>();
+
+        for(int i = 0 ; i< m; i++){
+            for(int j = 0; j < n; j++){
+                if(grid[i][j] == '1' && !visited[i][j]){
+                    bfs(new point(i,j), grid);
+                    res++;
+                }
+            }
+        }
+
+        return res;
+
+
+    }
+
+    public void bfs (point p , char[][] grid){
+        Queue<point> q = new LinkedList<>();
+        q.offer(p);
+        //重点是在加到队列的时候就设置为True, 不要早POLL出来的时候才设置为true，这样可以避免重复
+        visited[p.x][p.y] = true;
+        while(!q.isEmpty()){
+            int size = q.size();
+            for(int i = 0 ; i< size; i++){
+                point cur = q.poll();
+
+                for(int[] dir : dirs){
+                    int newX = dir[0] +  cur.x;
+                    int newY = dir[1] + cur.y;
+
+                    if(newX>=0 && newX <= m-1 && newY >=0 && newY<= n-1 && !visited[newX][newY] && grid[newX][newY] == '1'){
+                        q.offer(new point(newX, newY));
+                        visited[newX][newY] = true;
+                    }
+                }
+            }
+        }
+    }
+}
+	
+	
+	
+	
+	
+	
+	
+	
+/*
+当以邻接表表示时，查找所有顶点的邻接表所需时间为O(|E|)，访问顶点所需时间为O(|v|)，此时，总的时间复杂度为O(|v|+|E|)。
+ */
+//DFS
+class Solution {
+    final static int dir[][] = new int[][]{{-1,0}, {1,0}, {0,-1},{0,1}};
+    public int numIslands(char[][] grid) {
+        if(grid == null || grid.length <1 || grid[0].length <1){
+            return 0;
+        }
+
+        int row = grid.length;
+        int col = grid[0].length;
+
+        int count = 0;
+        for(int i =0 ; i < row; i++){
+            for(int j = 0; j < col; j++){
+                if(grid[i][j] == '1'){
+                    count++;
+                    dfs(grid, i, j , row, col);
+                }
+            }
+        }
+        return count;
+    }
+
+    public void dfs (char [][] grid, int i, int j, int row, int col){
+
+        if(i <0 || i >=row || j <0 || j>=col || grid[i][j] == '0'){
+            return ;
+        }
+        //要跟面试官讨论最后要不要恢复矩阵， 要恢复的话，要转换成其他数字，例如'3'
+        grid[i][j] = '0';
+        for(int[] tmp : dir){
+
+            int newX = tmp[0] + i;
+            int newY = tmp[1] + j;
+            dfs(grid, newX, newY, row,col);
+        }
+    }
+}
+
+
