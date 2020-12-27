@@ -1,0 +1,64 @@
+/*
+trie 
+https://leetcode-cn.com/problems/design-add-and-search-words-data-structure/solution/yu-dao-tong-pei-fu-shi-di-gui-chu-li-python-dai-ma/
+ */
+
+class WordDictionary {
+    class Node{
+        Node[] next;
+        boolean isWord;
+        public Node(){
+            next = new Node[26];
+            this.isWord = false;
+        }
+    }
+
+    Node root;
+    /** Initialize your data structure here. */
+    public WordDictionary() {
+        root = new Node();
+    }
+
+    public void addWord(String word) {
+        Node curNode = root;
+        int len = word.length();
+        for(int i = 0 ; i< len; i++){
+            char c  = word.charAt(i);
+            if(curNode.next[c- 'a'] == null){
+                curNode.next[c-'a'] = new Node();
+            }
+            curNode = curNode.next[c-'a'];
+        }
+
+        curNode.isWord = true;
+    }
+
+    public boolean search(String word) {
+        return match(word, root, 0);
+    }
+
+    public boolean match(String word, Node root, int start){
+        if(start == word.length()){
+            //因为上次有很长的单词例如abcd, 但这次搜索的只是abc，同一条路径往下走，直走到c， 那么应该返回root.isWord , 所以这里不能直接return true;
+            return root.isWord;
+        }
+        Node curNode = root;
+
+        char c = word.charAt(start);
+
+        if(c == '.'){
+            for(int i = 0 ;  i< 26; i++){
+                if(curNode.next[i] != null && match(word, curNode.next[i] , start+1) ){
+                    return true;
+                }
+            }
+            return false;
+        }else{
+            if(curNode.next[c -'a'] == null){
+                return false;
+            }
+
+            return match(word, curNode.next[c-'a'], start+1);
+        }
+    }
+}
