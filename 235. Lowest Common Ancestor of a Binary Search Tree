@@ -1,52 +1,47 @@
+/*
+Complexity Analysis
 
-//235. Lowest Common Ancestor of a Binary Search Tree
-//leetcode
-//思路就是一共有三种情况. (1) 目标节点分别在左右两边或者是目标节点有一个或两个跟根节点重合， return root
-//(2) 全部在左边， 
-//(3) 全部在右边
-public class lowestCommonAncestor235 {
-	public class TreeNode {
-		int val;
-		TreeNode left;
-		TreeNode right;
+Time Complexity: O(N), where N is the number of nodes in the BST. In the worst case we might be visiting all the nodes of the BST.
+Space Complexity: O(N). This is because the maximum amount of space utilized by the recursion stack would be 
+N . since the height of a skewed BST could be N. 
+*/
 
-		TreeNode(int x) {
-			val = x;
-		}
-	}
-	
-  //recursive
-	public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-		if (root == null) {
-			return root;
-		}
+//recursive
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if(root.val < p.val && root.val < q.val){
+            return lowestCommonAncestor(root.right, p,q);
+        }else if(root.val > p.val && root.val > q.val){
+            return lowestCommonAncestor(root.left, p,q);
+        }else{
+            return root;
+        }
+    }
+}
 
-		if(root.val> p.val && root.val> q.val){
-			return lowestCommonAncestor(root.left, p,q);
-		}else if(root.val< p.val && root.val< q.val){
-			return lowestCommonAncestor(root.right, p,q);
-		}else{
-			return root;
-		}
-	}
-	
-	
-	//iterative
-	/*
-	public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-		if (root == null) {
-			return root;
-		}
-		
-		while(true){
-			if(root.val> p.val && root.val> q.val){
-				root = root.left;
-			}else if(root.val< p.val && root.val< q.val){
-				root = root.right;
-			}else{
-				return root;
-			}
-		}
-	}
-	*/
+
+
+
+
+
+/*
+Complexity Analysis
+Time Complexity : O(N), where N is the number of nodes in the BST. In the worst case we might be visiting all the nodes of the BST.
+Space Complexity : O(1). 
+*/
+
+//iterative
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        while(root != null){
+            if(root.val < p.val && root.val < q.val){
+                root = root.right;
+            }else if(root.val > p.val && root.val > q.val){
+                root =root.left;
+            }else{
+                break;
+            }
+        }
+        return root;
+    }
 }
