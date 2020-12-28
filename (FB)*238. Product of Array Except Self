@@ -1,0 +1,26 @@
+/*
+Time complexity : O(N) where N represents the number of elements in the input array.
+Space complexity : O(1) since don't use any additional array for our computations.
+The problem statement mentions that using the res array doesn't add to the space complexity.
+
+
+基本思路就是先计算数字左边的乘积，在计算右边的乘积
+ */
+class Solution {
+    public int[] productExceptSelf(int[] nums) {
+        int len = nums.length;
+        int [] res = new int[len];
+        res[0] = 1;
+        int sum = 1;
+        for(int i = 1; i <len; i++){
+            res[i] = res[i-1]*nums[i-1];
+        }
+
+        int right =nums[len -1];
+        for(int i = len -2; i>=0; i--){
+            res[i] =  res[i] * right;
+            right =  nums[i] *right;
+        }
+        return res;
+    }
+}
