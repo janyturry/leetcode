@@ -1,0 +1,54 @@
+/*
+单独看 push 操作的复杂度确实不是 O(1)，但是算法整体的复杂度依然是 O(N) 线性时间。
+要这样想，nums 中的每个元素最多被 push_back 和 pop_back 一次，没有任何多余操作，所以整体的复杂度还是 O(N)。
+
+
+空间复杂度就很简单了，就是窗口的大小 : O(k)
+ */
+
+class Solution {
+    private class MonotonicQueue {
+
+        ArrayDeque<Integer> deque;
+
+        public MonotonicQueue() {
+            deque = new ArrayDeque<Integer>();
+        }
+
+        public Integer max() {
+            return deque.peekFirst();
+        }
+
+        public void pop(int num) {
+            if (!deque.isEmpty() && num == deque.peekFirst())
+                deque.pollFirst();
+        }
+
+        public void push(int num) {
+            while (!deque.isEmpty() && deque.peekLast() < num) {
+                deque.pollLast();
+            }
+            deque.addLast(num);
+        }
+
+    }
+
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        MonotonicQueue windows = new MonotonicQueue();
+        ArrayList<Integer> res = new ArrayList<>();
+        for (int i = 0; i < nums.length; i++) {
+            if (i < k - 1) {
+                windows.push(nums[i]);
+            } else {
+                windows.push(nums[i]);
+                res.add(windows.max());
+                windows.pop(nums[i - k + 1]);
+            }
+        }
+        int[] ans = new int[res.size()];
+        for (int i = 0; i < ans.length; i++) {
+            ans[i] = res.get(i);
+        }
+        return ans;
+    }
+}
