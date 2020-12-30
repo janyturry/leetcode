@@ -1,0 +1,49 @@
+/*
+time: 在这一过程的每一步中，我们都会考虑 4 种不同的选择或 4 种不同的递归路径。基本情况是当索引值达到 N时，即 nums 数组的长度。因此，我们的复杂性将是O( 4^n)。
+space: 由于递归堆栈的大小由索引的值决定，因此递归堆栈占用的空间也将为 O(n) 并且从 0 一直到 N不等。
+
+//https://leetcode-cn.com/problems/expression-add-operators/solution/xiang-xi-tong-su-de-si-lu-fen-xi-duo-jie-fa-by-52/
+ */
+
+class Solution {
+    public List<String> addOperators(String num, int target) {
+        List<String> result = new ArrayList<>();
+        addOperatorsHelper(num, target, result, new StringBuilder(), 0, 0, 0);
+        return result;
+    }
+
+    //eval 是之前PATH 的计算结果， PRE 是上一个节点的值
+    private void addOperatorsHelper(String num, int target, List<String> result, StringBuilder path, int start, long eval, long pre) {
+        if (start == num.length()) {
+            if (target == eval) {
+                result.add(path.toString());
+            }
+            return;
+
+        }
+        for (int i = start; i < num.length(); i++) {
+            // 数字不能以 0 开头
+            if (num.charAt(start) == '0' && i > start) {
+                break;
+            }
+            long cur = Long.parseLong(num.substring(start, i + 1));
+            int len = path.length();
+            if (start == 0) {
+                addOperatorsHelper(num, target, result, path.append(cur), i + 1, cur, cur);
+                path.setLength(len);
+            } else {
+
+                // 加当前值
+                addOperatorsHelper(num, target, result, path.append("+").append(cur), i + 1, eval + cur, cur);
+                path.setLength(len);
+                // 减当前值
+                addOperatorsHelper(num, target, result, path.append("-").append(cur), i + 1, eval - cur, -cur);
+                path.setLength(len);
+                // 乘当前值
+                addOperatorsHelper(num, target, result, path.append("*").append(cur), i + 1, eval - pre + pre * cur,
+                        pre * cur);
+                path.setLength(len);
+            }
+        }
+    }
+}
