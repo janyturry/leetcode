@@ -1,0 +1,50 @@
+https://leetcode-cn.com/problems/diagonal-traverse/solution/xiao-bai-kan-guo-lai-zui-zhi-bai-yi-li-jie-ban-ben/
+
+class Solution {
+    public int[] findDiagonalOrder(int[][] matrix) {
+        if(matrix == null || matrix.length<1){
+            return new int[0];
+        }
+
+        int m = matrix.length;
+        int n = matrix[0].length;
+
+        int[] res = new int[m*n];
+        int index = 0;
+
+        int count = m + n - 1;
+
+        int row = 0;
+        int col = 0;
+
+        for(int i = 0 ; i< count; i++){
+            if(i%2  == 0){
+                while(row>=0 && col< n) {
+                    res[index++] = matrix[row][col];
+                    row--;
+                    col++;
+                }
+                if(col< n){
+                    row++;
+                }else{
+                    row+=2;
+                    col--;
+                }
+            }else{
+                while(row< m && col >=0) {
+                    res[index++] = matrix[row][col];
+                    row++;
+                    col--;
+                }
+                if(row < m ){
+                    col++;
+                }else{
+                    row--;
+                    col = col+2;
+                }
+            }
+        }
+
+        return res;
+    }
+}
