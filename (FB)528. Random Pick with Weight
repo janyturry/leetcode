@@ -48,3 +48,45 @@ class Solution {
        return left;
     }
 }
+
+
+
+
+
+
+class Solution {
+    int [] sum ;
+    public Solution(int[] w) {
+        sum = new int[w.length];
+        int tmpSum = 0;
+        for(int i = 0 ; i < w.length; i++){
+            tmpSum+=w[i];
+            sum[i] = tmpSum;
+        }
+    }
+
+    public int pickIndex() {
+        Random r = new Random();
+        //because 1 <= w[i] <= 10^5, so nextInt from [0 to x) , then next from [1 to x+1)
+        int next = r.nextInt(sum[sum.length-1]) + 1;
+        int left = 0;
+        int right =sum.length-1;
+
+        /*
+        if you use while (lo <= hi) you use lo=mid+1 and hi=mid-1
+        if you use while (lo < hi) you use lo = mid+1 and hi=mid
+         */
+        while(left < right){
+            int mid = left + (right - left)/2;
+            if(next == sum[mid]){
+                return mid;
+            }else if( next < sum[mid]){
+                right = mid;
+            }else{
+                left = mid+1;
+            }
+        }
+        return left;
+    }
+}
+
