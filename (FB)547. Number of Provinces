@@ -1,0 +1,33 @@
+/*
+时间复杂度：O(n*n)，整个矩阵都要被遍历，大小为 n*n。
+空间复杂度：O(n)，visited 数组的大小。
+*/
+
+
+class Solution {
+    int count;
+    public int findCircleNum(int[][] isConnected) {
+        if(isConnected  == null || isConnected.length<1){
+            return 0;
+        }
+        count = 0;
+        boolean []visited = new boolean[isConnected.length];
+        for(int i =0 ; i< isConnected.length;i++){
+            if(!visited[i]){
+                                visited[i] = true;
+                helper(isConnected,visited, i);
+                count++;
+            }
+        }
+        return count;
+    }
+    
+    public void helper(int[][] isConnected,boolean[]visited, int person){
+        for(int other = 0 ; other< isConnected.length; other++){
+            if(isConnected[person][other] == 1 && !visited[other]){
+                visited[other] = true;
+                helper(isConnected, visited, other);
+            }
+        }
+    }
+}
