@@ -1,0 +1,27 @@
+/*
+Complexity Analysis
+
+Time Complexity: O(N), where N is the length of nums. We perform one loop through nums.
+
+Space Complexity: O(1), the space used by anchor and ans.
+
+*/
+
+class Solution {
+    public int findLengthOfLCIS(int[] nums) {
+        if(nums == null || nums.length <1){
+            return 0;
+        }
+        int res = 1;
+        int count = 1;
+        for(int i = 0;i < nums.length-1; i++){
+            if(nums[i+1] > nums[i]){
+                count++;
+                res = Math.max(res, count);
+            }else{
+                count =1;
+            }
+        }
+        return res;
+    }
+}
