@@ -1,3 +1,8 @@
+/*
+时间复杂度为O((n−1)(m−1))；每次仅使用了两个元素，
+空间复杂度为O(1)。
+*/
+
 class Solution {
     public boolean isToeplitzMatrix(int[][] matrix) {
         int m = matrix.length;
