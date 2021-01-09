@@ -42,16 +42,16 @@ class CBTInserter {
 
 //method 2
 //initial O(n), insert o(1)
+//插的顺序是上到下，左到右
 class CBTInserter {
-    TreeNode root;
-    Queue<TreeNode> q  = new LinkedList<>();
+    private TreeNode root;
+    private Queue<TreeNode> q = new LinkedList<>();
 
-    //INITIAL in queue only not complete parent node
     public CBTInserter(TreeNode root) {
         this.root = root;
-        q = new LinkedList<>();
         q.offer(root);
-        while(q.peek().right!=null){
+        //让PEEK 指向缺少左节点或者右节点的第一个节点
+        while (q.peek().right != null && q.peek().left != null) {
             q.offer(q.peek().left);
             q.offer(q.peek().right);
             q.poll();
@@ -59,23 +59,17 @@ class CBTInserter {
     }
 
     public int insert(int v) {
-        int res = q.peek().val ;
-        if(q.peek().left == null){
-            q.peek().left = new TreeNode(v);
-        }else{
-            q.peek().right = new TreeNode(v);
-            q.offer(q.peek().left);
-            q.offer(q.peek().right);
+        TreeNode p = q.peek();
+        if (p.left == null) {
+            p.left = new TreeNode(v);
+        }else {
+            p.right = new TreeNode(v);
+            q.offer(p.left);
+            q.offer(p.right);
             q.poll();
         }
-        return res;
-
+        return p.val;
     }
 
-    public TreeNode get_root() {
-        return root;
-    }
+    public TreeNode get_root() { return root; }
 }
-
-
-
