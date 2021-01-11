@@ -1,0 +1,21 @@
+class Solution {
+    public int minAddToMakeValid(String S) {
+        Deque<Character> q = new LinkedList<>();
+    
+        int ans = 0;
+        for(int i = 0 ; i< S.length(); i++){
+            char cur = S.charAt(i);
+            if(cur == '('){
+                q.push('(');
+            }else{
+                if(q.size() == 0){
+                    ans++;
+                }else{
+                    q.pop();
+                }
+            }
+        }
+        
+        return q.size() + ans;
+    }
+}
