@@ -42,7 +42,7 @@ class Solution {
                 if(res){
                     return false;
                 }
-
+                //这里无论cur.left, cur.right是不是NULL都需要入栈， 目的就是把全部点弄进去queue
                 q.offer(cur.left);
                 q.offer(cur.right);
 
