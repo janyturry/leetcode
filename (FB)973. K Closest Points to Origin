@@ -1,0 +1,97 @@
+/*
+时间复杂度：期望为 O(n)，其中 n 是数组 points 的长度。由于证明过程很繁琐，所以不再这里展开讲。具体证明可以参考《算法导论》第 9 章第 2 小节。
+最坏情况下，时间复杂度为
+O(n*n)。具体地，每次的划分点都是最大值或最小值，一共需要划分 n−1 次，而一次划分需要线性的时间复杂度，所以最坏情况下时间复杂度为 O(n*n)。
+
+ 因为我们是要找下标为k的元素，第一次切分的时候需要遍历整个数组 (0 ~ n) 找到了下标是 j 的元素，假如 k 比 j 小的话，
+ 那么我们下次切分只要遍历数组 (0~j-1)的元素就行啦，反之如果 k 比 j 大的话，那下次切分只要遍历数组 (j+1～n) 的元素就行啦，
+ 总之可以看作每次调用 partition 遍历的元素数目都是上一次遍历的 1/2，因此时间复杂度是 N + N/2 + N/4 + ... + N/N = 2N, 因此时间复杂度是 
+O(N)。
+
+
+空间复杂度：期望为 O(logn)，即为递归调用的期望深度。
+最坏情况下，空间复杂度为
+O(n)，此时需要划分 n−1 次，对应递归的深度为 n−1 层，所以最坏情况下时间复杂度为 O(n)。
+
+
+
+ */
+
+class Solution {
+    public int[][] kClosest(int[][] points, int K) {
+        // 使用快速选择（快排变形） 获取 points 数组中距离最小的 K 个点（第 4 个参数是下标，因此是 K - 1）
+        return quickSelect(points, 0, points.length - 1, K - 1);
+    }
+
+    private int[][] quickSelect(int[][] points, int lo, int hi, int idx) {
+        if (lo > hi) {
+            return new int[0][0];
+        }
+        // 快排切分后，j 左边的点距离都小于等于 points[j], j 右边的点的距离都大于等于 points[j]。
+        int j = partition(points, lo, hi);
+        // 如果 j 正好等于目标idx，说明当前points数组中的[0, idx]就是距离最小的 K 个元素
+        if (j == idx) {
+            return Arrays.copyOf(points, idx + 1);
+        }
+        // 否则根据 j 与 idx 的大小关系判断找左段还是右段
+        return j < idx? quickSelect(points, j + 1, hi, idx): quickSelect(points, lo, j - 1, idx);
+    }
+
+    private int partition(int[][] points, int lo, int hi) {
+        int[] v = points[lo];
+        int dist = v[0] * v[0] + v[1] * v[1];
+        int i = lo, j = hi + 1;
+        while (true) {
+            while (++i <= hi && points[i][0] * points[i][0] + points[i][1] * points[i][1] < dist);
+            while (--j >= lo && points[j][0] * points[j][0] + points[j][1] * points[j][1] > dist);
+            if (i >= j) {
+                break;
+            }
+            int[] tmp = points[i];
+            points[i] = points[j];
+            points[j] = tmp;
+        }
+        points[lo] = points[j];
+        points[j] = v;
+        return j;
+    }
+}
+
+
+
+
+
+
+import java.util.PriorityQueue;
+
+//solution 2 : max -heap
+//maintain a max-heap with size K
+/*
+
+Theoretically, the time complexity is O(NlogK), but pratically, the real time it takes on leetcode is 134ms.
+
+The advantage of this solution is it can deal with real-time(online) stream data. It does not have to know the size of the data previously.
+The disadvatage of this solution is it is not the most efficient solution.
+
+ */
+class Solution {
+    public int[][] kClosest(int[][] points, int K) {
+        PriorityQueue<int[]> p  =new PriorityQueue<>( (a, b)-> b[0]*b[0] + b[1]*b[1] - a[0]*a[0] - a[1]*a[1]);
+
+        for(int [] tmp : points){
+            p.offer(tmp);
+            while(p.size()>K){
+                p.poll();
+            }
+        }
+
+        int [][] res = new int[K][2];
+        for(int i = K-1; i >=0 ; i--){
+            res[i] = p.poll();
+        }
+
+        return res;
+
+    }
+}
+
