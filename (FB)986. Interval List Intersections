@@ -3,6 +3,8 @@
 Time Complexity: O(M + N), where M,N are the lengths of A and B respectively.
 
 Space Complexity: O(M + N), the maximum size of the answer.
+
+https://leetcode-cn.com/problems/interval-list-intersections/solution/jiu-pa-ni-bu-dong-shuang-zhi-zhen-by-hyj8/
 */
 
 //关键在于判断是否++, 是要看那一段intervel的end point 是不是最小，如果是最小的那么他肯定已经不可能跟B 继续inter, 所以++
