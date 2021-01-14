@@ -62,17 +62,14 @@ class Solution {
 
 
 
-import java.util.PriorityQueue;
 
-//solution 2 : max -heap
-//maintain a max-heap with size K
 /*
 
-Theoretically, the time complexity is O(NlogK), but pratically, the real time it takes on leetcode is 134ms.
+时间复杂度：
+O(nlogK)，其中 n 是数组 points 的长度。由于优先队列维护的是前K 个距离最小的点，
+因此弹出和插入操作的单次时间复杂度均为 O(logK)。在最坏情况下，数组里 n 个点都会插入，因此时间复杂度为 O(nlogK)。
 
-The advantage of this solution is it can deal with real-time(online) stream data. It does not have to know the size of the data previously.
-The disadvatage of this solution is it is not the most efficient solution.
-
+空间复杂度：O(K)，因为优先队列中最多有 K 个点。
  */
 class Solution {
     public int[][] kClosest(int[][] points, int K) {
