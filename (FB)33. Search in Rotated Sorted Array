@@ -3,44 +3,43 @@
 //leetcode
 //思路： 二分，找出mid跟 s比较，先判断mid 落在左边递增区间还是右边递增区间。 ex : 4,5,1,2,3   这里 mid （1） 落在右边递增区间.
 //当确定落在哪个递增区间之后，再判断target 是不是落在这个区间
+//binary search
 
-class search33 {
-	public int search(int[] nums, int target) {
-		if (nums == null || nums.length == 0) {
+class Solution {
+    public int search(int[] nums, int target) {
+        	if (nums == null || nums.length == 0) {
 			return -1;
 		}
 
 		int s = 0;
 		int e = nums.length - 1;
 
-		while (s + 1 < e) {
+		while (s  < e) {
 			int mid = s + (e - s) / 2;
 			if (nums[mid] == target) {
 				return mid;
 			}
 
-			if (nums[mid] > nums[s]) {
-			//target >= nums[s]  等号很重要因为target可能就落在边界
-				if (target >= nums[s] && target <= nums[mid]) {
-					e = mid;
+//注意这里是nums[mid+1]
+			if (nums[mid] <nums[e]) {
+				if (target <= nums[e] && target >= nums[mid+1]) {
+					s = mid+1;
 				} else {
-					s = mid;
+					e = mid;
 				}
 			} else {
-				if (target >= nums[mid] && target <= nums[e]) {
-					s = mid;
-				} else {
+				if (target <= nums[mid] && target >= nums[s]) {
 					e = mid;
+				} else {
+					s = mid+1;
 				}
 			}
 		}
 
 		if (nums[s] == target) {
 			return s;
-		} else if (nums[e] == target) {
-			return e;
 		} else {
-			return -1;
-		}
-	}
+            return -1;
+        }
+    }
 }

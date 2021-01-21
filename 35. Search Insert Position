@@ -1,0 +1,32 @@
+//binary search
+
+/*
+时间复杂度：O(logN)，这里 N 是数组的长度，每一次都将问题的规模缩减为原来的一半，因此时间复杂度是对数级别的；
+空间复杂度:O(1)，使用到常数个临时变量。
+*/
+class Solution {
+    public int searchInsert(int[] nums, int target) {
+        if(nums == null || nums.length<1){
+            return -1;
+        }
+
+        int left = 0;
+        int right = nums.length-1;
+
+        //因为这里二分搜索范围是0~nums.length-1, 但是目标有可能是要插入到nums.length这个位置，所以要加上这个判断
+        if(nums[right] < target){
+            return right+1;
+        }
+        while(left < right){
+            int mid = left + (right- left)/2;
+            if(nums[mid] == target){
+                return mid;
+            }else if(nums[mid] < target){
+                left = mid+1;
+            }else{
+                right = mid;
+            }
+        }
+        return left;
+    }
+}
