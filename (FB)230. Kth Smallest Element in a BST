@@ -1,0 +1,53 @@
+// inorder 
+//time complexity: O(N)
+class Solution {
+    public int kthSmallest(TreeNode root, int k) {
+        int count = 0;
+        Deque<TreeNode> dq = new ArrayDeque<>();
+        helper(dq, root);
+        
+        while(!dq.isEmpty()){
+            TreeNode cur = dq.pop();
+            count++;
+            
+            if(count == k){
+                return cur.val;
+            }
+            
+            cur = cur.right;
+            helper(dq, cur);
+        }
+        return -1;
+    }
+    
+    public void helper(Deque<TreeNode> dq, TreeNode root){
+        while(root != null){
+            dq.push(root);
+            root = root.left;
+        }
+    }
+}
+
+
+
+
+//解法二 分治法
+//O(lgn)
+public int kthSmallest(TreeNode root, int k) {
+    int n = nodeCount(root.left);  
+    if(n + 1 == k) {
+        return root.val;
+    } else if (n + 1 < k) {
+        return kthSmallest(root.right, k - n - 1);
+    } else {
+        return kthSmallest(root.left, k);
+    }
+}
+
+private int nodeCount(TreeNode root) {
+    if(root == null) {
+        return 0;
+    }
+    return 1 + nodeCount(root.left) + nodeCount(root.right);
+}
+
