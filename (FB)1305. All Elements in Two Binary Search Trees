@@ -1,0 +1,57 @@
+/*
+Time: O(n), where n is the total number of nodes in both trees.
+Memory: O(n) for the stack - in the worst case, we may need to store the entire tree there.
+*/
+
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public List<Integer> getAllElements(TreeNode root1, TreeNode root2) {
+        Deque<TreeNode> q1 = new ArrayDeque<>();
+        Deque<TreeNode> q2 = new ArrayDeque<>();
+        
+        List<Integer> res = new LinkedList<>();
+        TreeNode cur1 = root1;
+        TreeNode cur2 = root2;
+        helper(q1, cur1);
+        helper(q2, cur2);
+        
+        while(!q1.isEmpty() || !q2.isEmpty()){
+            Deque<TreeNode> q = new ArrayDeque<>();
+            if(q1.isEmpty()){
+                q = q2;
+            }else if(q2.isEmpty()){
+                q = q1;
+            }else{
+                q = q1.peek().val < q2.peek().val? q1 : q2;
+            }
+            
+            TreeNode cur = q.pop();
+            res.add(cur.val);
+            helper(q,cur.right);
+        }
+        
+        return res;
+    }
+    
+    public void helper(Deque<TreeNode> dq , TreeNode root){
+        while(root != null){
+            dq.push(root);
+            root = root.left;
+        }
+    }
+}
