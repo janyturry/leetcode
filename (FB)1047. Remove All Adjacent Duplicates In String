@@ -1,0 +1,27 @@
+class Solution {
+    public String removeDuplicates(String S) {
+        if(S  == null || S.length() < 1){
+            return S;
+        }
+        
+        Deque<Character> dq = new ArrayDeque<>();
+        
+        for(int i = 0; i < S.length();i++){
+            char c = S.charAt(i);
+            
+            if(!dq.isEmpty() && c == dq.peek()){
+                dq.pop();
+            }else{
+                dq.push(c);
+            }
+        }
+        
+        StringBuilder sb = new StringBuilder();
+        
+      while(!dq.isEmpty()){
+            sb.append(dq.pop());
+        }
+        
+        return sb.reverse().toString();
+    }
+}
