@@ -1,0 +1,29 @@
+//prefix sum
+
+class Solution {
+    public int numSubarraysWithSum(int[] A, int S) {
+        if(A == null || A.length <1){
+            return 0;
+        }
+        
+        Map<Integer, Integer> map = new HashMap<>();
+        
+        int res = 0;
+        int sum = 0;
+        
+        //handle sum == target.  same to  "if (sum == target) total++";
+        map.put(0, 1);
+        
+        for(int i = 0; i < A.length; i++){
+            sum+=A[i];
+            
+            if(map.containsKey(sum- S)){
+                res+= map.get(sum-S);
+            }
+            
+            map.put(sum, map.getOrDefault(sum,0) + 1);
+        }
+        
+        return res;
+    }
+}
