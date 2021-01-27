@@ -1,0 +1,65 @@
+/*
+
+初始状态为 dp[0[0]
+第一次买dp[0][1]、第一次卖dp[1][0]
+第二次买dp[1][1]、第二次卖dp[2][0]
+第k次买dp[k-1][1]、第k次卖dp[k][0]
+因为初始化状态是dp[0][0]，所以后面每次买和卖的时候，数组第一个维度都需要+1。这里和三维数组推导是类似的。
+第k次买入的定义是dp[k-1][1]，第k次卖出的状态定义是dp[k][0]
+同样dp[k][1]这种状态也是不存在的。
+
+DP公式如下：
+
+
+dp[j-1][1] = max(dp[j-1][1],dp[j-1][0]-prices[i])
+dp[j][0] = max(dp[j][0],dp[j-1][1]+prices[i])
+
+
+时间复杂度：O(NK)，这里 N 表示股价数组的长度，K 是最多可以完成交易的次数；
+空间复杂度：O(NK)，二维 dp 数组的大小，第 2 维是常数，故忽略。
+
+*/
+class Solution {
+    public int maxProfit(int k, int[] prices) {
+        
+        if(prices == null || prices.length< 2){
+            return 0;
+        }
+        
+        int len = prices.length;
+/*
+ // 特殊判断，因为交易一次需要 2 天，如果 k >= len / 2，相当于没有限制
+ // 转换为「力扣」第 122 题，使用贪心算法
+*/
+        if(k>=len/2){
+            int hasStock = -prices[0];
+            int noStock = 0;
+            
+            for(int i =0; i < len; i++){
+                hasStock = Math.max(hasStock, noStock - prices[i]);
+                noStock = Math.max( noStock, hasStock + prices[i]);
+            }
+            
+            return noStock;
+        }else{
+            
+            int [][] dp = new int[k+1][2];
+            
+        for(int i=0;i<=k;++i) {
+            dp[i][1] = -prices[0]; 
+        }
+
+            for(int i = 1; i <len; i++){
+                for(int j = 1; j <=k; j++){
+                    //第J次买
+                     dp[j-1][1] = Math.max(dp[j-1][1], dp[j-1][0] - prices[i]);
+                    //第J次卖
+                     dp[j][0] =   Math.max(dp[j][0], dp[j-1][1]+ prices[i]); 
+                }
+            }
+            
+            return dp[k][0];
+            
+        }
+    }
+}
