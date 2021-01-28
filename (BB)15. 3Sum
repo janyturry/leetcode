@@ -1,0 +1,52 @@
+/*
+时间复杂度：数组排序 O(NlogN)，遍历数组 O(n)，双指针遍历 O(n)，
+总体 O(NlogN)+O(n)∗O(n) = O(n*n)
+空间复杂度：O(1)
+*/
+
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> res= new LinkedList<>();
+        if(nums == null || nums.length <3){
+            return res;
+        }
+        
+        Arrays.sort(nums);
+        
+        for(int i =0; i < nums.length; i++){
+	//因为总和=0 ， 排序之后后面的都是》0.不用继续看
+            if(nums[i] >0){
+                break;
+            }
+            int left = i+1;
+            int right = nums.length-1;
+            int sum = 0- nums[i];
+            if(i ==0 || i< nums.length-2 && nums[i] !=nums[i-1]){
+                while(left < right){
+                if(nums[left] + nums[right] == sum){
+                    res.add(Arrays.asList(nums[i], nums[left], nums[right]));
+                    
+                    while(left < right && nums[left] == nums[left+1]){
+                        left++;
+                    }
+                    
+                    while( left < right && nums[right] == nums[right-1]){
+                        right--;
+                    }
+                    
+                    left++;
+                    right--;
+                }else if (nums[left] + nums[right] < sum){
+                    left++;
+                }else{
+                    right--;
+                }
+                }
+            }
+        }
+        
+        return res;
+        
+    
+    }
+}
