@@ -1,21 +1,22 @@
-//797. All Paths From Source to Target
-//graph[0] 代表node 0  能指向的所有点
-
+//DFS
 class Solution {
     public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
         List<List<Integer>> res= new LinkedList<>();
         if(graph == null || graph.length == 0){
             return res;
         }
+        
+        boolean [] visit = new boolean[graph.length];
         List<Integer> path = new LinkedList<>();
         path.add(0);
+        visit[0] = true;
         
-        dfs(graph, 0, path,res);
+        dfs(graph, 0, path,res, visit);
         
         return res;
     }
     
-    public void dfs(int[][] graph, Integer node,List<Integer> path,List<List<Integer>> res){
+    public void dfs(int[][] graph, Integer node,List<Integer> path,List<List<Integer>> res, boolean[] visit){
         if(node == graph.length -1){
             res.add(new LinkedList<Integer>(path));
             return;
@@ -23,8 +24,10 @@ class Solution {
         
         for(Integer tmp : graph[node]){
            path.add(tmp);
-           dfs(graph, tmp, path,res);
+           visit[tmp] = true;
+           dfs(graph, tmp, path,res,visit);
            path.remove(path.size()-1);
+           visit[tmp] = false; 
         }
         
         return;
