@@ -29,6 +29,8 @@ public class firstUniqChar {
 	}
 	*/
 	
+	
+	//follow up 当 data strea 特别大的时候需要用这种解法
 	//方法2 , 1 pass
 	public int firstUniqChar(String s) {
 	    Map<Character, Integer> map   = new LinkedHashMap<Character, Integer>();
