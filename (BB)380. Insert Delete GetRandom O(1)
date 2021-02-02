@@ -1,56 +1,59 @@
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
 //380. Insert Delete GetRandom O(1)
 //使用hashmap 来记录 <插入值， 在array里面的index>,
 //当插入的时候，如果存在，return false， 当不存在，插入到hashmap 和 arrayList. 移除的时候， 把需要移除的
 //放到最后， 交换， ，	
 //后面有个follow up 是允许duplicate, 关键是add a set to the hashMap to remember all the locations of a duplicated number.
 class RandomizedSet {
-    HashMap<Integer, Integer> map;
-    ArrayList<Integer> list;
-    Random ran = new Random();
-    
+    List<Integer> num;
+    Map<Integer, Integer> map;
+    Random random;
+
     /** Initialize your data structure here. */
     public RandomizedSet() {
-        map = new HashMap<Integer, Integer>();
-        list = new ArrayList<Integer>();
+        num = new ArrayList<>();
+        map = new HashMap<>();
+        random = new Random();
     }
     
     /** Inserts a value to the set. Returns true if the set did not already contain the specified element. */
     public boolean insert(int val) {
         if(map.containsKey(val)){
-		return false;
-	}
-        map.put(val, list.size());
-        list.add(val);
+            return false;
+        }else{
+            num.add(val);
+            map.put(val, num.size()-1);
+        }
+        
         return true;
     }
     
     /** Removes a value from the set. Returns true if the set contained the specified element. */
     public boolean remove(int val) {
         if(!map.containsKey(val)){
-		return false;
-	}
+            return false;
+        }else{
+            int index = map.get(val);
+            if(index != num.size()-1){
+                int tmpVal =  num.get(num.size()-1);
+                num.set(index, tmpVal);
+                map.put(tmpVal, index);
+            }
+            
+            num.remove(num.size()-1);
+            map.remove(val);
+        }   
         
-        if(val != list.get(list.size()-1)){
-            int tmp = list.get(list.size()-1);
-	    int index = map.get(val);
-            list.set(index, tmp);
-            map.put(tmp, index);
-        }
-        map.remove(val);
-        list.remove(list.size()-1);
         return true;
     }
     
     /** Get a random element from the set. */
     public int getRandom() {
-        return list.get(ran.nextInt(list.size()));
+        return num.get(random.nextInt(num.size()));
     }
-    
-    
+}
+
+ 
     
     //follow up:allowing duplications
     /*
