@@ -1,7 +1,26 @@
+//DFS
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> res = new LinkedList<List<Integer>>();
+        Arrays.sort(nums);
+        helper(nums, res, new LinkedList<Integer>(), 0);
+        return res;
+    }
+    
+    public void helper(int[] nums, List<List<Integer>> res, LinkedList<Integer> tmp, int start){
+        res.add(new LinkedList<Integer>(tmp));
+        for(int i = start; i < nums.length ; i++){
+            if(i > start && nums[i] == nums[i-1]) continue;
+            tmp.add(nums[i]);
+             helper(nums, res,tmp, i+1);
+            tmp.remove(tmp.size()-1);
+            
+        }
+    }
+}
+
+
 
 //90. Subsets II
 //leetcode
@@ -40,22 +59,4 @@ public class subsetsWithDup {
 
 
 
-class Solution {
-    public List<List<Integer>> subsets(int[] nums) {
-        List<List<Integer>> res = new LinkedList<List<Integer>>();
-        Arrays.sort(nums);
-        helper(nums, res, new LinkedList<Integer>(), 0);
-        return res;
-    }
-    
-    public void helper(int[] nums, List<List<Integer>> res, LinkedList<Integer> tmp, int start){
-        res.add(new LinkedList<Integer>(tmp));
-        for(int i = start; i < nums.length ; i++){
-            if(i > start && nums[i] == nums[i-1]) continue;
-            tmp.add(nums[i]);
-             helper(nums, res,tmp, i+1);
-            tmp.remove(tmp.size()-1);
-            
-        }
-    }
-}
+
