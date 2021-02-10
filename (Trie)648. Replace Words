@@ -1,0 +1,58 @@
+//Trie
+
+class Solution {
+    class Node {
+        boolean isWord;
+        Node[] child;
+
+        Node() {
+            isWord = false;
+            child = new Node[26];
+        }
+    }
+    public String replaceWords(List < String > dictionary, String sentence) {
+        Node root = buildTree(dictionary);
+        StringBuilder sb = new StringBuilder();
+        String[] token = sentence.split(" ");
+        for (String s: token) {
+            sb.append(getShortWord(root, s));
+            sb.append(" ");
+        }
+        return sb.substring(0, sb.length() - 1);
+    }
+
+    public String getShortWord(Node root, String s) {
+        Node dummy = root;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            int index = s.charAt(i) - 'a';
+            if (dummy.child[index] == null) {
+                return s;
+            } else {
+                dummy = dummy.child[index];
+                sb.append(s.charAt(i));
+                if (dummy.isWord) {
+                    return sb.toString();
+                }
+            }
+        }
+        return s;
+    }
+
+    public Node buildTree(List < String > dictionary) {
+        Node root = new Node();
+        for (String s: dictionary) {
+            Node dummy = root;
+            for (char c: s.toCharArray()) {
+                int index = c - 'a';
+                if (dummy.child[index] == null) {
+                    Node nextChild = new Node();
+                    dummy.child[index] = nextChild;
+                }
+                dummy = dummy.child[index];
+            }
+            dummy.isWord = true;
+        }
+        return root;
+    }
+}
