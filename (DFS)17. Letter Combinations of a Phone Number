@@ -1,39 +1,4 @@
 
-//17. Letter Combinations of a Phone Number
-//思路：重点是一开始就建立linkedlist = new LinkedList<> ,这样 define 可以直接当成数组来用
-//char to integer: char c - '0'
-////TIME: O(branch factor ^ depth  ) < O(4^n)
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-
-public class letterCombinations {
-	
-	//解法2
-	public static List<String> letterCombinations(String digits) {
-		LinkedList<String> res=  new LinkedList<String>();
-		String[] mapping = new String[] { "", "", "abc", "def", "ghi", "jkl","mno", "pqrs", "tuv", "wxyz" };
-        if(digits == null  || digits.length() ==0){
-        	return res;
-        }
-        
-        res.offer("");
-        char[] di = digits.toCharArray();
-        for(int i = 0; i < di.length; i++){
-            char[] tmp = mapping[di[i]-'0'].toCharArray();
-            while(!res.isEmpty() && res.peek().length() ==i){
-            	String t = res.poll();
-            	for(char c : tmp)
-            	res.offer(t+c);
-            }
-        }
-        return res;
-	}
-}
-
-
-
 //TIME: O(branch factor ^ depth  ) < O(4^n)
 //DFS
 class Solution {
@@ -84,3 +49,43 @@ class Solution {
         }
     }
 }
+
+
+
+
+
+
+//17. Letter Combinations of a Phone Number
+//思路：重点是一开始就建立linkedlist = new LinkedList<> ,这样 define 可以直接当成数组来用
+//char to integer: char c - '0'
+////TIME: O(branch factor ^ depth  ) < O(4^n)
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
+public class letterCombinations {
+	
+	//解法2
+	public static List<String> letterCombinations(String digits) {
+		LinkedList<String> res=  new LinkedList<String>();
+		String[] mapping = new String[] { "", "", "abc", "def", "ghi", "jkl","mno", "pqrs", "tuv", "wxyz" };
+        if(digits == null  || digits.length() ==0){
+        	return res;
+        }
+        
+        res.offer("");
+        char[] di = digits.toCharArray();
+        for(int i = 0; i < di.length; i++){
+            char[] tmp = mapping[di[i]-'0'].toCharArray();
+            while(!res.isEmpty() && res.peek().length() ==i){
+            	String t = res.poll();
+            	for(char c : tmp)
+            	res.offer(t+c);
+            }
+        }
+        return res;
+	}
+}
+
+
