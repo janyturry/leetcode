@@ -37,49 +37,50 @@ public class letterCombinations {
 //TIME: O(branch factor ^ depth  ) < O(4^n)
 //DFS
 class Solution {
-    public  List<String> letterCombinations(String digits) {
-        List<String> res=  new ArrayList<String>();
-        if(digits == null || digits.length() <1){
+    String[] map = new String[] {
+        "",
+        "",
+        "abc",
+        "def",
+        "ghi",
+        "jkl",
+        "mno",
+        "pqrs",
+        "tuv",
+        "wxyz"
+    };
+    List < String > res;
+    public List < String > letterCombinations(String digits) {
+        res = new LinkedList < > ();
+        if (digits == null || digits.length() < 1) {
             return res;
         }
-
-        Map<Integer, String> map= 	constructMap();
-
-        StringBuilder sb  = new StringBuilder();
-
-        dfsHelper(digits, map, res,0, sb);
-
+        dfs(digits, map, new StringBuilder(), 0);
         return res;
     }
 
-    public void dfsHelper(String digits, Map<Integer, String> map, List<String> res , int level, StringBuilder sb){
-        if(digits.length() ==  level){
+    public void dfs(String digits, String[] map, StringBuilder sb, int index) {
+        if (index == digits.length()) {
             res.add(sb.toString());
             return;
         }
+        //不需要FOR是因为这里的第一个位置只有第一个按下的数字， 之后的位置可以直接递归， 例如“12”， 如果有FOR， 第一层数字2的字母就会出现
+        /*
+        for(int i = index; i < digits.length(); i++){
+            int num = digits.charAt(i) - '0';
+            for(char c : map[num].toCharArray()){
+                sb.append(c);
+                dfs(digits, map, sb, i+1);
+                sb.deleteCharAt(sb.length()-1);
+            }
+        }
+        */
 
-        int cur = digits.charAt(level)- '0';
-        String tmpStr = map.get(cur);
-        for(char a : tmpStr.toCharArray()){
-            sb.append(a);
-            dfsHelper(digits, map, res, level+1, sb);
-            sb.deleteCharAt(sb.length()-1);
-
+        int num = digits.charAt(index) - '0';
+        for (char c: map[num].toCharArray()) {
+            sb.append(c);
+            dfs(digits, map, sb, index + 1);
+            sb.deleteCharAt(sb.length() - 1);
         }
     }
-    
-    public Map<Integer, String>  constructMap(){
-        Map<Integer, String> map = new HashMap<Integer, String>();
-        map.put(0, "");
-        map.put(1, "");
-        map.put(2, "abc");
-        map.put(3, "def");
-        map.put(4, "ghi");
-        map.put(5, "jkl");
-        map.put(6, "mno");
-        map.put(7, "pqrs");
-        map.put(8, "tuv");
-        map.put(9, "wxyz");
-        return map;
-    }
-
+}
