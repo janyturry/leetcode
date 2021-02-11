@@ -1,0 +1,34 @@
+// stack, pre order
+
+class Solution {
+    public Node flatten(Node head) {
+        if(head == null){
+            return head;
+        }
+        Deque<Node> d = new LinkedList<>();
+        d.push(head);
+        
+        Node dummy = new Node();
+        dummy.next = head;
+        Node pre = dummy;
+        while(!d.isEmpty()){
+            Node cur = d.pop();
+            cur.prev = pre;
+            pre.next = cur;
+            if(cur.next != null){
+                d.push(cur.next);
+            }
+            
+            if(cur.child!= null){
+                d.push(cur.child);
+                cur.child = null;
+            }
+            
+            pre = cur;
+        }
+        Node res = dummy.next;
+        dummy.next = null;
+        res.prev = null;
+        return res;
+    }
+}
