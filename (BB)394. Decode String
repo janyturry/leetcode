@@ -1,0 +1,36 @@
+//stack, deque
+
+class Solution {
+    public String decodeString(String s) {
+        StringBuilder sb  = new StringBuilder();
+        int carry = 0;
+        
+        Deque<Integer> d1 = new LinkedList<>();
+        Deque<String> d2 = new LinkedList<>();
+        
+        for(char c: s.toCharArray()){
+            if(c >='0' && c <= '9'){
+                carry = carry*10 + c-'0';
+            }
+            else if(c == '['){
+                d1.push(carry);
+                carry = 0;
+                d2.push(sb.toString());
+                sb = new StringBuilder();
+                
+            }else if(c == ']'){
+                int count = d1.pop();
+                String tmp = sb.toString();
+                StringBuilder now = new StringBuilder();
+                for(int i = 0 ; i < count; i++){
+                    now.append(tmp);
+                } 
+                sb = new StringBuilder(d2.pop() + now.toString());
+            }else{
+                sb.append(c);
+            }
+        }
+        return sb.toString();
+        
+    }
+}
