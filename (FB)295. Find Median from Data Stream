@@ -1,0 +1,40 @@
+/*
+时间复杂度：O(logN)，优先队列的出队入队操作都是对数级别的，数据在两个堆中间来回操作是常数级别的，
+综上时间复杂度是 O(logN) 级别的；
+空间复杂度：O(N)，使用了2个辅助空间，其中两个堆的空间复杂度是N/2
+*/
+
+class MedianFinder {
+    /** initialize your data structure here. */    
+    PriorityQueue<Integer> maxH;
+    PriorityQueue<Integer> minH;
+
+    public MedianFinder() {
+        maxH = new PriorityQueue<>((a,b)-> (b-a));
+        minH = new PriorityQueue<>();
+    }
+    
+    public void addNum(int num) {
+        
+        maxH.offer(num);
+        minH.offer(maxH.poll());
+        if(maxH.size()< minH.size()){
+            maxH.offer(minH.poll());
+        }
+    }
+    
+    public double findMedian() {
+        if(minH.size() == maxH.size()){
+            return  (minH.peek() + maxH.peek())/2.0;
+        }else{
+            return (double) maxH.peek();
+        }
+    }
+}
+
+/**
+ * Your MedianFinder object will be instantiated and called as such:
+ * MedianFinder obj = new MedianFinder();
+ * obj.addNum(num);
+ * double param_2 = obj.findMedian();
+ */
