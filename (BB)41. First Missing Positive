@@ -1,3 +1,11 @@
+/*
+why if(A[A[i]-1] != A[i]) instead of if(A[i]-1 != i) ? Aren't they the same???
+
+A[A[i]-1] != A[i]
+Almost the same, but like [3,2,3,4], when i = 0, A[0] = 3, which should be put on position i = 2 where also A[2] = 3.
+Thus there is no need to do swap and go to else statement i++ for next check or it will go into endless loop
+*/
+
 class Solution {
     public int firstMissingPositive(int[] nums) {
         if (nums == null || nums.length < 1) {
