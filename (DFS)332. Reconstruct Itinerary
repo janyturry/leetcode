@@ -1,0 +1,38 @@
+/*
+因为每个顶点都要访问一次，每条边都要访问一次，时间复杂度应为 O(∣V∣+∣E∣)，还要记得对临接点排序的时间复杂度 O(∣E∣log∣E∣)，算法整体时间复杂度为 O(∣E∣log∣E∣)；如果整个图是链式的，那么调用栈最深，空间复杂度应为 O(∣E∣)。
+
+*/
+
+class Solution {
+    public List<String> findItinerary(List<List<String>> tickets) {
+        List<String> res = new LinkedList<>();
+        if(tickets == null || tickets.size() <1){
+            return res;
+        }
+        
+        Map<String, PriorityQueue> map = new HashMap<>();
+        for(List<String> t : tickets){
+            if(!map.containsKey(t.get(0))){
+                PriorityQueue<String> p = new PriorityQueue<>();
+                map.put(t.get(0), p);
+            }
+            map.get(t.get(0)).add(t.get(1));
+        }
+        
+        dfs(map,res,"JFK");
+        
+        return res;
+    }
+    
+    public void dfs(Map<String, PriorityQueue> map,List<String>res, String s){
+        PriorityQueue<String> p = map.get(s);
+        while(p != null && p.size()>0){
+            String next = p.poll();
+            dfs(map, res, next);
+        }
+        
+        res.add(0,s);
+    }
+    
+    
+}
