@@ -1,0 +1,31 @@
+class Solution {
+    Map<Integer, Integer> map;
+    int[] pre;
+    int[] in;
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        map = new HashMap<>();
+        pre = preorder;
+        in = inorder;
+        int count = 0;
+        for(int i : inorder){
+            map.put(i, count++);
+        }
+        
+        return helper(0, preorder.length-1, 0, inorder.length-1);
+    }
+    
+    public TreeNode helper(int preS, int preE, int inS, int inE){
+        if(preS > preE || inS > inE){
+            return null;
+        }
+        
+        int rootVal = pre[preS];
+        TreeNode root = new TreeNode(rootVal);
+        
+        int cutPoint = map.get(rootVal);
+        
+        root.left = helper(preS+1,preS+1 +  cutPoint - inS  -1, inS,  cutPoint -1 );
+        root.right = helper( preS+1 +  cutPoint - inS  , preE, cutPoint+1, inE);
+        return root;
+    }
+}
