@@ -1,0 +1,40 @@
+class Solution {
+    List<List<Integer>> res;
+    public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
+        res = new LinkedList<>();
+        if(root == null){
+            return res;
+        }
+        
+        List<Integer> path = new LinkedList<Integer>();
+        path.add(root.val);
+        dfs(root, targetSum- root.val, path);
+        return res;
+    }
+    
+    public void dfs(TreeNode root, int sum, List<Integer> path){
+        if(root.left == null && root.right == null && sum == 0){
+            res.add(new LinkedList<Integer>(path));
+            return;
+        }
+        
+      
+        if(root.left != null){
+            sum-=root.left.val;
+            path.add(root.left.val);
+            dfs(root.left, sum, path);
+            sum+=root.left.val;
+            path.remove(path.size()-1);
+        }
+        
+       
+        if(root.right != null){
+            sum-=root.right.val;
+            path.add(root.right.val);
+            dfs(root.right, sum, path);
+            sum+=root.right.val;
+            path.remove(path.size()-1);
+        }
+        return;
+    }
+}
