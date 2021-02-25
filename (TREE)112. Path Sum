@@ -4,32 +4,33 @@ class Solution {
             return false;
         }
         
-        return dfs(root,targetSum );
+        return dfs(root,targetSum - root.val);
     }
     
     public boolean dfs(TreeNode root, int sum){
       
-        if(root.left == null && root.right == null && sum == root.val){
+        if(root.left == null && root.right == null && sum == 0){
             return true;
         }
         
-        sum-=root.val;
         if(root.left != null){
+            sum-=root.left.val;
             if(dfs(root.left, sum)){
                 return true;
             }
+            sum+=root.left.val;
         }
         
-        if(root.right != null){
+         if(root.right != null){
+            sum-=root.right.val;
             if(dfs(root.right, sum)){
                 return true;
             }
+            sum+=root.right.val;
         }
         
-        sum+=root.val;
         
         return false;
-            //return dfs(root.left, sum-root.val) || dfs(root.right, sum-root.val);
 
     }
 }
