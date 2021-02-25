@@ -1,0 +1,37 @@
+
+//重点是利用HASHMAP 来减少重复查找次数
+class Solution {
+    int[] in;
+    int[] post;
+    Map<Integer, Integer> map;
+    public TreeNode buildTree(int[] inorder, int[] postorder) {
+        in = inorder;
+        post = postorder;
+        map = new HashMap<>();
+        
+        int count = 0;
+        for(int i : inorder){
+            map.put(i, count++);
+        }
+        
+        
+        return  helper(0, inorder.length-1, 0,postorder.length-1);
+    }
+    
+    public TreeNode helper (int inS, int inE, int postS, int postE){
+        if(inS > inE || postS > postE){
+            return null;
+        }
+        
+        int rootVal = post[postE];
+        int cutPoint = map.get(rootVal);
+        
+        TreeNode root = new TreeNode(rootVal);
+        
+        root.left = helper(inS, cutPoint-1,postS, postS + (cutPoint-1 - inS +1)-1);
+        root.right = helper(cutPoint + 1, inE, postS + (cutPoint-1 - inS +1) , postE-1);
+        
+        return root;
+    
+    }
+}
