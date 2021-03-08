@@ -5,6 +5,49 @@ import java.util.Stack;
 //归纳了使用inorder解决树的问题
 //https://discuss.leetcode.com/topic/46016/learn-one-iterative-inorder-traversal-apply-it-to-multiple-tree-questions-java-solution
 //思路： 中序遍历BST就是小中大， ,BST 的 特征也是刚好 < , = , > 所以一旦current <=之前那个pre, 就要return false
+
+
+
+class Solution {
+    public boolean isValidBST(TreeNode root) {
+        if(root == null){
+            return true;
+        }
+        
+        Deque<TreeNode> q = new LinkedList<>();
+        TreeNode pre = null;
+        q.push(root);
+        
+        while(!q.isEmpty()){
+            TreeNode cur = q.peek();
+            
+            if(cur != null){
+                q.pop();
+                
+                if(cur.right != null){
+                    q.push(cur.right);
+                }
+                
+                q.push(cur);
+                q.push(null);
+                if(cur.left != null){
+                    q.push(cur.left);
+                }
+            }else{
+                q.pop();
+                TreeNode tmp = q.pop();
+                if(pre != null && tmp.val <= pre.val){
+                    return false;
+                }
+                pre = tmp;
+            }
+            
+        }
+        return true;
+    }
+}
+
+
 public class isValidBST {
 	public class TreeNode {
 		int val;
