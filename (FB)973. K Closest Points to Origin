@@ -13,7 +13,10 @@ O(N)。
 最坏情况下，空间复杂度为
 O(n)，此时需要划分 n−1 次，对应递归的深度为 n−1 层，所以最坏情况下时间复杂度为 O(n)。
 
+Theoretically, the average time complexity is O(N) , but just like quick sort, in the worst case, this solution would be degenerated to O(N^2), and pratically, the real time it takes on leetcode is 15ms.
 
+The advantage of this solution is it is very efficient.
+The disadvatage of this solution are it is neither an online solution nor a stable one. And the K elements closest are not sorted in ascending order.
 
  */
 
@@ -70,6 +73,12 @@ O(nlogK)，其中 n 是数组 points 的长度。由于优先队列维护的是�
 因此弹出和插入操作的单次时间复杂度均为 O(logK)。在最坏情况下，数组里 n 个点都会插入，因此时间复杂度为 O(nlogK)。
 
 空间复杂度：O(K)，因为优先队列中最多有 K 个点。
+
+Theoretically, the time complexity is O(NlogK), but pratically, the real time it takes on leetcode is 134ms.
+The advantage of this solution is it can deal with real-time(online) stream data. It does not have to know the size of the data previously.
+The disadvatage of this solution is it is not the most efficient solution.
+
+
  */
 class Solution {
     public int[][] kClosest(int[][] points, int K) {
