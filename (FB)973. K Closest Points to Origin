@@ -20,6 +20,30 @@ The disadvatage of this solution are it is neither an online solution nor a stab
 
  */
 
+/*
+下面表述的，用于比较大小的“元素”，都指的是坐标到原点的距离。
+
+用快排的思路，将小的排在前面，选一个主元元素作为pivot，将数组分为两部分：
+
+小于等于 pivot 的元素
+大于 pivot 的元素
+我们把数组最左项作为 pivot，安排两个首尾指针：
+
+如果左指针元素 <= pivot，是ok的，左指针右移，看下一个。
+如果右指针元素 > pivot，也是ok的，右指针左移，看下一个。
+如果左指针元素 > pivot，右指针元素 <= pivot，则小的应该到前面来，它们交换位置，指针同时收缩1，看下一个元素。
+直到双指针交错，循环结束，此时左边都是小于等于 pivot 的，右边都是大于 pivot 的。
+
+别忘了：将 pivot 元素与当前右指针元素交换，交换后，pivot 元素来到右指针的位置，它的左边都是小于等于它的，它的位置，是继续分治的位置。
+
+然后来到判断：
+
+如果右指针索引 right == K，则说明 right 的左边有 K 个元素，已经排好了。
+如果 right < K，说明 right 左边不足 K 个元素，说明右边的序列有些小的没排前面来，继续递归排。
+如果 right > K，说明 right 左边多于 K 个元素，说明左边的序列还没排好，继续递归排。
+*/
+
+
 class Solution {
     public int[][] kClosest(int[][] points, int K) {
         // 使用快速选择（快排变形） 获取 points 数组中距离最小的 K 个点（第 4 个参数是下标，因此是 K - 1）
