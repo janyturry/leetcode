@@ -1,18 +1,25 @@
+//https://leetcode-cn.com/problems/task-scheduler/solution/tong-zi-by-popopop/
+
+//桶的思想
+
+
+
 class Solution {
     public int leastInterval(char[] tasks, int n) {
-        int[] temp = new int[26];
-        int countMaxTask = 0;
-        int maxTask=0;
-        for(char c:tasks){
-            temp[c-'A']++;
-            maxTask = Math.max(temp[c-'A'],maxTask);
+       int [] taskCount = new int[26];
+       int maxTaskCount = 0;
+        int taskNum = 0;
+        for(char c: tasks){
+            taskCount[c - 'A']++;
+            maxTaskCount = Math.max(maxTaskCount, taskCount[c - 'A']);
         }
-        for(int i=0;i<26;i++){
-            if(temp[i]==maxTask){
-                countMaxTask++;
+        
+        for(int i : taskCount){
+            if(i == maxTaskCount){
+                taskNum++;
             }
         }
-	//因为(maxTask-1)*(n+1)+countMaxTask 只计算N的捅宽度之内的情况， 所以要考虑两者之间的最大值
-        return Math.max(tasks.length,(maxTask-1)*(n+1)+countMaxTask);
+        
+        return Math.max(tasks.length, (maxTaskCount-1)*(n+1) + taskNum );
     }
 }
