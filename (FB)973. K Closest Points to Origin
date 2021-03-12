@@ -44,7 +44,7 @@ The disadvatage of this solution are it is neither an online solution nor a stab
 */
 
 
-
+//quick select
 //https://leetcode-cn.com/problems/k-closest-points-to-origin/solution/xiang-jie-kuai-pai-si-lu-973-zui-jie-jin-yuan-dian/
 //时间复杂度平均是O(n)，效率更高
 class Solution {
