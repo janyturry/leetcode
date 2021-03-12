@@ -3,6 +3,8 @@
 空间复杂度为O(1)。
 */
 
+
+//简单从第二行第二列开始， 寻找i-1,j-1的数据
 class Solution {
     public boolean isToeplitzMatrix(int[][] matrix) {
         int m = matrix.length;
