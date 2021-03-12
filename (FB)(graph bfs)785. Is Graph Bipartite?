@@ -1,9 +1,9 @@
-/* B
+/* 
 时间复杂度是 O(N+M), 空间复杂度是 O(N)，其中 N 是无向图的顶点数，M 是无向图的边数。
 */
 
 //BFS
-
+//BFS 比较容易理解， 就是每个顶点都访问一次， 只访问未被染色的，然后染成跟CUR 节点相反的颜色，然后放入队列
 class Solution {
     public boolean isBipartite(int[][] graph) {
         // 定义 visited 数组，初始值为 0 表示未被访问，赋值为 1 或者 -1 表示两种不同的颜色。 
