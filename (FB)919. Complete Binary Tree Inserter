@@ -1,5 +1,6 @@
-
+//tree
 //method 1
+//插入的时候BFS 找到插入的位置，然后插进去
 // O(1) Build Tree + O(N) Insert:
 class CBTInserter {
     TreeNode root;
@@ -41,6 +42,8 @@ class CBTInserter {
 
 
 //method 2
+//INIT 的时候就是找到QUEEU 的头结点就是缺失LFT CHILD 或者RIGHT CHILD的
+//然后SEARCH 的时候 如果缺失的是左节点， 就插入左节点， 如果是缺失右节点， 就插入右节点， 然后POLL出母节点， 然后加进左右子节点
 //initial O(n), insert o(1)
 //插的顺序是上到下，左到右
 class CBTInserter {
