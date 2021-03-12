@@ -1,0 +1,35 @@
+//two pointer
+
+/*
+基本思路就是从后面空白的地方开始，因为m+n -1就是最后空白的INDEX
+
+复杂度分析
+时间复杂度 : O(n+m)。
+空间复杂度 : O(1)
+ */
+
+class Solution {
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        int right = m+n-1;
+        int p1 = m-1;
+        int p2 = n-1;
+        
+        while(p1>=0 && p2>=0){
+            if(nums1[p1] > nums2[p2]){
+                nums1[right--] = nums1[p1--];
+            }else{
+                nums1[right--] = nums2[p2--];
+            }
+        }
+        
+        while(p1>=0){
+            nums1[right--] = nums1[p1--];
+        }
+        
+        while(p2>=0){
+            nums1[right--] = nums2[p2--];
+        }
+        
+        return;
+    }
+}
