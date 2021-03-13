@@ -1,3 +1,5 @@
+//思路就是直接BFS 往下面扫， 每一层结束算一次
+
 
 class Solution {
     public List<Double> averageOfLevels(TreeNode root) {
