@@ -1,6 +1,7 @@
 //680. Valid Palindrome II
 //leetcode
 
+//基本思路就是先从左右两个端点开始往中间扫描， 然后找到不等于的，删掉那个跟右边的拼起来再查找一次
 //O(n) Time O(1) Space
 class Solution {
     public boolean validPalindrome(String s) {
