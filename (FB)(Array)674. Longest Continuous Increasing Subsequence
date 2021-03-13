@@ -7,6 +7,8 @@ Space Complexity: O(1), the space used by anchor and ans.
 
 */
 
+//基本思路就是设置一个全局的res,记录最长的长度， 然后从左到右每次循环的时候都更新local的值
+
 class Solution {
     public int findLengthOfLCIS(int[] nums) {
         if(nums == null || nums.length <1){
