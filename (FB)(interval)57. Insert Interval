@@ -1,0 +1,53 @@
+/*
+
+https://leetcode-cn.com/problems/insert-interval/solution/shou-hua-tu-jie-57-cha-ru-qu-jian-fen-cheng-3ge-ji/
+
+#1 不重叠，需满足：老区间的右端，位于新区间的左端的左边(边界不重合)
+则当前老区间，推入 res 数组，指针 +1，考察下一个绿区间。
+循环结束时，当前老区间的屁股，就在蓝区间左端点之后，有重叠了
+
+#2 现在看重叠的
+先假设，没重叠的话就要满足：当前老区间的左端，落在新区间右端点的后面。 否则就有重叠， 条件：老区间的左端 <= 新区间的右端
+有重叠的区间，会合并成一个新区间：左端取新旧左端的较小者，右端取新旧右端的较大者，不断更新给新区间。
+循环结束时，将新区间（它是合并后的新区间）推入 res 数组。
+
+
+#3剩下的，都在蓝区间右边，不重叠。不用额外判断，依次推入 res 数组。
+
+
+*/
+
+
+class Solution {
+    public int[][] insert(int[][] intervals, int[] newInterval) {
+        int index = 0;
+        int len = intervals.length;
+        List < int[] > res = new ArrayList < > ();
+        //碰到重叠之前
+        while (index < len && intervals[index][1] < newInterval[0]) {
+            res.add(intervals[index]);
+            index++;
+        }
+
+        //碰到重叠的情况
+        while (index < len && intervals[index][0] <= newInterval[1]) {
+            newInterval[0] = Math.min(newInterval[0], intervals[index][0]);
+            newInterval[1] = Math.max(newInterval[1], intervals[index][1]);
+            index++;
+        }
+        res.add(newInterval);
+
+        //重叠出来之后
+        while (index < len && intervals[index][0] > newInterval[1]) {
+            res.add(intervals[index]);
+            index++;
+        }
+
+
+        int[][] ans = new int[res.size()][2];
+        for (int j = -0; j < res.size(); j++) {
+            ans[j] = res.get(j);
+        }
+        return ans;
+    }
+}
