@@ -1,4 +1,6 @@
 //基本思路就是从右边往前面扫， 计算，最后reverse
+//不用考虑二进制那些复杂的操作，只需要考虑普通加法,整个数字都是用StringBuilder链接的，每次只有进位carry是需要带进去的
+
 class Solution {
     public String addBinary(String a, String b) {
         int sizeA = a.length();
