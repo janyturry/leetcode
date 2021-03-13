@@ -4,6 +4,10 @@
 */
 
 
+/*
+基本思路就是DFS， 设置VISIT 数组， 记录访问过的省份， 访问过的就不用继续访问， 
+*/
+
 class Solution {
     int count;
     public int findCircleNum(int[][] isConnected) {
