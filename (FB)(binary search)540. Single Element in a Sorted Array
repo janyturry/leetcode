@@ -1,14 +1,15 @@
 //time: log(n)
 //space:O(1)
 
+//binary search 二分法
 /*
 算法流程：
 mid = (left + right) // 2
 当mid为偶数时，nums[mid] 前面有 偶数个 元素，此时分为两种情况：
 (1) nums[mid] == nums[mid+1]，例如：数组 [1, 1, 2, 2, 3, 3, 4, 5, 5], mid = 4, nums[4] == nums[5] == 3；说明 nums[mid] 前面的元素都出现了两次，所以要在 nums[mid] 后面找单一元素，于是更新区间：left = mid + 1；
-(2) nums[mid] != nums[mid+1]，例如：数组 [1, 1, 2, 3, 3, 4, 4, 5, 5], mid = 4, (nums[4] == 3) != (nums[5] == 4)；说明 nums[mid] 前面的元素中存在单一元素，于是更新区间：right = mid - 1；
+(2) nums[mid] != nums[mid+1]，例如：数组 [1, 1, 2, 3, 3, 4, 4, 5, 5], mid = 4, (nums[4] == 3) != (nums[5] == 4)；说明 nums[mid] 前面的元素中存在单一元素，于是更新区间：right = mid；
 当mid为奇数时，nums[mid] 前面有 奇数个 元素，此时同样也分为两种情况：
-(1) nums[mid] == nums[mid+1]，例如：数组 [1, 1, 2, 3, 3, 4, 4, 5, 5], mid = 3, nums[3] == nums[4] == 3；说明 nums[mid] 前面的元素中存在单一元素，于是更新区间：right = mid - 1；
+(1) nums[mid] == nums[mid+1]，例如：数组 [1, 1, 2, 3, 3, 4, 4, 5, 5], mid = 3, nums[3] == nums[4] == 3；说明 nums[mid] 前面的元素中存在单一元素，于是更新区间：right = mid；
 (2) nums[mid] != nums[mid+1]，例如：数组 [1, 1, 2, 2, 3, 3, 4, 5, 5], mid = 3, (nums[3] == 2) != (nums[4] == 3)；说明单一元素出现在 nums[mid] 的后面，于是更新区间：left = mid + 1。
 注意边界条件，当 mid + 1 超出边界时，说明单一元素是数组的最后一个元素。
 */
