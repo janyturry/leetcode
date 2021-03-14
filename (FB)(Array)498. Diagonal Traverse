@@ -12,11 +12,13 @@ class Solution {
         int[] res = new int[m*n];
         int index = 0;
 
+//一共转向的次数，这个比较需要死记硬背
         int count = m + n - 1;
 
         int row = 0;
         int col = 0;
 
+//转向的次数
         for(int i = 0 ; i< count; i++){
             if(i%2  == 0){
                 while(row>=0 && col< n) {
