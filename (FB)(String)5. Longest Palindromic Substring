@@ -1,0 +1,105 @@
+
+//5. Longest Palindromic Substring, 先检查类似 aba, 在检查abba;
+//leetcode
+//思路：从左到右，每一个char都往左右两边扩展， 扩展的开始可以选取单一点和两个点， 例如"bab", "baab"
+//String
+Time complexity : O(n^2) Since expanding a palindrome around its center could take O(n) time, the overall complexity is O(n^2)
+Space complexity : O(1)
+
+
+class Solution {
+    String res;
+    public String longestPalindrome(String s) {
+        res  = "";
+        if(s == null || s.length()<=1){
+            return s;
+        }
+        
+        int len = s.length();
+        
+        for(int i = 1; i < len; i++){
+            helper1(s, i);
+            helper2(s, i);
+        }
+        
+        return res;   
+    }
+    
+    public void helper1(String s, int i){
+        String sub = Character.toString(s.charAt(i));
+        int left = i-1;
+        int right = i+1;
+        while(left>=0 && right<=s.length()-1){
+            if(s.charAt(left) == s.charAt(right)){
+               sub =  s.charAt(left) + sub + s.charAt(right);
+                left--;
+                right++;
+               
+            }else{
+                break;
+            }
+        }
+        
+         if(sub.length() > res.length()){
+            res = sub;
+        }
+       
+    }
+    
+     public void helper2(String s, int i){
+        String sub = "";
+        int left = i-1;
+        int right = i;
+        while(left>=0 && right<=s.length()-1){
+            if(s.charAt(left) == s.charAt(right)){
+               sub =  s.charAt(left) + sub + s.charAt(right);
+                left--;
+                right++;
+               
+            }else{
+                break;
+            }
+        }
+          if(sub.length() > res.length()){
+            res = sub;
+        }
+        
+    }
+}
+
+
+
+
+
+
+public class longestPalindrome {
+	public String longestPalindrome(String s) {
+		if (s.length() <= 1 || s == null || s.isEmpty()) {
+			return s;
+		}
+
+		String max = "";
+		for (int i = 0; i < s.length(); i++) {
+			String single = helper(s, i, i);
+			if (single.length() > max.length()) {
+				max = single;
+			}
+
+			String dou = helper(s, i, i + 1);
+			if (dou.length() > max.length()) {
+				max = dou;
+			}
+		}
+		return max;
+	}
+
+	public String helper(String s, int begin, int end) {
+		//如果使用	while (begin >= 0 && end <= s.length() - 1 ) {
+		//if(s.charAt(begin) == s.charAt(end)) 会一直循环超时
+		while (begin >= 0 && end <= s.length() - 1 && s.charAt(begin) == s.charAt(end)) {
+			begin--;
+			end++;
+		}
+		return s.substring(begin + 1, end);
+	}
+}
