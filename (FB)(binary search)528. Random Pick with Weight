@@ -12,6 +12,23 @@ For the pickIndex() function, its space complexity would O(1), since it uses con
     
     */
 
+//binary search
+
+
+/*
+基本思路就是先用前缀和得出一个范围数组
+例如 INPUT 是 2，5 
+那个前缀和数组就是 2, 7, 意思1，2   属于index0, 3,4,5,6,7 属于index1,  就是让范围可能性具体化出来了
+然后就random pick 一个数字从  1 ~~ sum[sum.length-1] 的数组出来。
+然后二分法算的是sum的index
+#1 如果nextInt 等于sum[mid], 那么直接返回mid,因为是直接知道落在了哪个范围
+#2 如果nextInt > sum[mid], 证明nextInt 的范围已经超出了sum[mid]的这个节点，范围可能落在 sum[mid] 以及小于它的左边，所以left = mid+1
+#3 如果nextInt < sum[mid],证明nextInt 有可能落在sum[mid]的范围，起码sum[mid]他是及格了，但需要再往左边找找看有没有别的。  1，2，3，4，5，6，7.
+例如sum[mid] 是7， nextInt是2， 1~2， 3~7 是一个范围
+
+
+*/
+
 
 class Solution {
     int[] sum;
