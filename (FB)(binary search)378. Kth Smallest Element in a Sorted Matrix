@@ -1,0 +1,92 @@
+\//binary search
+
+/*
+解题思路：
+
+1.左上角元素是下限，右下角元素是上限，就有了一个值域，第 k 小的元素在这个值域中
+2.我们对值域进行二分查找，逼近值域中的目标值，第 k 小的元素
+3.算出中间值，并求出矩阵里小于等于这个中间值的有几个，count 个
+4.count 和 k 比较，如果比 k 小，说明中间值小了，调整值域范围，否则，说明中间值大了，调整值域范围，一步步锁定目标值
+为什么对值二分
+
+二分查找可以根据索引二分，也可以根据数值二分，有序数组中，索引的大小可以反映值的大小，对索引二分就行
+但这里不是有序的一维数组，索引不能体现值谁大谁小，无法通过二分索引逼近目标值
+
+
+
+
+time : 综合来说，时间复杂度是 O(nlog(maxVal−minVal))
+统计<=val 的元素个数 时间复杂度是n, log(maxVal−minVal) 是域值的查找
+*/
+
+
+class Solution {
+    public int kthSmallest(int[][] matrix, int k) {
+        if(matrix == null || matrix.length < 1){
+            return -1;
+        }
+        
+        int m = matrix.length;
+        int n = matrix[0].length;
+    
+        int left = matrix[0][0];
+        int right = matrix[m-1][n-1];
+        
+        while(left < right){
+            int mid = left + (right- left)/2;
+            int count = helper(matrix, mid);
+            
+            if(k <= count){
+                right = mid;
+            }else{
+                left = mid +1;
+            }
+        }
+        
+        return left;
+    }
+
+    //统计<=val 的元素个数， 从最后一行第一列开始找起。
+    public Integer helper(int[][] matrix, int val){
+        int m = matrix.length;
+        int n = matrix[0].length;
+        
+        int row = m-1;
+        int col = 0;
+        
+        int res = 0;
+        while(row>=0 && col <n){
+            if(matrix[row][col] <=val){
+                res = res + (row)+1;
+                col++;
+            }else{
+                row--;
+            }
+        }
+        
+        return res;
+    }
+}
+
+
+//暴力解法
+//时间复杂度：
+O(n*nlogn)，对 n* n个数排序。
+class Solution {
+    public int kthSmallest(int[][] matrix, int k) {
+        PriorityQueue<Integer> q = new PriorityQueue<>();
+        
+        for(int i = 0 ; i < matrix.length; i++){
+            for(int j = 0 ; j < matrix[0].length; j++){
+                q.offer(matrix[i][j]);
+            }
+        }
+        
+        int res = 0;
+        for(int i = 1; i <= k; i++){
+            res = q.poll();
+        }
+        
+        return res;
+    }
+}
