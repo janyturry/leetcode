@@ -1,0 +1,73 @@
+/*
+基本思路就是算进位然后用stringBbuilder 来连接 
+
+*/
+
+
+class Solution {
+    public String addStrings(String num1, String num2) {
+        if (num1 == null) {
+            return num2;
+        }
+        if (num2 == null) {
+            return num1;
+        }
+
+        int len1 = num1.length() - 1;
+        int len2 = num2.length() - 1;
+
+        StringBuilder sb = new StringBuilder();
+        int carry = 0;
+
+        while (len1 >= 0 || len2 >= 0) {
+            int v1 = len1 >= 0 ? num1.charAt(len1--) - '0' : 0;
+            int v2 = len2 >= 0 ? num2.charAt(len2--) - '0' : 0;
+
+            int sum = v1 + v2 + carry;
+            carry = (sum) / 10;
+            int cur = sum % 10;
+            sb.append(cur);
+
+        }
+
+        if (carry > 0) {
+            sb.append(carry);
+        }
+        return sb.reverse().toString();
+    }
+}
+
+
+class Solution {
+    public String addStrings(String num1, String num2) {
+        int m = num1.length()-1;
+        int n = num2.length()-1;
+
+        int carry = 0;
+        StringBuilder sb = new StringBuilder();
+
+        while(m >=0 || n >=0){
+            int sum = 0;
+            if(m >=0){
+                int curM = num1.charAt(m) - '0';
+                sum+=curM;
+                m--;
+            }
+
+            if(n >=0){
+                int curN = num2.charAt(n) - '0';
+                sum+=curN;
+                n--;
+            }
+            sum = sum+carry;
+            sb.append(sum%10);
+            carry = sum/10;
+        }
+
+        if(carry >0){
+            sb.append(carry);
+        }
+
+        return sb.reverse().toString();
+    }
+}
