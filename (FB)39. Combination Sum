@@ -40,6 +40,7 @@ class Solution {
             }
             //做选择，选择一个
             path.add(candidates[i]);
+            //注意这里PASS进去i而不是start, 因为（2，1） ，（1，2） 是一样的
             helper(candidates, i, target - candidates[i], res, path);
             //把刚才的选择POP出来
             path.remove(path.size()-1);
