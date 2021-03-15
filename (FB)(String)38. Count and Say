@@ -16,6 +16,10 @@ Total time Complexity 1 + 2^1 + 2^2 + ... + 2^(n-1) = 2^n -1 which is O(2^n) .
  this is also loose bound as we know the length will not always be twice
  */
 
+/*
+基本思路就是外层是n的次数， 里层就是循环当前的string， 先找到count然后找到当前的数字， 一直append
+
+*/
 class Solution {
  */
     public String countAndSay(int n) {
