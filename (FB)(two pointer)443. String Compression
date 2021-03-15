@@ -1,3 +1,7 @@
+/*
+基本思路就是用two pointer ， 先使用left, right 来决定每次重复到哪里， 然后移动resIndex、
+*/
+
 class Solution {
     public int compress(char[] chars) {
         int size = chars.length;
@@ -13,6 +17,7 @@ class Solution {
             int count = right - left;
             chars[resIndex++] = chars[left];
             if(count>1){
+            //这一步很重要， 直接能把数字转换成char放进去
                 for(char c: String.valueOf(count).toCharArray()){
                     chars[resIndex++] = c;
 
