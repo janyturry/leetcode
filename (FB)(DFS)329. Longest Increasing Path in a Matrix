@@ -1,0 +1,112 @@
+/*
+Time complexity : O(mn). Each vertex/cell will be calculated once and only once, 
+and each edge will be visited once and only once. The total time complexity is then O(V+E).
+VV is the total number of vertices and EE is the total number of edges. In our problem, O(V)=O(mn),
+O(E) = O(4V) = O(mn)
+
+Space complexity : O(mn). The cache dominates the space complexity.
+
+复杂度分析
+
+时间复杂度：O(mn)，其中 m 和 n 分别是矩阵的行数和列数。深度优先搜索的时间复杂度是 O(V+E)，其中 
+V 是节点数，E 是边数。在矩阵中，O(V)=O(mn)，O(E)≈O(4mn)=O(mn)。
+空间复杂度：
+O(mn)，其中 m 和 n 分别是矩阵的行数和列数。空间复杂度主要取决于缓存和递归调用深度，缓存的空间复杂度是 O(mn)，递归调用深度不会超过 mn。
+*/
+
+
+//基本思路就是DFS 然后用 cache数组距离访问过的开始点的最长递增。
+//cache[i][j]表示从i,j开始的最长的递增
+
+
+class Solution {
+    int max;
+    int [][]dir = new int[][]{{-1,0},{1,0}, {0,1}, {0,-1}};
+    public int longestIncreasingPath(int[][] matrix) {
+        if(matrix == null || matrix.length < 1){
+            return 0;
+        }
+        max = 1;
+        
+        int m = matrix.length;
+        int n = matrix[0].length;
+        
+        int [][] cache = new int[m][n] ;
+        
+        for(int i = 0 ; i < m ; i++){
+            for(int j = 0; j < n; j++){
+                dfs(matrix,cache, i,j);
+            }
+        }
+        
+        return max;
+    }
+    
+    public int dfs(int[][] matrix, int[][] cache, int row, int col){
+        if(cache[row][col]!= 0){
+            return cache[row][col];
+        }
+        
+        cache[row][col]++;
+        
+        int m = matrix.length;
+        int n = matrix[0].length;
+        
+        for(int[] d : dir){
+            int newX = d[0] + row;
+            int newY = d[1] + col;
+            if(newX>=0 && newX<= m-1 && newY>=0 && newY<=n-1 && matrix[row][col] < 
+              matrix[newX][newY]){
+                cache[row][col] = Math.max(cache[row][col], 1 + dfs(matrix,cache, newX,newY));
+            }
+        }
+        
+        max = Math.max(max, cache[row][col]);
+        return cache[row][col];
+        
+        
+    }
+}
+
+
+class Solution {
+    int[][] dirs = new int[][]{{1,0}, {-1,0}, {0,-1}, {0,1}};
+    public int longestIncreasingPath(int[][] matrix) {
+        if(matrix == null || matrix.length < 1 || matrix[0].length < 1){
+            return 0;
+        }
+
+
+        int m = matrix.length;
+        int n = matrix[0].length;
+
+        int [][]cache = new int[m][n];
+        int max = 0;
+        for(int i =0 ; i < m; i++){
+            for(int j = 0 ; j < n; j++){
+                max = Math.max(max , dfs(matrix, cache, i,j));
+
+
+            }
+        }
+        return max;
+
+
+    }
+
+    public int dfs(int[][] matrix, int [][] cache, int i, int j){
+        if(cache[i][j] != 0){
+            return cache[i][j];
+        }
+
+        for(int[] dir :dirs){
+            int newX = dir[0] + i;
+            int newY = dir[1] + j;
+            if(newX >=0 && newX <= matrix.length-1 && newY>=0 && newY < matrix[0].length && matrix[newX][newY] > matrix[i][j]){
+                cache[i][j] = Math.max( cache[i][j],dfs(matrix, cache, newX, newY));
+            }
+        }
+
+        return ++cache[i][j];
+    }
+}
