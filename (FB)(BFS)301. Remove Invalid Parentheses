@@ -1,4 +1,10 @@
 //BFS
+
+/*
+基本思路就是先把原始S放入QUEEU,SET,出队列， 然后先检查是不是VALID， 然后遍历当前S， 每次删除一个括号， 检查是否访问过， 然后放入QUEUE和SET，一旦找到VALID， 然后这一层次的全部入RES。 
+
+关键是使用SUBSTRING（）来拼接删除括号的字符
+*/
 public class Solution {
     public List<String> removeInvalidParentheses(String s) {
         List<String> res = new ArrayList<>();
