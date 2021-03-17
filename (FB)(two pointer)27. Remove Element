@@ -1,0 +1,57 @@
+/*
+Complexity analysis
+
+Time complexity : O(n). Assume the array has a total of n elements, both and jj traverse at most 2n steps.
+
+Space complexity : O(1)
+
+*/
+
+
+//two pointer 
+class Solution {
+    public int removeElement(int[] nums, int val) {
+        if(nums == null ||nums.length < 1){
+            return 0;
+        }
+        
+        int left = 0;
+        int right = nums.length-1;
+        
+        // <= 处理edge case
+        while(left <= right){
+            if(nums[left] == val){
+                swap(nums,left,right);
+                right--;
+            }else{
+                left++;
+            }
+        }
+        
+        return left;
+        
+    }
+    
+    public void swap(int[] nums, int x, int y){
+        int tmp = nums[x];
+        nums[x] = nums[y];
+        nums[y] = tmp;
+    }
+}
+
+
+
+
+
+class Solution {
+    public int removeElement(int[] nums, int val) {
+        int begin = 0;
+
+        for(int i = 0 ; i< nums.length; i++){
+            if(nums[i] != val){
+                nums[begin++] = nums[i];
+            }
+        }
+        return begin;
+    }
+}
