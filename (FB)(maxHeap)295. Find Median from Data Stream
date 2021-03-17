@@ -3,7 +3,12 @@
 综上时间复杂度是 O(logN) 级别的；
 空间复杂度：O(N)，使用了2个辅助空间，其中两个堆的空间复杂度是N/2
 */
-
+//maxheap
+//最大堆
+//https://leetcode-cn.com/problems/find-median-from-data-stream/solution/you-xian-dui-lie-python-dai-ma-java-dai-ma-by-liwe/
+/*
+基本思路就是使用最大堆最小堆， 保证最大堆元素>=最小堆， 因为中位数我们只关心最中间的两个
+*/
 class MedianFinder {
     /** initialize your data structure here. */    
     PriorityQueue<Integer> maxH;
@@ -15,7 +20,7 @@ class MedianFinder {
     }
     
     public void addNum(int num) {
-        
+        //先加入maxH,再加入minH, 是为了保证新加入的num加入到正确的位置队列，maxH.offer(num)- > minH.offer(maxH.poll()) 保证了加入到minH 是在MAX 里面是最大的数字.
         maxH.offer(num);
         minH.offer(maxH.poll());
         if(maxH.size()< minH.size()){
