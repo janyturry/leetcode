@@ -1,5 +1,10 @@
 // inorder 
 //time complexity: O(N)
+
+/*
+基本思路就是使用Deque, inorder 来找最小的数字
+
+*/
 class Solution {
     public int kthSmallest(TreeNode root, int k) {
         int count = 0;
