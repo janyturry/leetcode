@@ -4,6 +4,54 @@
 其实有可能达到 O(n)。但如果算均摊时间复杂度的话，其实还是 O(1)，因为每个节点最多也就经过两次就出栈了。
 空间复杂度，这里只需要消耗栈的空间，也就是 O(h)
  */
+ 
+ 
+ //中心思路就，然后 直接 inorder 一次, 然后BREAK
+ 
+ class BSTIterator {
+    Deque<TreeNode> d;
+    TreeNode p;
+    public BSTIterator(TreeNode root) {
+        p = root;
+        d = new LinkedList<TreeNode>();
+        d.push(p);
+    }
+    
+    public int next() {
+        while(!d.isEmpty()){
+            TreeNode cur = d.peek();
+            if(cur != null){
+                d.pop();
+                if(cur.right != null){
+                    d.push(cur.right);
+                }
+
+                d.push(cur);
+                d.push(null);
+
+                 if(cur.left != null){
+                    d.push(cur.left);
+                }
+
+
+            }else{
+                d.pop();
+                p = d.pop();
+                break;
+            }
+        }
+       return p.val;
+    }
+    
+    
+    public boolean hasNext() {
+        return !d.isEmpty() || p.right != null;
+    }
+}
+
+
+
+ 
 class BSTIterator {
     Stack<TreeNode> s ;
     TreeNode cur;
