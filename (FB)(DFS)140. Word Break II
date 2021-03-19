@@ -1,51 +1,12 @@
 //140. Word Break II
 //leetcode
 
-
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-class Solution {
-    public List<String> wordBreak(String s, List<String> wordDict) {
-        return helper(s, wordDict, new HashMap<String, List<String>>());
-    }
-
-    List<String> helper(String s,List<String> wordDict, Map<String, List<String>> map){
-        if(map.get(s) != null){
-            return map.get(s);
-        }
-
-        List<String> res = new LinkedList<String>();
-
-        for(String dict :wordDict ){
-            if(s.startsWith(dict)){
-                String next = s.substring(dict.length());
-                if(next == null || next.length() <1){
-                    res.add(dict);
-                }else{
-                    for(String sub : helper(next, wordDict, map)){
-                        res.add(dict + " " + sub);
-                    }
-                }
-            }
-        }
-        map.put(s, res);
-        return res;
-    }
-}
-
-
-
-
-
 /*
 
 https://leetcode-cn.com/problems/word-break-ii/solution/shou-hua-tu-jie-dan-ci-chai-fen-ii-cong-di-gui-dao/
 
-
-用DFS回溯，考察所有的拆分可能，如下图，指针从左往右扫描。
+基本思路：
+用DFS回溯，考察所有的拆分可能，指针从左往右扫描。
 如果指针左侧部分是单词，则对右侧的剩余子串，递归考察。
 如果指针左侧部分不是单词，不用往下递归，回溯，考察别的分支。
  */
@@ -85,3 +46,44 @@ class Solution {
         return res;
     }
 }
+
+
+
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+class Solution {
+    public List<String> wordBreak(String s, List<String> wordDict) {
+        return helper(s, wordDict, new HashMap<String, List<String>>());
+    }
+
+    List<String> helper(String s,List<String> wordDict, Map<String, List<String>> map){
+        if(map.get(s) != null){
+            return map.get(s);
+        }
+
+        List<String> res = new LinkedList<String>();
+
+        for(String dict :wordDict ){
+            if(s.startsWith(dict)){
+                String next = s.substring(dict.length());
+                if(next == null || next.length() <1){
+                    res.add(dict);
+                }else{
+                    for(String sub : helper(next, wordDict, map)){
+                        res.add(dict + " " + sub);
+                    }
+                }
+            }
+        }
+        map.put(s, res);
+        return res;
+    }
+}
+
+
+
+
