@@ -1,4 +1,10 @@
 //time :  logn
+
+//https://leetcode-cn.com/problems/find-minimum-in-rotated-sorted-array-ii/solution/154-find-minimum-in-rotated-sorted-array-ii-by-jyd/
+
+//binary search
+
+
 class Solution {
     public int findMin(int[] nums) {
            if(nums == null || nums.length<1){
