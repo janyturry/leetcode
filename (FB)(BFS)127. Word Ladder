@@ -1,55 +1,4 @@
 
-//method1 BFS
-class Solution {
-    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-        Set<String> word = new HashSet<>(wordList);
-        Set<String> visited = new HashSet<>();
-        visited.add(beginWord);
-
-        int step = 1;
-
-        Queue<String> q = new LinkedList<>();
-        q.add(beginWord);
-
-        while(!q.isEmpty()){
-            int size = q.size();
-            for(int i = 0 ; i< size; i++){
-                String cur = q.poll();
-                char[] curArray = cur.toCharArray();
-                for(int j = 0 ; j < curArray.length; j++){
-                    char tmp  = curArray[j];
-
-                    for(char c = 'a'; c<='z'; c++){
-                        if(c == tmp){
-                            continue;
-                        }
-                        curArray[j] = c;
-
-                        String newStr = new String(curArray);
-
-                        if(word.contains(newStr)){
-                            if(newStr.equals(endWord)){
-                                return step +1;
-                            }
-
-                            if(!visited.contains(newStr)){
-                                visited.add(newStr);
-                                q.offer(newStr);
-                            }
-                        }
-                    }
-                    curArray[j] = tmp;
-                }
-            }
-            step++;
-        }
-        return 0;
-    }
-}
-
-
-
-
 //双向BFS
 public class Solution {
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
@@ -115,3 +64,57 @@ public class Solution {
         return 0;
     }
 }
+
+
+
+
+//method1 BFS
+class Solution {
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        Set<String> word = new HashSet<>(wordList);
+        Set<String> visited = new HashSet<>();
+        visited.add(beginWord);
+
+        int step = 1;
+
+        Queue<String> q = new LinkedList<>();
+        q.add(beginWord);
+
+        while(!q.isEmpty()){
+            int size = q.size();
+            for(int i = 0 ; i< size; i++){
+                String cur = q.poll();
+                char[] curArray = cur.toCharArray();
+                for(int j = 0 ; j < curArray.length; j++){
+                    char tmp  = curArray[j];
+
+                    for(char c = 'a'; c<='z'; c++){
+                        if(c == tmp){
+                            continue;
+                        }
+                        curArray[j] = c;
+
+                        String newStr = new String(curArray);
+
+                        if(word.contains(newStr)){
+                            if(newStr.equals(endWord)){
+                                return step +1;
+                            }
+
+                            if(!visited.contains(newStr)){
+                                visited.add(newStr);
+                                q.offer(newStr);
+                            }
+                        }
+                    }
+                    curArray[j] = tmp;
+                }
+            }
+            step++;
+        }
+        return 0;
+    }
+}
+
+
+
