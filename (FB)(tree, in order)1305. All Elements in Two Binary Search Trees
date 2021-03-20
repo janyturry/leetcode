@@ -1,6 +1,8 @@
 /*
 Time: O(n), where n is the total number of nodes in both trees.
 Memory: O(n) for the stack - in the worst case, we may need to store the entire tree there.
+
+基本思路就是中序遍历，同时遍历两棵树
 */
 
 
