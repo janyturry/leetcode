@@ -5,6 +5,9 @@
 时间复杂度：O(NlogN)，需要对 price_A - price_B 进行排序。
 空间复杂度：O(1)。
 
+基本思路就是假设原本所有人都是要去B的，然后现在有一半人要变成去A， 那个cost[i][0] 就是去A 的钱， cost[i][1]就是去B 的钱
+那个cost[i][0] 是支出，  cost[i][1] 是因为不去节省下来了， 花费越少约好， 节省越多约好，cost[i][0] -cost[i][1]  越小越好 ， 需要进行排序
+
 /*
 class Solution {
     public int twoCitySchedCost(int[][] costs) {
