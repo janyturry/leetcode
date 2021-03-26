@@ -7,19 +7,31 @@
 */
 class Solution {
     public TreeNode lcaDeepestLeaves(TreeNode root) {
-       if(root==null) return null;
-       int left=dfs(root.left);
-       int right=dfs(root.right);
-       if(left==right) return root;
-       else if(left<right) return lcaDeepestLeaves(root.right);
-       return lcaDeepestLeaves(root.left);
+        if(root == null){
+            return root;
+        }
+        
+        int left = getDepth(root.left);
+        int right = getDepth(root.right);
+        
+        if(left == right){
+            return root;
+        }else if(left < right){
+            return lcaDeepestLeaves(root.right);
+        }else{
+            return lcaDeepestLeaves(root.left);
+        }
     }
-    int dfs(TreeNode  node){
-      if(node==null) return 0;
-      return 1+Math.max(dfs(node.right),dfs(node.left));
+    
+    //get depth of the tree
+    public int getDepth(TreeNode root){
+        if(root == null){
+            return 0;
+        }
+        
+        return 1 + Math.max(getDepth(root.left) , getDepth(root.right));
     }
 }
-
 
 
 
