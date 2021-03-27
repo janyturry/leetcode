@@ -1,4 +1,6 @@
 //我们可以理解为，滑动窗口内最多有K个0，求滑动窗口最大的长度
+
+//基本思路就是一个滑动窗口， 然后two pointer,然后滑动窗口最多允许有K个 0， 如果超过了左边就要缩 
 class Solution {
     public int longestOnes(int[] A, int K) {
         int count = 0;
