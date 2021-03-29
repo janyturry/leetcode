@@ -1,3 +1,35 @@
+//slide window
+
+class Solution {
+    public List<Integer> findAnagrams(String s, String p) {
+        List<Integer> res = new LinkedList<>();
+        
+        int[] pWin = new int[26];
+        int[] sWin = new int[26];
+        for(char c  : p.toCharArray()){
+            pWin[c-'a']++;
+        }
+        
+        int left = 0;
+        for(int right = 0 ; right< s.length();right++){
+            char c = s.charAt(right);
+            sWin[c-'a']++;
+            while(sWin[c-'a'] > pWin[c-'a']){
+                sWin[s.charAt(left)-'a']--;
+                left++;
+            }
+            
+            if(right - left +1 == p.length()){
+                res.add(left);
+            }
+        }
+        return res;
+    }
+}
+
+
+
+
 class Solution {
     public List<Integer> findAnagrams(String s, String p) {
         char[] arrS = s.toCharArray();
