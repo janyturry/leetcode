@@ -11,6 +11,9 @@
  //time: O(nlogk)
  //spacecQ(k)
  //使用priority queue, 先把头都放进去 然后每次pop出最小的值，一直下去
+ 
+ //binaey search
+ 
 class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
         if(lists == null || lists.length <1){
