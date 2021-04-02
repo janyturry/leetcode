@@ -23,6 +23,9 @@ public class maxPathSum {
 	public int dfs(TreeNode root){
 		//求出左右单边path最大值 (包含左右点的值)
 		//如果结果是小于0， 就设置为0
+		//使用Math.max( dfs(root.left) , 0)  而不直接用dfs(root.left) 是因为点的VAL有可能都是负数， 如果左右儿子回复是负数的话，还不如不经过，所以直接设置为0
+		
+		//如果结果是小于0， 就设置为0
 		int left =  root.left == null ? 0 : Math.max( dfs(root.left) , 0);
 		int right =  root.right == null ? 0 : Math.max( dfs(root.right) , 0);
 		//求出当前人字path的 最大sum, 因为题目说任何一个人字的path都可以,所以每个人字形都要计算一下最大值
@@ -104,3 +107,4 @@ class Solution {
         return root.val  + Math.max(left, right);
     }
 }
+   i = 1  2 3 4
