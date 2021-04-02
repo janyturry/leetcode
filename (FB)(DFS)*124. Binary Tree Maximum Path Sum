@@ -1,8 +1,3 @@
-package test;
-
-import test.lowestCommonAncestor.TreeNode;
-
-
 //124. Binary Tree Maximum Path Sum
 //leetcode
 //每个人字形的path都可以求一下SUM 然后比较， 所以采用DFS的方法， 最后返回全局变量最大值
@@ -107,4 +102,3 @@ class Solution {
         return root.val  + Math.max(left, right);
     }
 }
-   i = 1  2 3 4
