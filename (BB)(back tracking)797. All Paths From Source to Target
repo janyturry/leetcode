@@ -1,4 +1,6 @@
 //DFS
+
+//基本思路就是设置VISITED 数组记录， 然后每个点继续往下找， 当最后一个点是N-1的时候加进
 class Solution {
     public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
         List<List<Integer>> res= new LinkedList<>();

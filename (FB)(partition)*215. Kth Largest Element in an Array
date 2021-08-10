@@ -49,6 +49,7 @@ public class Solution {
         int pivot = nums[left];
         int j = left;
         for (int i = left + 1; i <= right; i++) {
+        //这里的基本思路就是j就是可以放置<pivot的位置， 等循环一遍之后，  swap(nums, j, left) 是可以保证 j 都大于左边的因为 pivot就是left
             if (nums[i] < pivot) {
                 // 小于 pivot 的元素都被交换到前面
                 j++;

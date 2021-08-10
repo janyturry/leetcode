@@ -3,6 +3,8 @@
 复杂度分析
 时间复杂度： O(Nlogk)。其中 NN 是 words 的长度。我们用 O(N) 的时间计算每个单词的频率，然后将 N 个单词添加到堆中，添加每个单词的时间为 O(logk) 。最后，我们从堆中弹出最多 k 次。因为 k≤N 的值，总共是O(Nlogk)。
 空间复杂度：O(N)，用于存储我们计数的空间
+
+基本思路就是使用priorityQueue ， 注意这里的COMPARETO， b.compareTo(a) 代表的是 从大到小
 */
 
 class Solution {
