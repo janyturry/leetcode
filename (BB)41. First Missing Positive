@@ -1,9 +1,13 @@
+//BB,FB
 /*
 why if(A[A[i]-1] != A[i]) instead of if(A[i]-1 != i) ? Aren't they the same???
 
 A[A[i]-1] != A[i]
 Almost the same, but like [3,2,3,4], when i = 0, A[0] = 3, which should be put on position i = 2 where also A[2] = 3.
 Thus there is no need to do swap and go to else statement i++ for next check or it will go into endless loop
+
+基本思路就是原地哈希，就把  1 这个数放到下标为 0 的位置， 2 这个数放到下标为 1 的位置
+那就是数值为 i 的数映射到下标为 i - 1 的位置
 */
 
 //time O(n)
@@ -11,24 +15,28 @@ Thus there is no need to do swap and go to else statement i++ for next check or 
 
 class Solution {
     public int firstMissingPositive(int[] nums) {
-        if (nums == null || nums.length < 1) {
-            return 1;
+        if(nums == null || nums.length < 1){
+            return -1;
         }
-        int i = 0;
-        while (i < nums.length) {
+
+        for(int i = 0 ; i< nums.length;i++){
             //nums[nums[i] - 1] != nums[i]   要交换的目标数不一致才是要交换的，不然无限循环
-            if (nums[i] >= 1 && nums[i] <= nums.length && nums[nums[i] - 1] != nums[i]) {
-                swap(nums, i, nums[i] - 1);
-            } else {
-                i++;
+            //要找的数一定在 [1, N + 1] 左闭右闭（这里 N 是数组的长度）
+            while(nums[i] != i+1 && nums[i] >=1 && nums[i]<= nums.length && nums[nums[i]-1] != nums[i]){
+                swap(nums, i, nums[i]-1);
             }
         }
-        i = 0;
-        while (i < nums.length && nums[i] == i + 1) i++;
-        return i + 1;
+
+       for(int i = 0 ; i< nums.length;i++){
+        if(nums[i] != i+1){
+            return i+1;
+        }
+       }
+
+        return nums.length+1;
     }
 
-    private void swap(int[] A, int i, int j) {
+     private void swap(int[] A, int i, int j) {
         int temp = A[i];
         A[i] = A[j];
         A[j] = temp;
