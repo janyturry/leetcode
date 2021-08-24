@@ -1,0 +1,40 @@
+/*
+复杂度分析
+
+时间复杂度：O(N)。我们需要遍历所有的日志，因为有 N 个函数，因此日志的数量为 2N。
+空间复杂度：O(N)，为栈占用的空间。
+
+
+*/
+
+class Solution {
+  public int[] exclusiveTime(int n, List < String > logs) {
+    int[] res = new int[n];
+    
+    //pre 是当前start time of interval
+    int pre = 0;
+    
+    //stack 存放id， 只存放还没有end的id
+    Deque < Integer > stack = new LinkedList < > ();
+
+    for (String log: logs) {
+      String[] item = log.split(":");
+      int id = Integer.parseInt(item[0]);
+      int time = Integer.parseInt(item[2]);
+
+      if (item[1].equals("start")) {
+        if (!stack.isEmpty()) {
+          res[stack.peek()] += time - pre;
+        }
+        stack.push(id);
+        pre = time;
+
+      } else {
+        res[stack.pop()] += time - pre + 1;
+        pre = time + 1;
+      }
+    }
+    return res;
+  }
+}
+
