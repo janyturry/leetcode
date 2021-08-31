@@ -1,0 +1,44 @@
+/*
+Complexity
+
+Time O(N)
+Space O(H + N), where H is the height of tree.
+
+*/
+
+class Solution {
+    public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
+        List<TreeNode> res = new LinkedList<>();
+        Set<Integer> set = new HashSet<>();
+        for(int to : to_delete){
+            set.add(to);
+        }
+        
+        if(!set.contains(root.val)){
+            res.add(root);
+        }
+        
+        helper(root, res, set);
+        return res;
+    }
+
+    public TreeNode helper(TreeNode root, List<TreeNode> res, Set<Integer> set){
+        if(root == null){
+            return root;
+        }
+        
+        root.left = helper(root.left, res, set);
+        root.right = helper(root.right, res, set);
+        
+        if(set.contains(root.val)){
+            if(root.left != null){
+                res.add(root.left);
+            }
+            if(root.right != null){
+                res.add(root.right);
+            }
+            root = null;
+        }
+        return root;
+    }
+}
