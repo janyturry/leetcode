@@ -1,8 +1,24 @@
+https://leetcode-cn.com/problems/subarray-sum-equals-k/solution/dai-ni-da-tong-qian-zhui-he-cong-zui-ben-fang-fa-y/
+
 /*
 时间复杂度：O(N)，这里 N 是数组的长度；
 空间复杂度：O(N)。
 */
 
+/*
+为什么要放  preSumFreq.put(0, 1);
+
+nums 的 第 i 到 j 项 的和，有：
+
+nums[i]+…+nums[j]=prefixSum[j]−prefixSum[i−1]
+
+当 i 为 0，此时 i-1 为 -1，我们故意让 prefixSum[-1] 为 0，使得通式在i=0时也成立：
+nums[0]+…+nums[j]=prefixSum[j]
+
+让 prefixSum[-1] 为 0 意味着 前缀和为0的已经有一个结果
+
+
+*/
 import java.util.HashMap;
 import java.util.Map;
 
