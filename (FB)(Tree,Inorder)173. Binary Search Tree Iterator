@@ -43,7 +43,7 @@
        return p.val;
     }
     
-    
+    //因为是in-order,所以P的下一个点就是right, 所以是p.right
     public boolean hasNext() {
         return !d.isEmpty() || p.right != null;
     }
