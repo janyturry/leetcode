@@ -1,9 +1,9 @@
 /*
 Complexity Analysis
 
-Time Complexity: O(N)O(N), where NN is the length of A.
+Time Complexity: O(N) where NN is the length of A.
 
-Space Complexity: O(1)O(1).
+Space Complexity: O(1)
 */
 
 
