@@ -1,0 +1,47 @@
+复杂度分析
+
+时间复杂度 ：O(MN)M,N 分别为 num1 和 num2 的长度。
+空间复杂度：O(M+N)。用于存储计算结果。
+
+//https://leetcode-cn.com/problems/multiply-strings/solution/you-hua-ban-shu-shi-da-bai-994-by-breezean/
+
+class Solution {
+    public String multiply(String num1, String num2) {
+        if (num1.equals("0") || num2.equals("0")) {
+            return "0";
+        }
+
+        String res = "0";
+
+        for (int i = num2.length() - 1; i >= 0; i--) {
+            int carry = 0;
+            StringBuilder tmp = new StringBuilder();
+            for (int j = 0; j < num2.length() - 1 - i; j++) {
+                tmp.append("0");
+            }
+            int n2 = num2.charAt(i) - '0';
+            for (int z = num1.length() - 1; z >= 0 || carry != 0; z--) {
+                int cur = z < 0 ? 0 : num1.charAt(z) - '0';
+                int left = (cur * n2 + carry) % 10;
+                carry = (cur * n2 + carry) / 10;
+                tmp.append(left);
+            }
+            res = addString(res, tmp.reverse().toString());
+        }
+        return res;
+    }
+
+    public String addString(String num1, String num2) {
+        StringBuilder builder = new StringBuilder();
+        int carry = 0;
+        for (int i = num1.length() - 1, j = num2.length() - 1; i >= 0 || j >= 0 || carry != 0; i--, j--) {
+            int x = i < 0 ? 0 : num1.charAt(i) - '0';
+            int y = j < 0 ? 0 : num2.charAt(j) - '0';
+            int sum = (x + y + carry) % 10;
+            builder.append(sum);
+            carry = (x + y + carry) / 10;
+        }
+        return builder.reverse().toString();
+    }
+
+}
