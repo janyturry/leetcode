@@ -19,6 +19,49 @@
 
 /*
 
+层序遍历
+
+思路：把一颗树的节点（包括空节点）按层序遍历排成一行，当且仅当存在两个相邻节点：前一个为null，后一个不为null时，才不是不是完全二叉树。
+如：
+
+
+       1
+      / \
+     2   3
+    / \   \
+   4   5   6
+层序遍历序列为：[1, 2, 3, 4, 5, null, 6]，其中 null 出现在了6前面，所以不合法
+
+
+*/
+class Solution {
+    public boolean isCompleteTree(TreeNode root) {
+        if(root == null){
+            return false;
+        }
+        
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+        //记录PRE 节点
+        TreeNode pre = root;
+        while(!q.isEmpty()){
+            TreeNode cur = q.poll();
+            if(pre == null && cur != null){
+                return false;
+            }else{
+                if(cur != null){
+                    q.offer(cur.left);
+                    q.offer(cur.right);
+                }
+            }
+            pre = cur;
+        }
+        return true;
+    }
+}
+
+
+
 When level-order traversal in a complete tree, after the last node, all nodes in the queue should be null.
 Otherwise, the tree is not complete.
 
