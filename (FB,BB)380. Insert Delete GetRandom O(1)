@@ -1,4 +1,53 @@
 
+https://leetcode-cn.com/problems/insert-delete-getrandom-o1/solution/chang-shu-shi-jian-cha-ru-shan-chu-he-huo-qu-sui-j/
+
+
+
+class RandomizedSet {
+    Map<Integer, Integer> map;
+    List<Integer> list;
+    Random r;
+    /** Initialize your data structure here. */
+    public RandomizedSet() {
+        map = new HashMap<>();
+        list = new ArrayList<>();
+        r = new Random();
+    }
+    
+    /** Inserts a value to the set. Returns true if the set did not already contain the specified element. */
+    public boolean insert(int val) {
+        if(map.containsKey(val)){
+            return false;
+        }
+        
+        map.put(val, list.size());
+        list.add(list.size(), val);
+        return true;
+    }
+    
+    /** Removes a value from the set. Returns true if the set contained the specified element. */
+    public boolean remove(int val) {
+        if(!map.containsKey(val)){
+            return false;
+        }
+        int deleteIndex = map.get(val);
+        int lastElementVal = list.get(list.size()-1);
+        list.set(deleteIndex, lastElementVal);
+        map.put(lastElementVal, deleteIndex);
+        list.remove(list.size()-1);
+        map.remove(val);
+        return true;
+        
+    }
+    
+    /** Get a random element from the set. */
+    public int getRandom() {
+        return list.get(r.nextInt(list.size()));
+    }
+}
+
+
+
 //380. Insert Delete GetRandom O(1)
 //使用hashmap 来记录 <插入值， 在array里面的index>,
 //当插入的时候，如果存在，return false， 当不存在，插入到hashmap 和 arrayList. 移除的时候， 把需要移除的
