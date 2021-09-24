@@ -1,4 +1,34 @@
 
+class Solution {
+    public String simplifyPath(String path) {
+        if(path == null || path.length()<1){
+            return "";
+        }
+        Deque<String> d = new LinkedList<>();
+        for(String i : path.split("/")){
+            if( i.equals("..")){
+                d.pollFirst();
+            }else if(!i.equals(".")&& !i.equals("..") && !i.equals("")){
+                d.offerFirst(i);
+            }
+        }
+        
+        StringBuilder sb = new StringBuilder();
+        if(d.size() == 0){
+            return "/";
+        }
+        while(!d.isEmpty()){
+            sb.append("/" + d.pollLast());
+        }
+        
+        return sb.toString();
+    }
+}
+
+
+
+
+
 import java.util.LinkedList;
 
 //71. Simplify Path
