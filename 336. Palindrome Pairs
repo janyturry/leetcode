@@ -9,6 +9,17 @@
 
 
 /*
+
+复杂度分析
+
+时间复杂度：O(n×m x m)，其中 n 是字符串的数量，m 是字符串的平均长度。对于每一个字符串，我们需要 O(m x m)地判断其所有前缀与后缀是否是回文串，并 O(m x m) 地寻找其所有前缀与后缀是否在给定的字符串序列中出现。
+空间复杂度：O(n×m)，其中 n 是字符串的数量，m 是字符串的平均长度。为字典树的空间开销。
+
+
+*/
+
+
+/*
 Input: ["abcd","dcba","lls","s","sssll"]
 Output: [[1,0],[0,1],[0,1],[1,0],[3,2],[2,4]]
 Expected: [[0,1],[1,0],[3,2],[2,4]]
@@ -26,6 +37,7 @@ public class palindromePairs {
 		    for (int i=0; i<words.length; i++) map.put(words[i], i);
 		    for (int i=0; i<words.length; i++) {
 		        for (int j=0; j<=words[i].length(); j++) { // notice it should be "j <= words[i].length()"
+			    //s.substring(0,0) = null
 		            String str1 = words[i].substring(0, j);
 		            String str2 = words[i].substring(j);
 		            if (isPalindrome(str1)) {
@@ -40,6 +52,7 @@ public class palindromePairs {
 		            if (isPalindrome(str2)) {
 		                String str1rvs = new StringBuilder(str1).reverse().toString();
 		                // check "str.length() != 0" to avoid duplicates
+				//避免出现 （"", "abc"） 和 （“abc”, ""） 这样的情况
 		                if (map.containsKey(str1rvs) && map.get(str1rvs) != i && str2.length()!=0) { 
 		                    List<Integer> list = new ArrayList<Integer>();
 		                    list.add(i);
