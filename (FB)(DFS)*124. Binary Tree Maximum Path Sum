@@ -28,6 +28,7 @@ public class maxPathSum {
 		//计算一下当前人字的最大值
 		max = Math.max( max, cur);
 		//返回目前单边的最大值， 因为dfs()就是求单边
+		//因为DFS 路径就是根节点+ 左边的路径+ 右边的路径， DFS 返回如果把LEFT+ RIGHT+ ROOT的话就等于是SUB 路径就是一个人字形， 就不满足题目需求
 		return root.val + Math.max(left, right);
 	}
 
