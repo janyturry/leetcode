@@ -1,0 +1,38 @@
+
+//116. Populating Next Right Pointers in Each Node
+//leetcode
+//重点是一直循环链接各种点, 外层循环永远是每层最左边的点， 然后先判断左右是否空， 不是空的话直接连接。 然后判断右和next是否为空， 不空的话直接连
+//assume that it is a perfect binary tree (ie, all leaves are at the same level, and every parent has two children)
+
+/*
+时间复杂度：O(n)
+空间复杂度：O(1)
+*/
+
+class Solution {
+	public Node connect(Node root) {
+		if(root==null) {
+			return root;
+		}
+		Node pre = root;
+		//循环条件是当前节点的left不为空，当只有根节点
+		//或所有叶子节点都出串联完后循环就退出了
+		while(pre.left!=null) {
+			Node tmp = pre;
+			while(tmp!=null) {
+				//将tmp的左右节点都串联起来
+				//注:外层循环已经判断了当前节点的left不为空
+				tmp.left.next = tmp.right;
+				//下一个不为空说明上一层已经帮我们完成串联了
+				if(tmp.next!=null) {
+					tmp.right.next = tmp.next.left;
+				}
+				//继续右边遍历
+				tmp = tmp.next;
+			}
+			//从下一层的最左边开始遍历
+			pre = pre.left;
+		}
+		return root;
+	}
+}
