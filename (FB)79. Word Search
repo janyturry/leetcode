@@ -1,0 +1,177 @@
+
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
+
+//79. Word Search
+//leetcode
+//总共有BFS和DFS两种方法
+
+
+/*
+时间复杂度：一个非常宽松的上界为 O(MN⋅3的L次方)，其中 M,N 为网格的长度与宽度，
+L 为字符串 word 的长度。在每次调用函数 
+check 时，除了第一次可以进入 4 个分支以外，其余时间我们最多会进入 3 个分支（因为每个位置只能使用一次，所以走过来的分支没法走回去）。由于单词长为 
+L，故 check(i,j,0) 的时间复杂度为 
+O(3的L次方)，而我们要执行 O(MN) 次检查。然而，由于剪枝的存在，我们在遇到不匹配或已访问的字符时会提前退出，终止递归流程。因此，实际的时间复杂度会远远小于 
+空间复杂度：O(MN)。我们额外开辟了 O(MN) 的 visited 数组，同时栈的深度最大为 O(min(L,MN))。
+
+*/
+
+//back tracking + dfs 
+class Solution {
+    int[][]dirs = new int[][]{{0,1},{1,0},{-1,0},{0,-1}};
+    char[][] b ;
+    char[] ar;
+    boolean[][] visit;
+    public boolean exist(char[][] board, String word) {
+        if(board == null || board.length < 1){
+            return false;
+        }
+        
+        this.b = board;
+        
+        int m = b.length;
+        int n = b[0].length;
+        
+        visit = new boolean[m][n];
+        ar = word.toCharArray();
+        for(int i = 0 ; i< m; i++){
+            for(int j = 0; j < n; j++){
+                if(ar[0] == b[i][j]){
+                    visit[i][j] = true;
+                    if(dfs(i,j, 0)){
+                        return true;
+                    }
+                    visit[i][j] = false;
+                }
+            }
+        }
+        
+        return false;
+    }
+    
+    public boolean dfs(int i, int j,int level){
+        if(level == ar.length -1){
+            return true;
+        }
+        
+        for(int[] dir : dirs){
+            int newX = dir[0] + i;
+            int newY = dir[1] + j;
+            
+            if(!inArea(newX, newY)){
+                continue;
+            }
+            
+            if(visit[newX][newY]){
+                continue;
+            }
+            
+            if(b[newX][newY] != ar[level+1]){
+                continue;
+            }
+            
+            visit[newX][newY] = true;
+            if(dfs(newX,newY, level+1)){
+                return true;
+            }else{
+                visit[newX][newY] = false;;
+            }
+        }
+        return false;
+        
+    }
+    
+    public boolean inArea(int i, int j){
+        if(i >=0 && i<= b.length-1 && j >=0 && j<=b[0].length-1){
+            return true;
+        }else{
+            return false;
+        }
+    }
+}
+
+
+class point {
+	int x;
+	int y;
+
+	point(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+}
+
+//BFS
+/*
+public class exist {
+	public static int[] dirX = { 0, -1, 1, 0 };
+	public static  int[] dirY = { -1, 0, 0, 1 };
+
+	
+	public static  boolean existhere(char[][] board, String word) {
+		if (board == null || board.length == 0 || board[0] == null
+				|| board[0].length == 0 || word == null || word.length() == 0) {
+			return false;
+		}
+
+		int m = board.length;
+		int n = board[0].length;
+
+		boolean res = false;
+		for (int i = 0; i < m; i++) {
+			for (int j = 0; j < n; j++) {
+				if (board[i][j] == word.charAt(0)) {
+					point pp = new point(i,j);
+					res = helper(new point(i, j), board, word);
+					if (res) {
+						return res;
+					}
+				}
+			}
+		}
+
+		return res;
+	}
+
+	public  static boolean helper(point p, char[][] board, String word) {
+		HashSet<point> set = new HashSet<point>();
+		Queue<point> q = new LinkedList<point>();
+		if (word.length() < 2) {
+			return true;
+		}
+		set.add(p);
+		q.offer(p);
+		int index = 1;
+		while (!q.isEmpty()) {
+			int size = q.size();
+			for (int i = 0; i < size; i++) {
+				point tmp = q.poll();
+
+				for (int j = 0; j < 4; j++) {
+					int newX = tmp.x + dirX[j];
+					int newY = tmp.y + dirY[j];
+
+					if (newX >= 0 && newX <= board.length - 1 && newY >= 0
+							&& newY <= board[0].length - 1
+							&& index <= word.length() - 1
+							&& board[newX][newY] == word.charAt(index)
+							&& set.add(new point(newX, newY))) {
+						if (index == word.length() - 1) {
+							return true;
+						}
+
+						q.offer(new point(newX, newY));
+					}
+				}
+			}
+			index++;
+		}
+
+		return false;
+	}
+
+}
+*/
+
