@@ -1,23 +1,34 @@
+/*
+时间复杂度：O(n)
+空间复杂度：O(n)
+
+https://leetcode-cn.com/problems/continuous-subarray-sum/solution/gong-shui-san-xie-tuo-zhan-wei-qiu-fang-1juse/
+*/
+
 class Solution {
     public boolean checkSubarraySum(int[] nums, int k) {
-       int n = nums.length;
-        // 构建前缀数组
-        int[] sum = new int[n + 1];
-        Map<Integer, Integer> need = new HashMap<>();
-        need.put(0, 0);
+        int len = nums.length;
+        int[]sum = new int[len+1];
         
-        for(int i = 1; i <= n ; i++){
-            sum[i] = (sum[i - 1] + nums[i - 1]);
+        //(存放sum%k, index)
+        Map<Integer, Integer> map = new HashMap<>();
+        
+        for(int i = 1; i <=len; i++){
+            sum[i] = sum[i-1] + nums[i-1];
         }
-        for (int i = 1; i <= n; i++) {
-            if (need.containsKey(sum[i]%k)) {
-                if (i - need.get(sum[i]%k) >= 2) {
+        
+        map.put(0,0);
+        for(int i = 1; i <=len; i++){
+            if(map.containsKey(sum[i]%k)){
+            //不可以是i - map.get(sum[i]%k) >=1， 因为是>=1的话根据前缀和的定义，就只能是num[i]一个数
+                if(i - map.get(sum[i]%k) >=2 ){
                     return true;
                 }
-            } else {
-                need.put(sum[i]%k, i);
+            }else{
+                map.put(sum[i]%k, i);
             }
         }
-        return false;   
+        return false;
+        
     }
 }
