@@ -1,0 +1,87 @@
+package test;
+
+//146. LRU Cache
+//leetcode
+//思路：用双向指针作为节点， 然后创建hashmap, 初始化的时候初始化头尾相连， 然后初始化capacity. get() 的时候， 检查hashmap,不存在的话直接返回-1
+//存在的话,接触当前节点前后指针， 然后move to tail.
+//put method, 使用get method(get 会自动接触当前前后指针并且move to tail),如果返回大于1表明存在， 只更新他的value.否则的话，先判断是否慢了size,是的话先把head的下一个remove
+//然后创建一个新的node, 放到tail的前面
+import java.util.HashMap;
+
+//https://leetcode-cn.com/problems/lru-cache/solution/lru-ce-lue-xiang-jie-he-shi-xian-by-labuladong/
+
+class LRUCache {
+    class Node{
+        Node pre;
+        Node next;
+        int key;
+        int val;
+        
+        Node (int key, int val){
+            this.key = key;
+            this.val = val;
+            this.pre = null;
+            this.next = null;
+        }
+    } 
+    
+    int cap;
+    Node head;
+    Node tail;
+    Map<Integer, Node> map;
+    public LRUCache(int capacity) {
+        cap = capacity;
+        map = new HashMap<>();
+        head = new Node(-1,-1);
+        tail = new Node(-1,-1);
+        head.pre = tail;
+        tail.next = head;
+    }
+    
+    public int get(int key) {
+        if(!map.containsKey(key)){
+            return -1;
+        }
+        
+        //解绑
+        Node cur = map.get(key);
+        cur.pre.next = cur.next;
+        cur.next.pre = cur.pre;
+        moveToHead(key);
+        return cur.val;
+    }
+    
+    public void put(int key, int value) {
+        if(map.containsKey(key)){
+            get(key);
+            Node cur = map.get(key);
+            cur.val = value;
+            return;
+        }
+        
+        if(cap == map.size()){
+            removeTail();
+        }
+        
+        Node addNode = new Node(key,value);
+        map.put(key,addNode);
+        moveToHead(key);
+    }
+    
+    public void moveToHead(int key){
+        Node cur = map.get(key);
+        cur.pre = head.pre;
+        cur.next = head;
+        head.pre.next = cur;
+        head.pre = cur;
+    }
+    
+    public void removeTail(){
+        Node removeNode = tail.next;
+        tail.next = removeNode.next;
+        removeNode.next.pre = tail;
+        removeNode.next = null;
+        removeNode.pre = null;
+        map.remove(removeNode.key);
+    }
+}
