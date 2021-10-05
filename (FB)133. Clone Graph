@@ -21,29 +21,34 @@ class Node {
 //BFS
 class Solution {
     public Node cloneGraph(Node node) {
-        if( node ==null){
+        if(node == null){
             return node;
         }
-
-        Map<Node,Node> map = new HashMap<>();
-        Node n = new Node(node.val, new LinkedList<Node>());
-        map.put(node, n);
-
-        Queue<Node> q = new LinkedList<Node>();
+        //old node, new node
+        Map<Node, Node> map = new HashMap<>();
+        Node clone = new Node(node.val);
+        map.put(node,clone);
+        
+        Queue<Node> q = new LinkedList<>();
         q.offer(node);
-
+        
         while(!q.isEmpty()){
-            Node tmp = q.poll();
-            for(Node nei : tmp.neighbors){
-                if(!map.containsKey(nei)){
-                    map.put(nei, new Node(nei.val, new LinkedList<Node>()));
-                    q.offer(nei);
+            int size = q.size();
+            for(int i = 0 ; i< size; i++){
+                Node cur = q.poll();
+                for(Node n : cur.neighbors){
+                    if(!map.containsKey(n)){
+                        Node nClone = new Node(n.val);
+                        map.put(n, nClone);
+                        q.offer(n);
+                    }
+                    map.get(cur).neighbors.add(map.get(n));
                 }
-
-                map.get(tmp).neighbors.add(map.get(nei));
             }
         }
-        return  n;
+        
+        return map.get(node);
+        
     }
 }
 
