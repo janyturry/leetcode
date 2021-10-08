@@ -1,0 +1,78 @@
+class Solution {
+    public int compress(char[] chars) {
+        if(chars == null || chars.length <1){
+            return 0;
+        }
+        int left = 0;
+        int right = 0;
+        
+        int len = chars.length;
+        if(len == 1){
+            return 1;
+        }
+        int count = 1;
+        int index = 0;
+        for(right = 1; right <= len; right++){
+            if(right == len){
+                if(count ==1){
+                   chars[index++] = chars[left];
+                }else{
+                  chars[index++] = chars[left];
+                  for(char c : String.valueOf(count).toCharArray()){
+                        chars[index++] = c;
+                    }
+                }
+                break;
+            }
+            if(chars[right] == chars[left]){
+                count++;
+                continue;
+            }else{
+                if(count ==1){
+                    chars[index++] = chars[left];
+                    
+                }else{
+                    chars[index++] = chars[left];
+                    for(char c : String.valueOf(count).toCharArray()){
+                        chars[index++] = c;
+                    }
+                }
+                count =1;
+                left = right;
+            }
+        }
+        return index;
+    }
+}
+
+
+/*
+基本思路就是用two pointer ， 先使用left, right 来决定每次重复到哪里， 然后移动resIndex、
+*/
+
+class Solution {
+    public int compress(char[] chars) {
+        int size = chars.length;
+
+        int left =0;
+        int right =0;
+
+        int resIndex = 0;
+        while(left < size){
+            while(right < size && chars[left] == chars[right]){
+                right++;
+            }
+            int count = right - left;
+            chars[resIndex++] = chars[left];
+            if(count>1){
+            //这一步很重要， 直接能把数字转换成char放进去
+                for(char c: String.valueOf(count).toCharArray()){
+                    chars[resIndex++] = c;
+
+                }
+            }
+            left = right;
+        }
+        return resIndex;
+    }
+}
