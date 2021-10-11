@@ -1,6 +1,10 @@
 //49. Group Anagrams
 
 
+时间复杂度：字符串的最长长度 K, 排序的话算作 O（Klog（K））,最外层的 for 循环，所以就是 O（nKlog（K））。
+
+空间复杂度：O（NK），用来存储结果。
+
 
 //time: nlog(n)
 class Solution {
