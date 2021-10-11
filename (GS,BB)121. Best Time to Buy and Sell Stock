@@ -15,6 +15,32 @@ dp[i][1]：规定了今天持股，有以下两种情况：
 */
 
 
+
+
+//简化SPACE COMPLEXITY    N->1
+
+class Solution {
+    public int maxProfit(int[] prices) {
+        if(prices == null || prices.length <1 ){
+            return 0;
+        }
+        
+        int max = 0;
+        int len =prices.length;
+        int [][] res = new int[len][2];
+        
+       int preWithout = 0;
+       int preHold = -prices[0];
+        
+        for(int i = 1; i < len; i++){
+            preWithout =  Math.max(preWithout, preHold + prices[i]);
+              preHold =  Math.max(preHold, - prices[i]);
+        }
+        
+        return preWithout;
+    }
+}
+
 public class Solution {
     public int maxProfit(int[] prices) {
         int len = prices.length;
