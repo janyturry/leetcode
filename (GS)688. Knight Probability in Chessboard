@@ -5,6 +5,7 @@
 class Solution {
     public double knightProbability(int N, int K, int r, int c) {
         //preways [i][j][K]  means 第K步  走到 第i行J 列的 可能性
+        //注意要用double
         double [][][] preWays = new double[N][N][K+1];
 
         preWays[r][c][0] = 1;
