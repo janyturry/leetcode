@@ -10,7 +10,7 @@ class MyHashMap {
         }
     }
     
-    public final ListNode[] nodes = new ListNode[10000] ;
+    public final ListNode[] nodes = new ListNode[10009] ;
     
     
     public int getIndex(int key){
