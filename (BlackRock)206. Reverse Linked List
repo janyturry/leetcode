@@ -1,0 +1,41 @@
+//206. Reverse Linked List
+//leetcode
+//思路:主要是设置pre点来记录之前的点
+
+//iterative
+class Solution {
+    public ListNode reverseList(ListNode head) {
+        if(head == null){
+            return head;
+        }
+        
+        ListNode pre = null;
+        while(head != null){
+            ListNode nextNode = head.next;
+            head.next = pre;
+            pre = head;
+            head = nextNode;
+        }
+        return pre;
+    }
+}
+
+
+
+//recursion
+/*
+time complexity: O(n)
+space complexity: O(n)
+*/
+class Solution {
+    public ListNode reverseList(ListNode head) {
+        if(head == null || head.next == null){
+            return head;
+        }
+        
+        ListNode newHead = reverseList(head.next);
+        head.next.next = head;
+        head.next = null;
+        return newHead;
+    }
+}
