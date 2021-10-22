@@ -14,20 +14,20 @@ import javax.swing.tree.TreeNode;
 class Solution {
     public TreeNode invertTree(TreeNode root) {
         if(root == null){
-            return null;
+            return root;
         }
 
-        TreeNode dummy = root.left;
-        root.left = root.right;
-        root.right = dummy;
-        
-        invertTree(root.left);
-        invertTree(root.right);
+        TreeNode left = root.left;
+        TreeNode right = root.right;
+        invertTree(left);
+        invertTree(right);
+
+        root.left = right;
+        root.right = left;
 
         return root;
     }
 }
-
 
 //BFS
 
