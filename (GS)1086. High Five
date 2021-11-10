@@ -1,0 +1,47 @@
+class Solution {
+    public int[][] highFive(int[][] items) {
+        if (items == null || items.length < 1) {
+            return new int[0][0];
+        }
+
+        Map < Integer, PriorityQueue < Integer >> map = new HashMap < > ();
+
+        for (int[] i: items) {
+            int id = i[0];
+            int score = i[1];
+            if (!map.containsKey(id)) {
+                PriorityQueue < Integer > tmp = new PriorityQueue < Integer > ();
+                tmp.offer(score);
+                map.put(id, tmp);
+
+            } else {
+                PriorityQueue < Integer > p = map.get(id);
+                p.offer(score);
+                if (p.size() > 5) {
+                    p.poll();
+                }
+                map.put(id, p);
+            }
+        }
+
+        int[][] res = new int[map.size()][2];
+        int count = 0;
+        for (int i = 0; i <= 1000; i++) {
+            if (map.get(i) == null) {
+                continue;
+            }
+            PriorityQueue < Integer > tp = map.get(i);
+            int size = tp.size();
+            int sum = 0;
+            while (!tp.isEmpty()) {
+                sum += tp.poll();
+            }
+
+            int sc = sum / size;
+            res[count][0] = i;
+            res[count][1] = sc;
+            count++;
+        }
+        return res;
+    }
+}
