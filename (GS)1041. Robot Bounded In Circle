@@ -1,0 +1,79 @@
+/*
+. One, if you end up where you started, it is a circle. Two, if you end up in a different place with facing north (again),
+hence you are drifting away. All other scenarios are going to be in a circle (or come back) in infinity no matter. 
+You can think that the starting and the end point form a vector.
+Unless the end direction is north, concataned vectors will always end up on the starting point eventually (infinity).
+
+*/
+
+class Solution {
+    enum Dir{
+        north,
+        south,
+        west,
+        east
+    }
+    public boolean isRobotBounded(String instructions) {
+        Dir dir = Dir.north;
+        
+        int x = 0;
+        int y = 0;
+        
+        for(char c : instructions.toCharArray()){
+            if(c == 'G'){
+                switch(dir){
+                    case north:
+                        y++;
+                        break;
+                    case south:
+                        y--;
+                        break;
+                    case west:
+                        x--;
+                        break;
+                    case east:
+                        x++;
+                        break;
+                }
+            }else if (c == 'L'){
+                 switch(dir){
+                    case north:
+                        dir = Dir.west;
+                        break;
+                    case south:
+                        dir = Dir.east;
+                        break;
+                    case west:
+                        dir = Dir.south;
+                        break;
+                    case east:
+                        dir = Dir.north;
+                        break;
+                }
+            }else if (c == 'R'){
+                 switch(dir){
+                    case north:
+                        dir = Dir.east;
+                        break;
+                    case south:
+                        dir = Dir.west;
+                        break;
+                    case west:
+                        dir = Dir.north;
+                        break;
+                    case east:
+                        dir = Dir.south;
+                        break;
+                }
+            }
+        }
+        if (x ==0 && y == 0){
+            return true;
+        }
+        if(dir == Dir.north){
+            return false;
+        }
+        
+        return true;
+    }
+}
