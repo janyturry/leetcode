@@ -1,0 +1,27 @@
+/*
+基本思路就是先把nums[i] 的值映射到 数组上面， 这样等于是把值线性排列了，  取出其中一个的话，旁边两个的值都要被删除
+*/
+
+class Solution {
+    public int deleteAndEarn(int[] nums) {
+        if(nums == null || nums.length< 1){
+            return -1;
+        }
+        
+        int[] bucket = new int[10001];
+        int[] dp = new int[10001];
+        for(int i : nums){
+            bucket[i] +=i;
+        }
+        
+        dp[0] = bucket[0];
+        dp[1] = bucket[1];
+        
+        //i的选项可以是取这个值，然后不取这个值
+        for(int i = 2; i < bucket.length; i++){
+            dp[i] = Math.max(dp[i-2] + bucket[i] , dp[i-1]);
+        }
+        
+        return dp[10000];
+    }
+}
