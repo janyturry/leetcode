@@ -1,0 +1,46 @@
+/*
+遍历中间的士兵，统计 左边/右边 比他 小/大 的士兵人数。
+
+每名士兵在中间的情况下可以组队的数量为：
+左边比他小的人数 × 右边比他大的人数 + 左边比他大的人数 × 右边比他小的人数
+
+
+*/
+
+class Solution {
+    public int numTeams(int[] rating) {
+        int res = 0;
+        if (rating == null || rating.length <= 1) {
+            return 0;
+        }
+
+        int[] left = new int[2];
+        int[] right = new int[2];
+        int len = rating.length;
+        for (int i = 0; i < len; i++) {
+            left = helper(rating, 0, i - 1, rating[i]);
+            right = helper(rating, i + 1, len - 1, rating[i]);
+            res += ((left[0] * right[1]) + (left[1] * right[0]));
+
+        }
+        return res;
+    }
+
+    public int[] helper(int[] rating, int s, int e, int key) {
+        if ((s < 0 || s > rating.length - 1) || (e < 0 || e > rating.length - 1)) {
+            return new int[] {
+                0,
+                0
+            };
+        }
+        int[] res = new int[2];
+        for (int i = s; i <= e; i++) {
+            if (rating[i] < key) {
+                res[0]++;
+            } else if (rating[i] > key) {
+                res[1]++;
+            }
+        }
+        return res;
+    }
+}
