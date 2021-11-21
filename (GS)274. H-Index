@@ -1,0 +1,39 @@
+/*
+
+根据题意，我们需要找到满足条件「引用次数至少为 x 次的 x 篇论文」中的最大 x 值
+
+
+时间复杂度：对 [0,n] 做二分，复杂度为  O(logn)；check 函数需要对数组进行线性遍历，复杂度为 O(n)。整体复杂度为 O(nlogn)
+空间复杂度：O(1)
+*/
+
+class Solution {
+    public int hIndex(int[] citations) {
+        if(citations == null || citations.length < 1){
+            return -1;
+        }
+        
+        int left = 0;
+        int right = citations.length;
+        
+        while(left < right){
+            int mid = left + (right - left+1)/2;
+            if(check(citations, mid)){
+                left = mid;
+            }else{
+                right = mid-1;
+            }
+        }
+        return left;
+    }
+    
+    public boolean check(int[] citations, int mid){
+       int count = 0;
+        for(int i : citations){
+            if(mid <= i){
+                count++;
+            }
+        }
+        return mid <= count;
+    }
+}
