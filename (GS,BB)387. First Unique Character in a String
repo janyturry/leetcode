@@ -32,18 +32,34 @@ public class firstUniqChar {
 	
 	//follow up 当 data strea 特别大的时候需要用这种解法
 	//方法2 , 1 pass
-	public int firstUniqChar(String s) {
-	    Map<Character, Integer> map   = new LinkedHashMap<Character, Integer>();
-	    HashSet<Character> set = new HashSet<Character>();
-	    for(int i = 0; i < s.length(); i++){
-	        if(set.contains(s.charAt(i))){
-	        	map.remove(s.charAt(i));
-	        }else{
-	        	set.add(s.charAt(i));
-	        	map.put(s.charAt(i), i);
-	        }
-	    }
-	    
-	    return map.size() >0 ? map.entrySet().iterator().next().getValue() : -1;      
-	}
+class Solution {
+    public int firstUniqChar(String s) {
+        if(s == null || s.length() < 1){
+            return -1;
+        }
+        
+        
+        Map<Character, Integer> map = new LinkedHashMap<>();
+        Set<Character> set = new HashSet<>();
+        
+        
+        for(int i = 0 ; i< s.length();i++){
+           if(!set.contains(s.charAt(i))){
+               set.add(s.charAt(i));
+               map.put(s.charAt(i), i);
+           }else{
+               map.remove(s.charAt(i));
+           }
+        }
+        
+        if(map.size() == 0){
+            return -1;
+        }
+        
+        for(Character c : map.keySet()){
+                return map.get(c);
+        }
+        
+        return -1;
+    }
 }
