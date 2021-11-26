@@ -1,0 +1,55 @@
+/*
+基本思路就是先转换成1D 数组， 然后BFS 寻找答案
+*/
+
+class Solution {
+    public int snakesAndLadders(int[][] board) {
+        if (board == null || board.length < 1) {
+            return -1;
+        }
+
+        int len = board.length;
+
+        //convert to 1D
+        int[] ar = new int[len * len + 1];
+
+        int index = 1;
+	//记录方向
+        boolean isRight = true;
+
+
+        for (int i = len - 1; i >= 0; i--) {
+            for (int j = (isRight ? 0 : len - 1); isRight ? j <= len - 1 : j >= 0; j += isRight ? 1 : -1) {
+                ar[index++] = board[i][j];
+            }
+            isRight = !isRight;
+        }
+
+
+        Queue < Integer > q = new LinkedList < > ();
+        q.offer(1);
+        boolean[] visit = new boolean[(len * len) + 1];
+        visit[1] = true;
+
+        int res = 0;
+        while (!q.isEmpty()) {
+            int size = q.size();
+            for (int i = 0; i < size; i++) {
+                int cur = q.poll();
+                if (cur == len * len) {
+                    return res;
+                }
+
+                for (int j = cur + 1; j <= Math.min(cur + 6, len * len); j++) {
+                    int next = ar[j] == -1 ? j : ar[j];
+                    if (!visit[next]) {
+                        visit[next] = true;
+                        q.offer(next);
+                    }
+                }
+            }
+            res++;
+        }
+        return -1;
+    }
+}
