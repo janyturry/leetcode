@@ -1,0 +1,34 @@
+class Solution {
+    class node{
+        int count;
+        char c;
+        node(int count, char c){
+            this.count = count;
+            this.c = c;
+        }
+    }
+    public String removeDuplicates(String s, int k) {
+        Deque<node> d = new LinkedList<>();
+        for(char cur : s.toCharArray()){
+            if(!d.isEmpty() && d.peek().c == cur){
+                d.peek().count++;
+            }else{
+                d.push(new node(1,cur));
+            }
+            
+            if(d.peek().count == k){
+                d.pop();
+            }
+        }
+        
+        StringBuilder sb = new StringBuilder();
+        while(!d.isEmpty()){
+            node cur = d.pop();
+            for(int i = 0 ; i< cur.count; i++){
+                sb.append(cur.c);
+            }
+        }
+        
+        return sb.reverse().toString();
+    }
+}
