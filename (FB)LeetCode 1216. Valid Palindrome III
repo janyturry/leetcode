@@ -1,0 +1,52 @@
+/*Given a string s and an integer k, find out if the given string is a K-Palindrome or not.
+
+A string is K-Palindrome if it can be transformed into a palindrome by removing at most k characters from it.
+
+Example 1:
+
+Input: s = "abcdeca", k = 2
+Output: true
+Explanation: Remove 'b' and 'e' characters.
+Constraints:
+
+1 <= s.length <= 1000
+s has only lowercase English letters.
+1 <= k <= s.length
+
+*/
+
+//基本思路就是找出S 最长能组成的回文串。 然后LEN(S) - LEN(最长回文串)<=k 的话意思就是符合条件
+
+
+class Solution {
+     public boolean isValidPalindrome(String s, int k) {
+         if(s == null || s.length() <= k){
+             return true;
+         }
+ 
+         int lp = findLongestPalin(s);
+         return s.length() - lp <= k;
+     }
+ 
+     private int findLongestPalin(String s){
+         if(s == null || s.length() == 0){
+             return 0;
+         }
+ 
+         int n = s.length();
+         int [][] dp = new int[n][n];
+         for(int i = n-1; i>=0; i--){
+             dp[i][i] = 1;
+             for(int j = i+1; j<n; j++){
+                 if(s.charAt(i) == s.charAt(j)){
+                     dp[i][j] = dp[i+1][j-1] + 2;
+                 }else{
+                    //删掉左边的或者删掉右边的继续走
+                     dp[i][j] = Math.max(dp[i+1][j], dp[i][j-1]);
+                 }
+             }
+         }
+ 
+         return dp[0][n-1];
+     }
+ }
