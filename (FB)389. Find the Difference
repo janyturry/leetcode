@@ -1,0 +1,23 @@
+class Solution {
+    public char findTheDifference(String s, String t) {
+        if(s == null || s.length() < 1){
+            return t.charAt(0);
+        }
+        
+        int len = s.length();
+        int[] sc = new int[256];
+        
+        for(char c : s.toCharArray()){
+            sc[c-'a']++;
+        }
+        
+        for(char c : t.toCharArray()){
+            sc[c-'a']--;
+            if(sc[c-'a']<0){
+                return c;
+            }
+        }
+        
+        return ' ';
+    }
+}
