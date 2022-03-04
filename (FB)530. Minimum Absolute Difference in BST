@@ -1,0 +1,20 @@
+//Solution 1 - In-Order traverse, time complexity O(N), space complexity O(1).
+
+class Solution {
+    int res =  Integer.MAX_VALUE;
+    TreeNode pre;
+    public int getMinimumDifference(TreeNode root) {
+        if(root == null){
+            return res;
+        }
+        
+        getMinimumDifference(root.left);
+        if(pre != null){
+        res = Math.min(res, Math.abs(root.val - pre.val));
+        }
+        pre = root;
+        getMinimumDifference(root.right);
+        
+        return res;
+    }
+}
