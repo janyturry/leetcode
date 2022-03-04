@@ -1,3 +1,5 @@
+// inorder 本来就是从小到大排序 ，所以就不需要MATH.ABS
+
 //Solution 1 - In-Order traverse, time complexity O(N), space complexity O(1).
 
 class Solution {
@@ -15,6 +17,43 @@ class Solution {
         pre = root;
         getMinimumDifference(root.right);
         
+        return res;
+    }
+}
+
+
+
+class Solution {
+    public int getMinimumDifference(TreeNode root) {
+        int res = Integer.MAX_VALUE;
+        if (root == null) {
+            return res;
+        }
+        TreeNode pre = null;
+        Deque < TreeNode > d = new LinkedList < > ();
+        d.push(root);
+
+        while (!d.isEmpty()) {
+            TreeNode cur = d.peek();
+            if (cur != null) {
+                d.pop()
+                if (cur.right != null) {
+                    d.push(cur.right);
+                }
+                d.push(cur);
+                d.push(null);
+                if (cur.left != null) {
+                    d.push(cur.left);
+                }
+            } else {
+                d.pop();
+                TreeNode tmp = d.pop();
+                if (pre != null) {
+                    res = Math.min(res, tmp.val - pre.val);
+                }
+                pre = tmp;
+            }
+        }
         return res;
     }
 }
