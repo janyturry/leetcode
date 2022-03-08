@@ -1,3 +1,5 @@
+//基本思路就是先SPLIT， SPLIT 的过程中遇到..就先从DEQUE里面出栈了，然后最后DEQUE应该只存放文件名
+
 
 class Solution {
     public String simplifyPath(String path) {
