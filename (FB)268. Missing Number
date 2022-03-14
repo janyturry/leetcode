@@ -1,0 +1,34 @@
+//XOR 的应用 
+
+/*
+找缺失数、找出现一次数都是异或的经典应用。
+我们可以先求得 
+[1,n]的异或和 ans，然后用 ans 对各个 nums[i] 进行异或。
+
+这样最终得到的异或和表达式中，只有缺失元素出现次数为 1 次，其余元素均出现两次（x⊕x=0），即最终答案 ans 为缺失元素。
+
+https://leetcode-cn.com/problems/missing-number/solution/gong-shui-san-xie-yi-ti-wu-jie-pai-xu-ji-te3s/
+*/
+
+class Solution {
+    public int missingNumber(int[] nums) {
+        if(nums == null || nums.length < 1){
+            return 0;
+        }
+        int len = nums.length;
+        
+        
+        int res = 0;
+        int ans = 0;
+        
+        for(int i = 0 ; i <= len; i++){
+            res^=i;
+        }
+        
+        for(int i : nums){
+            res^=i;
+        }
+        
+        return res;
+    }
+}
