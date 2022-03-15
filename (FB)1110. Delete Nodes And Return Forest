@@ -1,5 +1,9 @@
 /*
 Complexity
+If a node is root (has no parent) and isn't deleted,
+when will we add it to the result.
+
+
 
 Time O(N)
 Space O(H + N), where H is the height of tree.
