@@ -1,4 +1,5 @@
 //基本思路就是选第一个， 然后跟其他LOOP比较 ，找出最大公共前缀
+//这里注意res是每次都更新的，所以一旦某一次比较结果是“”， 那么可以直接返回了
 
 class Solution {
     public String longestCommonPrefix(String[] strs) {
