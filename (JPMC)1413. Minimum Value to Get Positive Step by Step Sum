@@ -1,0 +1,16 @@
+class Solution {
+    public int minStartValue(int[] nums) {
+        int minPreSum = 0;
+        int preSum = 0;
+        for(int i : nums){
+            preSum+=i;
+            minPreSum = Math.min(minPreSum,preSum );
+        }
+        
+        if(minPreSum >=0){
+            return 1;
+        }else{
+            return 1-minPreSum;
+        }
+    }
+}
