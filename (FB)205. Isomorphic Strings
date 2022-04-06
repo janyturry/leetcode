@@ -1,3 +1,19 @@
+/*
+Two strings are isomorphic if the positions of the characters follow the same pattern. So I'm using maps to compare the position patterns.
+
+For example:
+
+String 1:              A B E A C D B
+index pattern:         0 1 2 0 4 5 1
+String 2:              X Y I X H K Y
+index pattern:         0 1 2 0 4 5 1
+Whether the two strings are isomorphic can be judged by the index patterns. In the above example, these two strings are isomorphic with the same index patterns.
+
+
+
+
+*/
+
 class Solution {
     public boolean isIsomorphic(String s, String t) {
         Map<Character, Integer> map1 = new HashMap<>();
@@ -13,11 +29,11 @@ class Solution {
             if(indexA != indexB){
                 return false;
             }
-            
-            map1.put(s.charAt(i), i);
-            map2.put(t.charAt(i), i);
+            if(indexA == -1 && indexB == -1){
+            	map1.put(s.charAt(i), i);
+            	map2.put(t.charAt(i), i);
+            }
         }
-        
         return true;
     }
 }
