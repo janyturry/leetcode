@@ -7,38 +7,38 @@ import java.util.List;
 import java.util.Map;
 
 class Solution {
-    public List<Integer> topKFrequent(int[] nums, int k) {
-        List<Integer> res = new LinkedList<Integer>();
-        if(nums == null || nums.length < 1){
-            return res;
+    public static int[] topKFrequent(int[] nums, int k) {
+        if (nums == null || nums.length < 1) {
+            return new int[0];
         }
 
-        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+        Map < Integer, Integer > map = new HashMap < > ();
 
-        for(int tmp : nums){
-            map.put(tmp, map.getOrDefault(tmp,0) + 1);
+        for (int i: nums) {
+            map.put(i, map.getOrDefault(i, 0) + 1);
         }
+        
+        int size = nums.length;
+        /SIZE + 1 是处理 {1), k = 1 的情况
+        List < Integer > [] fre = new List[size + 1];
 
-        List<Integer>[] fre = new List[nums.length+1];
-
-        for(int tmp : map.keySet()){
-            int count = map.get(tmp);
-            if(fre[count] == null){
-                fre[count] = new LinkedList<Integer>();
+        map.forEach((a, b) - > {
+            if (fre[b] == null) {
+                fre[b] = new LinkedList < Integer > ();
             }
-            fre[count].add(tmp);
 
-        }
+            fre[b].add(a);
+        });
 
-        for(int i = fre.length -1; i>0; i--){
-            if(fre[i] != null) {
-                List<Integer> sub = fre[i];
-                for (int j = 0; j < sub.size() && res.size() < k; j++) {
-                    res.add(sub.get(j));
+        int[] res = new int[k];
+        int index = 0;
+        for (int i = fre.length - 1; i >= 0; i--) {
+            if (fre[i] != null) {
+                for (int j = 0; j < fre[i].size() && index < k; j++) {
+                    res[index++] = fre[i].get(j);
                 }
             }
         }
-
         return res;
     }
 }
