@@ -1,3 +1,36 @@
+//use set to check the path duplicate
+
+class Solution {
+    public List < List < Integer >> findSubsequences(int[] nums) {
+        List < List < Integer >> res = new LinkedList < > ();
+        if (nums == null || nums.length < 2) {
+            return res;
+        }
+
+        HashSet < List < Integer >> set = new HashSet < > ();
+        helper(set, nums, new LinkedList < Integer > (), 0, res);
+        return res;
+    }
+
+    public void helper(HashSet < List < Integer >> set, int[] nums, List < Integer > path, int start, List < List < Integer >> res) {
+        if (path.size() > 1) {
+            if (!set.contains(path)) {
+                set.add(new LinkedList < Integer > (path));
+                res.add(new LinkedList < Integer > (path));
+            }
+        }
+
+        for (int i = start; i < nums.length; i++) {
+            if (path.size() == 0 || nums[i] >= path.get(path.size() - 1)) {
+                path.add(nums[i]);
+                helper(set, nums, path, i + 1, res);
+                path.remove(path.size() - 1);
+            }
+        }
+    }
+}
+
+
 class Solution {
     public List < List < Integer >> findSubsequences(int[] nums) {
         List < List < Integer >> res = new LinkedList < > ();
