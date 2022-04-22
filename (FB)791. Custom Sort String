@@ -1,29 +1,25 @@
-Time and space: O(T.length())
-
 class Solution {
-    public String customSortString(String S, String T) {
-        int[] ar = new int[26];
+    public String customSortString(String order, String s) {
+        int[] count = new int[26];
         
-        
-        StringBuilder  sb = new StringBuilder();
-        for(char c : T.toCharArray()){
-            ar[c-'a']++;
+        for(char c : s.toCharArray()){
+            count[c - 'a']++;
         }
         
-        for(char c : S.toCharArray()){
-            while(ar[c- 'a']-- >0){
-               sb.append(c); 
-            }
-        }
-        
-        for(char c : T.toCharArray()){
-            if(ar[c-'a']-->0){
+        StringBuilder sb = new StringBuilder();
+        for(char c : order.toCharArray()){
+            while(count[c-'a']-- > 0){
                 sb.append(c);
             }
         }
         
+        //这一步是计算出现在S， 但是不出现在order上面的情况
+          for(char c : s.toCharArray()){
+              while(count[c-'a']-- > 0){
+                  sb.append(c);
+              }
+        }
+        
         return sb.toString();
-        
-        
     }
 }
