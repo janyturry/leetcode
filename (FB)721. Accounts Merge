@@ -1,3 +1,81 @@
+//https://leetcode-cn.com/problems/accounts-merge/solution/tu-jie-yi-ran-shi-bing-cha-ji-by-yexiso-5ncf/
+
+//union find
+
+class Solution {
+    public List<List<String>> accountsMerge(List<List<String>> accounts) {
+        List<List<String>> res = new LinkedList<>();
+        int size = accounts.size();
+        unionFind u = new unionFind(size);
+        
+        Map<String, Integer> emailId = new HashMap<>();
+        for(int i = 0 ; i < accounts.size(); i++){
+            int emailSize = accounts.get(i).size();
+            for(int j = 1; j < emailSize; j++){
+                if(emailId.containsKey(accounts.get(i).get(j))){
+                    u.merge(i,emailId.get(accounts.get(i).get(j)));
+                }else{
+                    emailId.put(accounts.get(i).get(j) , i);
+                }
+            }
+        }
+        
+        
+         Map<Integer, List<String>> idEmail = new HashMap<>();
+         for(Map.Entry<String, Integer> e : emailId.entrySet()){
+             int user = u.find(e.getValue());
+             List<String> email = idEmail.getOrDefault(user, new ArrayList<>());
+             email.add(e.getKey());
+             idEmail.put(user, email);
+         }
+        
+         for(Map.Entry<Integer, List<String>> e : idEmail.entrySet()){
+            List<String> email = e.getValue();
+             Collections.sort(email);
+             List<String> tmp = new ArrayList<>();
+             tmp.add(accounts.get(e.getKey()).get(0));
+             tmp.addAll(email);
+             res.add(tmp);
+         }
+        
+        return res;
+
+
+    }
+    
+    
+    class unionFind{
+        int[]parent;
+        
+        public unionFind(int n){
+            parent = new int[n];
+            for(int i = 0 ; i < n ; i++){
+                parent[i] = i;
+            }
+        }
+        
+        public int find(int i){
+            int j = parent[i];
+            if(j == i){
+                return i;
+            }else{
+                parent[i] = find(parent[i]);
+                return parent[i];
+            }
+        }
+        public void merge(int i, int j){
+            i = find(i);
+            j = find(j);
+            if(i!=j){
+                parent[j] = i;
+            }
+        }
+    }
+}
+
+
+
+
 import java.util.*;
 
 
