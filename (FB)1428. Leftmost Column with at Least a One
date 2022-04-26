@@ -1,4 +1,32 @@
 /*
+Time: O(M + N), where M is the number of rows, N is the number of columns in Binary Matrix
+Space: O(1)
+*/
+
+class Solution {
+    public int leftMostColumnWithOne(BinaryMatrix binaryMatrix) {
+        List<Integer> dimen = binaryMatrix.dimensions();
+        
+        int m = dimen.get(0);
+        int n = dimen.get(1);
+        int res = -1;
+        int r = 0;
+        int c = n-1;
+        
+        while(r >=0 && r <= m-1 && c >=0 && c <= n-1){
+            if(binaryMatrix.get(r,c) == 1){
+                res = c;
+                c--;
+            }else{
+                r++;
+            }
+        }
+        return res;
+    }
+}
+
+
+/*
 Solution 1 - Binary Search
 
 Complexity:
