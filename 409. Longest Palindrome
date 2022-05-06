@@ -1,0 +1,28 @@
+/*
+ans += x - (x & 1);
+
+1 对于任意一个数字x，（x & 1）的结果要么为0，要么为1——取决于x的二进制数的最后一位是0还是1； 
+2 奇数的二进制数最后一位总是1，偶数的二进制数最后一位总是0； 所以,如果x为偶数，(x & 1)就为0； 如果x为奇数， （x & 1）就为1
+
+*/
+
+class Solution {
+    public int longestPalindrome(String s) {
+        if(s == null ){
+            return 0;
+        }
+        
+        int[] count = new int[58];
+        
+        int res = 0;
+        for(char c: s.toCharArray()){
+            count[c-'A']++;
+        }
+        
+        for(int i : count){
+            res+= i - (i&1);
+        }
+        //  如果最终的长度小于原字符串的长度，说明里面某个字符出现了奇数次，那么那个字符可以放在回文串的中间，所以额外再加一。
+        return res< s.length()? res+1 : res;
+    }
+}
