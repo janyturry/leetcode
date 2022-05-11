@@ -1,3 +1,57 @@
+/*
+所以时间复杂度是 O(n)，空间复杂度为 O(k)，k为S和T中的字符集合。
+
+https://leetcode.cn/problems/minimum-window-substring/solution/tong-su-qie-xiang-xi-de-miao-shu-hua-dong-chuang-k/
+*/
+
+
+class Solution {
+    public String minWindow(String s, String t) {
+        if (s == null || s.length() < 1 || t == null || t.length() < 1 ||
+            s.length() < t.length()) {
+            return "";
+        }
+
+        int[] need = new int[58];
+        int count = 0;
+        int left = 0;
+        int right = 0;
+        int minLen = s.length() + 1;
+        int minLeft = 0;
+        for (char c: t.toCharArray()) {
+            need[c - 'A']++;
+        }
+
+        for (; right < s.length(); right++) {
+            if (need[s.charAt(right) - 'A'] > 0) {
+                count++;
+            }
+            need[s.charAt(right) - 'A']--;
+            if (count == t.length()) {
+                while (left < right && need[s.charAt(left) - 'A'] < 0) {
+                    need[s.charAt(left) - 'A']++;
+                    left++;
+                }
+
+                if (minLen > right - left + 1) {
+                    minLen = right - left + 1;
+                    minLeft = left;
+                }
+
+                need[s.charAt(left) - 'A']++;
+                left++;
+                count--;
+            }
+
+
+        }
+
+        return minLen == s.length() + 1 ? "" : s.substring(minLeft, minLeft + minLen);
+    }
+}
+
+
+
 import java.util.HashMap;
 import java.util.Map;
 
