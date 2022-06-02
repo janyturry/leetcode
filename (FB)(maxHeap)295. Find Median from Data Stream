@@ -1,3 +1,65 @@
+//https://leetcode.cn/problems/find-median-from-data-stream/solution/gong-shui-san-xie-jing-dian-shu-ju-jie-g-pqy8/
+
+class MedianFinder {
+    PriorityQueue<Integer> l ;
+    PriorityQueue<Integer> r ;
+
+
+    public MedianFinder() {
+        l = new PriorityQueue<>((a,b)->(b-a));
+        r = new PriorityQueue<>((a,b)->(a-b));
+    }
+    
+    public void addNum(int num) {
+        int sizeL = l.size();
+        int sizeR = r.size();
+        
+        if(sizeL == sizeR){
+            if(sizeR == 0){
+                l.offer(num);
+            }else{
+                if(num >= r.peek()){
+                    // l.offer(r.poll());
+                    // r.offer(num);
+                    r.offer(num);
+                    l.offer(r.poll());
+                }else{
+                    l.offer(num);
+                }
+            }
+        }else{
+            if(num >= l.peek()){
+                 r.offer(num);
+            }else{
+                // r.offer(l.poll());
+                // l.offer(num);
+                 l.offer(num);
+                    r.offer(l.poll());
+            }
+        }
+    }
+    
+    public double findMedian() {
+         int sizeL = l.size();
+         int sizeR = r.size();
+         if(sizeL == sizeR){
+             return (l.peek() + r.peek())/2.0;
+        }else{
+             return (double)l.peek();
+         }
+    }
+}
+
+/**
+ * Your MedianFinder object will be instantiated and called as such:
+ * MedianFinder obj = new MedianFinder();
+ * obj.addNum(num);
+ * double param_2 = obj.findMedian();
+ */
+
+
+
+
 /*
 时间复杂度：O(logN)，优先队列的出队入队操作都是对数级别的，数据在两个堆中间来回操作是常数级别的，
 综上时间复杂度是 O(logN) 级别的；
