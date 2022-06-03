@@ -1,3 +1,64 @@
+class Solution {
+    public int ladderLength(String beginWord, String endWord, List < String > wordList) {
+        Set < String > begin = new HashSet < > ();
+        Set < String > end = new HashSet < > ();
+        Set < String > visit = new HashSet < > ();
+
+        Set < String > word = new HashSet < > ();
+        for (String s: wordList) {
+            word.add(s);
+        }
+
+        if (!word.contains(endWord)) {
+            return 0;
+        }
+
+        //  visit.add(beginWord);
+        begin.add(beginWord);
+        end.add(endWord);
+        
+        visit.add(beginWord);
+
+        int res = 1;
+        while (!begin.isEmpty() && !end.isEmpty()) {
+            if (begin.size() > end.size()) {
+                Set < String > tmp = begin;
+                begin = end;
+                end = tmp;
+            }
+
+            Set < String > curSet = new HashSet < > ();
+            for (String cur: begin) {
+                char[] curArray = cur.toCharArray();
+                for (int j = 0; j < cur.length(); j++) {
+                    char curC = curArray[j];
+                    for (char a = 'a'; a <= 'z'; a++) {
+                        if (a == curC) {
+                            continue;
+                        }
+                        curArray[j] = a;
+                        String nextWord = new String(curArray);
+
+                        if (end.contains(nextWord)) {
+                            return res + 1;
+                        } else {
+                            if (word.contains(nextWord) && !visit.contains(nextWord)) {
+                                curSet.add(nextWord);
+                                visit.add(nextWord);
+                            }
+                        }
+                    }
+                    curArray[j] = curC;
+                }
+            }
+            begin = curSet;
+            res++;
+        }
+        return 0;
+    }
+}
+
+
 
 //双向BFS
 public class Solution {
