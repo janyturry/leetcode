@@ -1,0 +1,60 @@
+//dp[i]是表示 一直到 INDEX I 的最大profit
+class Solution {
+    class Job{
+        int s;
+        int e;
+        int p;
+        
+        Job(int s, int e, int p){
+            this.s = s;
+            this.e = e;
+            this.p = p;
+        }
+    }
+    public int jobScheduling(int[] startTime, int[] endTime, int[] profit) {
+        int len = startTime.length;
+        
+        Job[] jobs = new Job[len];
+        for(int i = 0 ; i < len ; i ++){
+            jobs[i] = new Job(startTime[i], endTime[i],profit[i]);
+        }
+        
+        Arrays.sort(jobs, (a,b)->(a.e - b.e));
+        
+        int[] dp = new int[len];
+        
+        dp[0] = jobs[0].p;
+        
+        for(int i = 1; i < len; i++){
+            int temP = jobs[i].p;
+            
+            //reurn 符合  jobs[left].e <= jobs[index].s 的最近的 INDEX
+            int index = find(jobs,i);
+            if(index != -1){
+                temP+= dp[index];
+            }
+            
+            dp[i] = Math.max(dp[i-1], temP);
+        }
+        return dp[len-1];
+    }
+    
+    public int find(Job [] jobs, int index){
+        int left  = 0;
+        int right = index-1;
+        while(left < right){
+            int mid = left + (right - left+1)/2;
+            if(jobs[mid].e <= jobs[index].s){
+                left = mid;
+            }else{
+                right = mid -1;
+            }
+        }
+        
+        if(left < index && jobs[left].e <= jobs[index].s){
+            return left;
+        }else{
+            return -1;
+        }
+    }
+}
