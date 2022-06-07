@@ -1,5 +1,35 @@
-
-
+class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        if(lists == null || lists.length < 1){
+            return null;
+        }
+        
+      PriorityQueue<ListNode> q = new PriorityQueue<>((a,b)-> a.val - b.val);
+        
+      for(ListNode l : lists){
+          if(l != null){
+              q.offer(l);
+          }
+      }
+        
+      ListNode dummy = new ListNode(-1);
+      ListNode head = dummy;
+        
+      while(!q.isEmpty()){
+          ListNode cur = q.poll();
+          head.next = cur;
+          cur = cur.next;
+          if(cur != null){
+              q.offer(cur);
+          }
+          head = head.next;
+      }
+        
+        return dummy.next;
+        
+    }
+    
+}
 
 
 class Solution {
