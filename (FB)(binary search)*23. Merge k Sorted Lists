@@ -4,31 +4,26 @@ class Solution {
             return null;
         }
         
-      PriorityQueue<ListNode> q = new PriorityQueue<>((a,b)-> a.val - b.val);
+        ListNode dummy = new ListNode(-1);
+        ListNode tail = dummy;
+        PriorityQueue<ListNode> q = new PriorityQueue<>((a,b)->(a.val-b.val));
         
-      for(ListNode l : lists){
-          if(l != null){
-              q.offer(l);
-          }
-      }
+        for(ListNode l : lists){
+            if(l != null){
+                q.offer(l);
+            }
+        }
         
-      ListNode dummy = new ListNode(-1);
-      ListNode head = dummy;
-        
-      while(!q.isEmpty()){
-          ListNode cur = q.poll();
-          head.next = cur;
-          cur = cur.next;
-          if(cur != null){
-              q.offer(cur);
-          }
-          head = head.next;
-      }
+        while(!q.isEmpty()){
+            tail.next = q.poll();
+            tail = tail.next;
+            if(tail.next != null){
+                q.offer(tail.next);
+            }
+        }
         
         return dummy.next;
-        
     }
-    
 }
 
 
