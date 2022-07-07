@@ -1,3 +1,33 @@
+class Solution {
+    public String minRemoveToMakeValid(String s) {
+        if(s == null || s.length() < 1){
+            return s;
+        }
+        
+        Deque<Integer> stack = new LinkedList<>();
+        StringBuilder sb = new StringBuilder(s);
+        
+        for(int i = 0 ; i < s.length(); i++){
+            char c = s.charAt(i);
+            if(c == '('){
+                stack.push(i);
+            }else if (c == ')'){
+                if(!stack.isEmpty()){
+                    stack.pop();
+                }else{
+                    sb.setCharAt(i, '-');
+                }
+            }
+        }
+        
+        while(!stack.isEmpty()){
+            sb.setCharAt(stack.pop(), '-');
+        }
+        
+        return sb.toString().replaceAll("\\-","");
+    }
+}
+
 /*
 Time: O(n). We process each character once, or twice for 'single' '('.
 Memory: O(n) for the stack.
