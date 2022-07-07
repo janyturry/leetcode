@@ -1,0 +1,51 @@
+class Solution {
+    class T{
+        String name;
+        int time;
+        int amount;
+        String city;
+        public T(String name, int time, int amount, String city){
+            this.name = name;
+            this.time= time;
+            this.amount = amount; 
+            this.city = city;
+        }
+    }
+    public List<String> invalidTransactions(String[] transactions) {
+        List<String> res = new LinkedList<>();
+        if(transactions == null || transactions.length < 1){
+            return res;
+        }
+        Map<String, List<T>> map = new HashMap<>();
+        for(String s : transactions){
+            String[] info = s.split(",");
+            T tNode = new T(info[0], Integer.parseInt(info[1]), Integer.parseInt(info[2]), info[3]);
+            if(map.containsKey(info[0])){
+                List<T> tmp = map.get(info[0]);
+                tmp.add(tNode);
+            }else{
+                List<T> tmp = new ArrayList<>();
+                tmp.add(tNode);
+                map.put(info[0], tmp);
+            }
+        }
+        
+        for(String tran : transactions){
+            String[] tar = tran.split(",");
+            List<T> cur = map.get(tar[0]);
+            for(int i = 0 ; i < cur.size(); i++){
+                T tmp = cur.get(i);
+                if(Integer.parseInt(tar[2] )>1000){
+                    res.add(tran);
+                    break;
+                }
+              
+                if( Math.abs(tmp.time - Integer.parseInt(tar[1]) ) <=60 && !tmp.city.equals(tar[3]) ){
+                    res.add(tran);
+                 break; 
+                }
+            }
+        }
+        return res;
+    }
+}
