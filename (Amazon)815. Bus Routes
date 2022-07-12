@@ -8,6 +8,7 @@ class Solution {
             return 0;
         }
 
+//bus stop, [avaliable bus]
         Map<Integer, ArrayList<Integer>> bus = new HashMap<>();
         Queue<Integer> q = new LinkedList<>();
         HashSet<Integer> set  = new HashSet<>();
