@@ -1,0 +1,92 @@
+class Solution {
+   public  List<Boolean> camelMatch(String[] queries, String pattern) {
+        List<Boolean> res = new LinkedList<>();
+        
+        for(String q : queries){
+            res.add(isMatch(q,pattern));
+        }
+       
+       return res;
+    }
+    
+    public Boolean isMatch(String query, String pattern){
+        int lenA = query.length();
+        int lenB = pattern.length();
+        
+        int left = 0;
+        int right = 0;
+        
+        while(left < lenA && right < lenB){
+            char leftC = query.charAt(left);
+            char rightC = pattern.charAt(right);
+            
+            if(leftC == rightC){
+                left++;
+                right++;
+            }else{
+            //QUERY 字符是大写， 并且跟PATTERN 不一样， PATTERN 无法插入大写， 所以直接RETURN
+                if(leftC >='A' && leftC <='Z'){
+                    return false;
+                }else{
+                //其他情况的话， 只要QUERY 不是大写， PATTERN 都可以插入小写来MATCH，直接增加UQERY 的INDEX
+                    left++;
+                }
+            }
+        }
+        
+        //MATCH 完之后， QUERY 没到底， 但因为只能往QUEEY 插入字符， 所以明显不能匹配完，直接FALSE
+        while(right != lenB){
+            return false;
+        }
+        
+        //PATTERN 匹配完了，QUERY 如果都是 小写， PATTERN 还能插入， 但是大写的话就直接F
+        while(left < lenA){
+            char tmp = query.charAt(left);
+            if(tmp >='A' && tmp <= 'Z'){
+                return false;
+            }else{
+                left++;
+            }
+        }
+        return true;
+    }
+}
+
+
+/*
+The match process uses i for query pointer and j for pattern pointer, each iteration;
+
+If current char query[i] matches pattern[j], increase pattern pointer;
+if does not match and query[i] is lowercase, keep going;
+if does not match and query[i] is captalized, we should return false.
+If this pattern matches, j should equal length of pattern at the end.
+
+*/
+
+class Solution {
+    public List<Boolean> camelMatch(String[] queries, String pattern) {
+        List<Boolean> res = new LinkedList<>();
+        for(String s : queries){
+            boolean  flag = isMatch(s.toCharArray(), pattern.toCharArray());
+            res.add(flag);
+        }
+        return res;
+    }
+    
+    public boolean isMatch(char[] query, char[] pat){
+        int j = 0; 
+        for(int i = 0 ; i< query.length; i++) {
+            if( j < pat.length && query[i] == pat[j]){
+                j++;
+           }else if((query[i] >='A' && query[i] <='Z' ))
+                {
+                return false;
+            }else{
+                
+            }
+        }
+        return j == pat.length;
+    } 
+}
+                     
+                     
