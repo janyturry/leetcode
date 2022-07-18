@@ -1,0 +1,36 @@
+class Solution {
+    public boolean isValidSudoku(char[][] board) {
+        int m = board.length;
+        int n = board[0].length;
+        
+        //boolean[i][j] row means row i have vallue j 
+        boolean[][] row = new boolean[9][10];
+        boolean[][] col = new boolean[9][10];
+        boolean[][] box = new boolean[9][10];
+        
+        for(int i = 0 ; i < 9; i++){
+            for(int j = 0; j < 9; j++){
+                char c = board[i][j];
+                if(c == '.'){
+                    continue;
+                }
+                
+                int num = c  - '0';
+                //规律,出现在第几个BOX
+                int boxNum = i / 3 * 3 + j / 3;
+                
+                if(row[i][num] || col[j][num] || box[boxNum][num]){
+                    return false;
+                }
+                
+                row[i][num] = true;
+                col[j][num] = true;
+                box[boxNum][num] = true;
+                
+            }
+        }
+        
+        return true;
+    }
+    
+}
