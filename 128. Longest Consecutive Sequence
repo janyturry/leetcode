@@ -1,0 +1,36 @@
+/*
+思路就是如果NUM-1是存在的，那个简历的时候一定会检查NUM， 所以就不用遍历这些数字了
+复杂度分析
+
+时间复杂度：O(n)O(n)，其中 nn 为数组的长度。具体分析已在上面正文中给出。
+
+空间复杂度：O(n)O(n)。哈希表存储数组中所有的数需要 O(n)O(n) 的空间。
+*/
+
+class Solution {
+    public int longestConsecutive(int[] nums) {
+        if(nums == null || nums.length < 1){
+            return 0;
+        }
+        
+        int res = 1;
+        
+        Set<Integer> set = new HashSet<>();
+        for(int i : nums){
+            set.add(i);
+        }
+        
+        for(int num: set){
+            if(set.contains(num-1)){
+                continue;
+            }else{
+                int cur = num;
+                while(set.contains(cur + 1)){
+                    cur++;
+                }
+                res = Math.max(res, cur - num + 1);
+            }
+        }
+        return res;
+    }
+}
