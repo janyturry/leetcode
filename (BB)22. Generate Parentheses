@@ -1,37 +1,43 @@
 //DFS
 
+//插入左边括号的条件是左括号的COUNT < N
+//插入右括号的条件是右括号的COUNT  < 左括号的COUNT
+//加入RES 的条件是  左括号的COUNT ==右括号的COUNT  ==N
+
 class Solution {
+    List<String> res;
+    int count;
     public List<String> generateParenthesis(int n) {
-        List<String> res = new LinkedList<>();
+        res = new LinkedList<>();
+        count = n;
         
-        if(n == 0){
-            return res;
-        }
-        
-        dfs(new StringBuilder(), n ,n, res);
+        //左括号目前用了几个右括号目前用了几个
+        helper(new StringBuilder(), 0,0);
         return res;
     }
     
-    public void dfs(StringBuilder sb, int left, int right, List<String>res){
-        if(left == 0 && right == 0){
+    public void helper(StringBuilder sb, int left, int right){
+        if(left == count && right == count){
             res.add(sb.toString());
             return;
         }
         
-        if(right < left){
+        if(right> left){
             return;
         }
         
-        if(left>0){
-            sb.append('(');
-            dfs(sb, left-1, right, res);
-            sb.deleteCharAt(sb.length()-1);
+        if(left < count){
+            sb.append("(");
+            helper(sb, left+1, right);
+            sb.deleteCharAt(sb.length() -1);
         }
         
-         if(right>0){
-            sb.append(')');
-            dfs(sb, left, right -1 , res);
-            sb.deleteCharAt(sb.length()-1);
+        if(right < left){
+            sb.append(")");
+            helper(sb, left, right +1 );
+            sb.deleteCharAt(sb.length() -1);
         }
+        
+        
     }
 }
