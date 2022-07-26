@@ -4,6 +4,7 @@
 //Time: O(N)
  //Space: O(N)
 //思路就是单调栈
+//单调递减栈
 import java.util.ArrayDeque;
 import java.util.Deque;
 
