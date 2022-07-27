@@ -1,0 +1,52 @@
+//先搜索目标应该处于哪个行，然后定位到行之后， 再搜索应该处于哪个列。
+//TIME: LOG(M) + LOG(N)
+
+class Solution {
+    public boolean searchMatrix(int[][] matrix, int target) {
+        if(matrix == null || matrix.length < 1){
+            return false;
+        }
+        int m = matrix.length;
+        int n = matrix[0].length;
+        
+        int left = 0;
+        int right = m-1;
+        
+        while(left < right){
+            int mid = left + (right - left + 1)/2;
+            
+            if(matrix[mid][0] == target){
+                return true;
+            }else if (matrix[mid][0] > target){
+                right = mid -1;
+            }else{
+                left = mid;
+            }
+        }
+        
+        if(matrix[left][0]== target){
+            return true;
+        }
+        int row = left;
+         left = 0;
+         right = n -1;
+        
+        while(left < right){
+            int mid = left + (right - left)/2;
+            if(matrix[row][mid] == target){
+                return true;
+            }else if(matrix[row][mid] < target){
+                left = mid + 1;
+            }else{
+                right = mid;
+            }
+        }
+        
+        if(matrix[row][left] == target){
+            return true;
+        }
+        
+        return false;
+        
+    }
+}
