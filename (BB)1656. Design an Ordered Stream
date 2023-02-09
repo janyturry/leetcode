@@ -1,0 +1,20 @@
+class OrderedStream {
+    int ptr;
+    String[] str;
+
+    public OrderedStream(int n) {
+        str = new String[n];
+        
+        ptr =0;    
+    }
+    
+    public List<String> insert(int idKey, String value) {
+        List<String> res = new LinkedList<>();
+        str[idKey -1] = value;
+        while(ptr <= str.length -1 && str[ptr] != null){
+            res.add(str[ptr]);
+            ptr++;
+        }
+        return res;
+    }
+}
