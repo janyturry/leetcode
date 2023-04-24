@@ -1,0 +1,68 @@
+class Leaderboard {
+    Map<Integer, Integer> map;
+    Map<Integer, Integer> sMap;
+
+    public Leaderboard() {
+        map = new HashMap<>();
+        sMap = new TreeMap<>(Collections.reverseOrder()); 
+    }
+    
+    public void addScore(int playerId, int score) {
+        if(!map.containsKey(playerId)){
+            map.put(playerId,score);
+            sMap.put(score, sMap.getOrDefault(score, 0)+ 1);
+        }else{
+            int preScore = map.get(playerId);
+            int preCount = sMap.get(preScore);
+            if(preCount == 1){
+                sMap.remove(preScore);
+            }else{
+                sMap.put(preScore, preCount -1);
+            }
+            map.put(playerId, preScore + score);
+            sMap.put(preScore + score, sMap.getOrDefault(preScore + score,0) + 1);
+        }
+    }
+    
+    public int top(int K) {
+        int sum = 0;
+        int count = 0;
+
+        for(Map.Entry<Integer, Integer> entry : sMap.entrySet()){
+            int tmpScore = entry.getKey();
+            int tmpCount = entry.getValue();
+
+            while(tmpCount >0){
+                 tmpCount--;
+                sum+=tmpScore;
+               
+                count++;
+                if(count == K){
+                    break;
+                }
+            }
+            if(count == K){
+                break;
+            }
+        }
+        return sum;
+        
+    }
+    
+    public void reset(int playerId) {
+        int tmpScore = map.get(playerId);
+        sMap.put(tmpScore, sMap.getOrDefault(tmpScore, 0) -1);
+        if(sMap.get(tmpScore) == 0){
+            sMap.remove(tmpScore);
+        }
+        map.remove(playerId);
+    }
+}
+
+/**
+ * Your Leaderboard object will be instantiated and called as such:
+ * Leaderboard obj = new Leaderboard();
+ * obj.addScore(playerId,score);
+ * int param_2 = obj.top(K);
+ * obj.reset(playerId);
+ */
