@@ -1,3 +1,45 @@
+/*
+
+Time Complexity: O(Nlog⁡N)O(N\log N)O(NlogN).
+
+There are two major portions that take up time here. One is sorting of the array that takes O(Nlog⁡N)O(N\log N)O(NlogN)
+considering that the array consists of NNN elements.
+Then we have the min-heap. In the worst case, all NNN meetings will collide with each other. In any case 
+we have NNN add operations on the heap. In the worst case we will have NNN extract-min operations as well.
+Overall complexity being (NlogN)(NlogN)(NlogN) since extract-min operation on a heap takes O(log⁡N)O(\log N)O(logN).
+
+Space Complexity: O(N)O(N)O(N) because we construct the min-heap and that can contain NNN elements in 
+the worst case as described above in the time complexity section. Hence, the space complexity is O(N)O(N)O(N).
+*/
+
+class Solution {
+    public int minMeetingRooms(int[][] intervals) {
+        if(intervals == null || intervals.length < 1){
+            return 0;
+        }
+
+        Arrays.sort(intervals, (a,b)->(a[0]- b[0]));
+
+        PriorityQueue<Integer> p = new PriorityQueue<>((a,b)->a-b);
+
+        p.offer(intervals[0][1]);
+
+        for(int i = 1; i < intervals.length ;i++){
+            if(intervals[i][0] >= p.peek()){
+                p.poll();
+            }
+            p.offer(intervals[i][1]);
+            
+        }
+
+        return p.size();
+    }
+}
+
+
+
+
+
 //253. Meeting Rooms II
 /*
 Here is my thought. whenever there is a start meeting, we need to add one room. 
