@@ -1,0 +1,29 @@
+/*
+
+由于我们每一次替换字母是无任何要求的，所以我们可以将任何一个 t 比 s 多的字母替换为一个 t 比 s 少的字母。
+并且，由于 t 和 s 这两个字符串的长度一定相等，所以我们这里多出的数量和少的数量一定是相等的。
+也就是说，我们最终要找的最少的替换步数，其实就是这个多出的数量或者少的数量。
+
+*/
+
+class Solution {
+    public int minSteps(String s, String t) {
+        if(s == null || t == null){
+            return 0;
+        }
+
+        int[] sum = new int[26];
+        int res = 0;
+        for(int i = 0 ; i < s.length();i++){
+            sum[s.charAt(i)-'a']++;
+            sum[t.charAt(i)-'a']--;
+        }
+
+        for(int i : sum){
+            if(i>0){
+                res+=i;
+            }
+        }
+        return res;
+    }
+}
