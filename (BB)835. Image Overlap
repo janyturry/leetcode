@@ -1,0 +1,35 @@
+class Solution {
+    public int largestOverlap(int[][] img1, int[][] img2) {
+        int m = img1.length;
+        int n = img1[0].length;
+
+        List<int[]> a = new LinkedList<>();
+        List<int[]> b = new LinkedList<>();
+
+        for(int i = 0 ; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(img1[i][j] == 1){
+                    a.add(new int[]{i,j});
+                }
+                if(img2[i][j] == 1){
+                    b.add(new int[]{i,j});
+                }
+            }
+        }
+//平移差值, count
+        Map<String, Integer> map = new HashMap<>();
+        for(int[] pa : a){
+            for(int[]pb : b){
+                String tmp = (pa[0]- pb[0]) + "-" + (pa[1]- pb[1]);
+                map.put(tmp, map.getOrDefault(tmp, 0) + 1);
+            }
+        }
+
+        int max = 0;
+        for(int i : map.values()){
+            max = Math.max(max, i);
+        }
+
+        return max;
+    }
+}
