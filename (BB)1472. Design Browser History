@@ -1,0 +1,78 @@
+/*
+Time complexity:
+
+In the visit(url) method, we insert the URL string in our array and update the current pointer, both of these operations will take O(1)O(1)O(1) time each.
+Thus, in the worst case each call to the visit(url) method will take O(1)O(1)O(1) time.
+
+In the back(steps) and forward(steps) methods, we directly return the element at the required index which takes O(1)O(1)O(1) time.
+Thus, in the worst case, each call to these methods will take O(1)O(1)O(1) time.
+
+
+
+Space complexity:
+
+We might visit nnn URL strings and they will be stored in our array.
+Thus, in the worse case, we use O(l⋅n)O(l \cdot n)O(l⋅n) space.
+*/
+
+class BrowserHistory {
+    List<String> res;
+    int curIndex;
+    int border;
+    public BrowserHistory(String homepage) {
+        res = new ArrayList<>();
+        res.add(homepage);
+        curIndex = 0;
+        border = 0;
+    }
+    
+    public void visit(String url) {
+        curIndex++;
+        if(res.size() <= curIndex){
+            res.add(url);
+        }else{
+            res.set(curIndex, url);
+        }
+        border = curIndex;
+
+    }
+    
+    public String back(int steps) {
+       // int index = Math.max(0,curIndex - steps);
+        //return res.get(index);
+        
+        if(curIndex - steps > 0){
+            curIndex = curIndex - steps;
+          
+        }else{
+             curIndex = 0;
+           
+        }
+         return res.get(curIndex );
+        
+    }
+    
+    public String forward(int steps) {
+     //   int index = Math.min(border,curIndex + steps);
+       // return res.get(index);
+        
+        if(curIndex + steps > border){
+             curIndex = border;
+           
+        }else{
+             curIndex = curIndex + steps;
+       
+        }
+        return res.get(curIndex );
+        
+        
+    }
+}
+
+/**
+ * Your BrowserHistory object will be instantiated and called as such:
+ * BrowserHistory obj = new BrowserHistory(homepage);
+ * obj.visit(url);
+ * String param_2 = obj.back(steps);
+ * String param_3 = obj.forward(steps);
+ */
