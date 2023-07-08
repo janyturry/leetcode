@@ -1,3 +1,48 @@
+/*
+时间复杂度：均为 O(1)
+空间复杂度：O(q)，其中 q 为 push 调用的次数。
+
+https://leetcode.cn/problems/maximum-frequency-stack/solution/mei-xiang-ming-bai-yi-ge-dong-hua-miao-d-oich/
+*/
+
+
+class FreqStack {
+    Map<Integer, Integer>map;
+    List<Deque<Integer>> stacks;
+    public FreqStack() {
+        map = new HashMap<>();
+        stacks = new ArrayList<>();
+    }
+    
+    public void push(int val) {
+        int c = map.getOrDefault(val,0);
+        if(c == stacks.size()){
+            Deque<Integer> d = new LinkedList<>();
+            d.push(val);
+            stacks.add(d);
+        }else{
+            stacks.get(c).push(val);
+        }
+
+        map.putIfAbsent(val,0);
+        map.put(val, map.get(val)+1);
+    }
+    
+    public int pop() {
+        int val = stacks.get(stacks.size() -1).pop();
+        if(stacks.get(stacks.size() -1).isEmpty()){
+            stacks.remove(stacks.size() -1);
+        }
+        map.put(val, map.get(val) -1);
+        return val;
+    }
+}
+
+
+
+
+
+
 import java.util.HashMap;
 import java.util.Stack;
 
