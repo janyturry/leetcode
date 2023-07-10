@@ -1,0 +1,22 @@
+class Solution {
+    public boolean increasingTriplet(int[] nums) {
+        if(nums == null || nums.length < 1){
+            return false;
+        }
+
+        int min  = Integer.MAX_VALUE;
+        int medium = Integer.MAX_VALUE;
+
+        for(int i : nums){
+            if(i <= min){
+                min = i;
+            }else if (i <= medium ){
+                medium = i;
+            }else{
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
