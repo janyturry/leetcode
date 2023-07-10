@@ -1,3 +1,33 @@
+class Solution {
+    int max ;
+    public int diameterOfBinaryTree(TreeNode root) {
+        if(root == null){
+            return 0;
+        }
+        max = 0;
+
+        dfs(root);
+//因为DFS 统计的一直是经过的点数， 答案要的是边数，所以要减去1
+        return max -1;
+    }
+
+    public int dfs(TreeNode root){
+        if(root == null){
+            return 0;
+        }
+// 左儿子为根的子树的深度
+        int left = dfs(root.left);
+        int right = dfs(root.right);
+
+//max 记录的就是结果的最大值， 以当前节点为根的经过点数的最大值， 比较更新一下全部答案
+        max = Math.max(max, (left + right+1));
+//这个是不以当前节点为根的单边结果最大值， 返回给上面
+        return Math.max(left, right) + 1;
+    }
+}
+
+
+
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
