@@ -1,5 +1,12 @@
 //https://leetcode.cn/problems/find-median-from-data-stream/solution/gong-shui-san-xie-jing-dian-shu-ju-jie-g-pqy8/
 
+/*
+时间复杂度：addNum 函数的复杂度为 
+O(logn)
+findMedian 函数的复杂度为 O(1)
+空间复杂度：O(n)
+*/
+
 class MedianFinder {
     PriorityQueue<Integer> l ;
     PriorityQueue<Integer> r ;
